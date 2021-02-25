@@ -1,19 +1,29 @@
 ## US 01.01.01
-Users are able to click on the blue "Add" button at the top right to open this fragment. This is used to add an experiment.
-![](https://raw.githubusercontent.com/CMPUT301W21T04/Crowder/master/doc/Storyboard/Add%20Experiment.png)
-
+![](Add%20Experiment.png)
 ## US 01.02.01
 
 ## US 01.03.01
-
 ## US 01.04.01
-
 ## US 01.05.01
-
-## US 01.06.01
-
-## US 01.07.01
-
 ## US 01.08.01
-
 ## US 01.09.01
+## US 01.06.01
+## US 01.07.01
+## US 02.01.01
+## US 02.02.01
+## US 02.03.01
+## US 03.01.01
+## US 03.02.01
+## US 03.03.01
+## US 04.01.01
+## US 04.02.01
+## US 04.03.01
+## US 05.01.01
+## US 05.02.01
+## US 06.01.01
+## US 06.02.01
+## US 06.03.01
+## US 06.04.01
+
+
+
