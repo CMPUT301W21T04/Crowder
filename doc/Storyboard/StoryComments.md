@@ -1,8 +1,15 @@
 ## US 01.01.01
 ![](Add%20Experiment.png)
 ## US 01.02.01
-
+![](Binomial%20Trial%20Hmaburger.png)
+![](Non-Negative%20Integer%20Count%20Trial%20Hamburger.png)  
+![](Measurement%20Trial%20Hamburger.png)
+![](Count%20Trial%20Hamburger.png)
 ## US 01.03.01
+![](Binomial%20Trial%20Hmaburger.png)
+![](Non-Negative%20Integer%20Count%20Trial%20Hamburger.png)  
+![](Measurement%20Trial%20Hamburger.png)
+![](Count%20Trial%20Hamburger.png)
 ## US 01.04.01
 ## US 01.05.01
 ## US 01.08.01
