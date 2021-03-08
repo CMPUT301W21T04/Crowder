@@ -59,4 +59,16 @@ public class Experiment {
     public void setLocationRequired(boolean locationRequired) {
         isLocationRequired = locationRequired;
     }
+
+    // this requires attention will need
+    // to use some api to generate QR codes
+    public void generateQR() {
+
+    }
+
+    // similar to the generateQR we will
+    // need some api to read barcodes in
+    public void registerBarcode() {
+
+    }
 }
