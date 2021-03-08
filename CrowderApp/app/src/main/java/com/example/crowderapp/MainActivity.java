@@ -8,6 +8,9 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.crowderapp.views.AllExperimentsFragment;
+import com.example.crowderapp.views.MyExperimentsFragment;
+import com.example.crowderapp.views.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        openFragment(AllExperimentsFragment.newInstance("", ""));
+        openFragment(AllExperimentsFragment.newInstance());
     }
 
     public void openFragment(Fragment fragment) {
@@ -35,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.navigation_all_experiments:
-                            openFragment(AllExperimentsFragment.newInstance("", ""));
+                            openFragment(AllExperimentsFragment.newInstance());
                             return true;
                         case R.id.navigation_my_experiments:
-                            openFragment(MyExperimentsFragment.newInstance("", ""));
+                            openFragment(MyExperimentsFragment.newInstance());
                             return true;
                         case R.id.navigation_profile:
-                            openFragment(ProfileFragment.newInstance("", ""));
+                            openFragment(ProfileFragment.newInstance());
                             return true;
                     }
                     return false;
