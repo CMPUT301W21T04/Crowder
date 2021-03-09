@@ -1,5 +1,8 @@
 package com.example.crowderapp.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Experiment {
 
     private int experimentID;
@@ -8,6 +11,7 @@ public class Experiment {
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private int ownerID;
+    private List<Trial> trials = new ArrayList<Trial>();
 
     public Experiment() {
     }
