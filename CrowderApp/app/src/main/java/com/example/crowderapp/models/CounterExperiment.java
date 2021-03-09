@@ -6,7 +6,7 @@ public class CounterExperiment extends Experiment {
 
     private int totalCount;
 
-    public CounterExperiment(int experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+    public CounterExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
         super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 

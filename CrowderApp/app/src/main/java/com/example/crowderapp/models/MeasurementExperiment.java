@@ -7,7 +7,7 @@ public class MeasurementExperiment extends Experiment {
     private double averageMeasurement;
     private int measurementCount;
 
-    public MeasurementExperiment(int experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+    public MeasurementExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
         super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 

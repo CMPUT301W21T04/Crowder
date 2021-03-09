@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Experiment {
 
-    private int experimentID;
+    private String experimentID;
     private int minTrials;
     private boolean isEnded;
     private boolean isUnpublished;
@@ -13,7 +13,17 @@ public class Experiment {
     private int ownerID;
     protected List<Trial> trials = new ArrayList<Trial>();
 
-    public Experiment(int experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+    public Experiment() {
+        this.experimentID = null;
+        this.minTrials = 0;
+        this.isEnded = false;
+        this.isUnpublished = false;
+        this.isLocationRequired = false;
+        this.ownerID = 0;
+
+    }
+
+    public Experiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
         this.experimentID = experimentID;
         this.minTrials = minTrials;
         this.isEnded = isEnded;
@@ -30,7 +40,7 @@ public class Experiment {
         this.minTrials = minTrials;
     }
 
-    public int getExperimentID() {
+    public String getExperimentID() {
         return experimentID;
     }
 
@@ -54,7 +64,7 @@ public class Experiment {
         this.ownerID = ownerID;
     }
 
-    public void setExperimentID(int experimentID) {
+    public void setExperimentID(String experimentID) {
         this.experimentID = experimentID;
     }
 
