@@ -2,8 +2,10 @@ package com.example.crowderapp.models.dao;
 
 import com.example.crowderapp.models.Experiment;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * This is a base data access object for experiment data.
@@ -11,33 +13,31 @@ import java.lang.reflect.Array;
 public abstract class ExperimentDAO {
     /**
      * Gets an experiment by its ID.
-     * @param listener Callback when the experiment is fetched.
      * @param experimentId The ID of the experiment to fetch.
      */
-    abstract void getExperiment(OnSuccessListener<Experiment> listener, String experimentId);
+    public abstract Task<Experiment> getExperiment(String experimentId);
 
     /**
      * Gets a list of all experiments.
-     * @param listener
      */
-    abstract void getAllExperiments(OnSuccessListener listener);
+    public abstract Task<ArrayList<Experiment>> getAllExperiments();
 
     /**
      * Creates a new experiment.
      * @param exp The experiment
      * @return The string representing the experiment ID
      */
-    abstract String createExperiment(Experiment exp);
+    public abstract Task<String> createExperiment(Experiment exp);
 
     /**
      * Removes an existing experiment.
      * @param exp The experiment
      */
-    abstract void deleteExperiment(Experiment exp);
+    public abstract void deleteExperiment(Experiment exp);
 
     /**
      * Updates data of an existing experiment.
      * @param exp The experiment
      */
-    abstract void updateExperiment(Experiment exp);
+    public abstract void updateExperiment(Experiment exp);
 }

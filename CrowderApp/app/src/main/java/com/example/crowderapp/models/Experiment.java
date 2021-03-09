@@ -2,7 +2,7 @@ package com.example.crowderapp.models;
 
 public class Experiment {
 
-    private int experimentID;
+    private String experimentID;
     private int minTrials;
     private boolean isEnded;
     private boolean isUnpublished;
@@ -20,7 +20,7 @@ public class Experiment {
         this.minTrials = minTrials;
     }
 
-    public int getExperimentID() {
+    public String getExperimentID() {
         return experimentID;
     }
 
@@ -44,7 +44,7 @@ public class Experiment {
         this.ownerID = ownerID;
     }
 
-    public void setExperimentID(int experimentID) {
+    public void setExperimentID(String experimentID) {
         this.experimentID = experimentID;
     }
 
