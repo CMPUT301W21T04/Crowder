@@ -1,11 +1,9 @@
 package com.example.crowderapp.models.dao;
 
 import com.example.crowderapp.models.Experiment;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a base data access object for experiment data.
@@ -20,7 +18,7 @@ public abstract class ExperimentDAO {
     /**
      * Gets a list of all experiments.
      */
-    public abstract Task<ArrayList<Experiment>> getAllExperiments();
+    public abstract Task<List<Experiment>> getAllExperiments();
 
     /**
      * Creates a new experiment.

@@ -10,10 +10,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DAOUnitTest {
 
+    /**
+     * Does basic add and read test on mock dao
+     */
     @Test
     public void testMock() {
         ExperimentDAO dao = new ExperimentMockDAO();
@@ -21,7 +25,7 @@ public class DAOUnitTest {
         dao.createExperiment(testExperiment);
 
 
-        Task<ArrayList<Experiment>> getTask = dao.getAllExperiments();
+        Task<List<Experiment>> getTask = dao.getAllExperiments();
 
         try {
             Tasks.await(getTask);
