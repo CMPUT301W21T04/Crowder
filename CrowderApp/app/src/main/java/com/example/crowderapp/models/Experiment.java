@@ -66,9 +66,4 @@ public class Experiment {
 
     }
 
-    // similar to the generateQR we will
-    // need some api to read barcodes in
-    public void registerBarcode() {
-
-    }
 }
