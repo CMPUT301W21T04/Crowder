@@ -13,7 +13,17 @@ public class Experiment {
     private int ownerID;
     protected List<Trial> trials = new ArrayList<Trial>();
 
-    public Experiment(int experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+    public Experiment() {
+        this.experimentID = null;
+        this.minTrials = 0;
+        this.isEnded = false;
+        this.isUnpublished = false;
+        this.isLocationRequired = false;
+        this.ownerID = 0;
+
+    }
+
+    public Experiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
         this.experimentID = experimentID;
         this.minTrials = minTrials;
         this.isEnded = isEnded;
