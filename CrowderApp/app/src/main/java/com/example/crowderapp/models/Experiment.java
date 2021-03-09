@@ -11,9 +11,15 @@ public class Experiment {
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private int ownerID;
-    private List<Trial> trials = new ArrayList<Trial>();
+    protected List<Trial> trials = new ArrayList<Trial>();
 
-    public Experiment() {
+    public Experiment(int experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+        this.experimentID = experimentID;
+        this.minTrials = minTrials;
+        this.isEnded = isEnded;
+        this.isUnpublished = isUnpublished;
+        this.isLocationRequired = isLocationRequired;
+        this.ownerID = ownerID;
     }
 
     public int getMinTrials() {
@@ -72,7 +78,7 @@ public class Experiment {
 
     // similar to the generateQR we will
     // need some api to read barcodes in
-    public void registerBarcode() {
+    public void registerBarcode(Long barcode) {
 
     }
 }
