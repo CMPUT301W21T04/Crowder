@@ -1,4 +1,4 @@
-package com.example.crowderapp.views;
+package com.example.crowderapp.views.trialfragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,14 +8,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
 
-public class BinomialTrialFragment extends Fragment {
+public class CountTrialFragment extends Fragment {
 
-    public BinomialTrialFragment() {
+    public CountTrialFragment() {
 
     }
 
-    public static BinomialTrialFragment newInstance() {
-        BinomialTrialFragment fragment = new BinomialTrialFragment();
+    public static CountTrialFragment newInstance() {
+        CountTrialFragment fragment = new CountTrialFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -29,6 +29,6 @@ public class BinomialTrialFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.binomial_trial_fragment, container, false);
+        return inflater.inflate(R.layout.count_trial_fragment, container, false);
     }
 }
