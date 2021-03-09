@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExperimentMockDAO extends ExperimentDAO {
 
@@ -43,8 +44,8 @@ public class ExperimentMockDAO extends ExperimentDAO {
      * Gets a list of all experiments.
      */
     @Override
-    public Task<ArrayList<Experiment>> getAllExperiments() {
-        TaskCompletionSource<ArrayList<Experiment>> taskSource = new TaskCompletionSource<>();
+    public Task<List<Experiment>> getAllExperiments() {
+        TaskCompletionSource<List<Experiment>> taskSource = new TaskCompletionSource<>();
         taskSource.setResult(expList);
         return taskSource.getTask();
     }
