@@ -7,6 +7,10 @@ public class BinomialExperiment extends Experiment {
     private int totalPass = 0;
     private int totalFail = 0;
 
+    public BinomialExperiment() {
+        super();
+    }
+
     public BinomialExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
         super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }

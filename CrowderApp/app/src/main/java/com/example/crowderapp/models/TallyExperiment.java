@@ -7,6 +7,10 @@ public class TallyExperiment extends Experiment {
     private double avgTally;
     private int tallyCount;
 
+    public TallyExperiment() {
+        super();
+    }
+
     public TallyExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
         super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
