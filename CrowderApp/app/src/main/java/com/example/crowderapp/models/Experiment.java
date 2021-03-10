@@ -1,15 +1,35 @@
 package com.example.crowderapp.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Experiment {
 
-    private int experimentID;
+    private String experimentID;
     private int minTrials;
     private boolean isEnded;
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private int ownerID;
+    protected List<Trial> trials = new ArrayList<Trial>();
 
     public Experiment() {
+        this.experimentID = null;
+        this.minTrials = 0;
+        this.isEnded = false;
+        this.isUnpublished = false;
+        this.isLocationRequired = false;
+        this.ownerID = 0;
+
+    }
+
+    public Experiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+        this.experimentID = experimentID;
+        this.minTrials = minTrials;
+        this.isEnded = isEnded;
+        this.isUnpublished = isUnpublished;
+        this.isLocationRequired = isLocationRequired;
+        this.ownerID = ownerID;
     }
 
     public int getMinTrials() {
@@ -20,7 +40,7 @@ public class Experiment {
         this.minTrials = minTrials;
     }
 
-    public int getExperimentID() {
+    public String getExperimentID() {
         return experimentID;
     }
 
@@ -44,7 +64,7 @@ public class Experiment {
         this.ownerID = ownerID;
     }
 
-    public void setExperimentID(int experimentID) {
+    public void setExperimentID(String experimentID) {
         this.experimentID = experimentID;
     }
 
@@ -66,4 +86,9 @@ public class Experiment {
 
     }
 
+    // similar to the generateQR we will
+    // need some api to read barcodes in
+    public void registerBarcode(Long barcode) {
+
+    }
 }
