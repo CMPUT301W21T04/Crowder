@@ -33,41 +33,41 @@ public class ExperimentHandler {
     }
 
 
-    public void unPublishExperiment(int experimentID) {
+    public void unPublishExperiment(string experimentID) {
         // TODO: remove experiment from fire store
     }
 
 
-    public void endExperiment(int experimentID) {
+    public void endExperiment(string experimentID) {
         // TODO: prevent owner and subscriber from adding a trial
     }
 
 
-    public void addTrial(int experimentID, Date date, Location location) {
+    public void addTrial(string experimentID, Date date, Location location) {
         // TODO: check if Location needs to be a user-defined class
     }
 
-    public List<Trial> getData(int experimentID) {
+    public List<Trial> getData(string experimentID) {
         // TODO: get trials from the experiment
     }
 
-    public List<Trial> getData(int experimentID, List<Integer> exclude) {
+    public List<Trial> getData(string experimentID, List<Integer> exclude) {
         // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
     }
 
-    public List<User> getAllExperimenters(int experimentID) {
+    public List<User> getAllExperimenters(string experimentID) {
         // TODO: get all participating experimenters of the given experiment
     }
 
-    public ExperimentStats getStatistics(int experimentID) {
+    public ExperimentStats getStatistics(string experimentID) {
         // TODO: get the corresponding ExperimentStats class for this experiment
     }
 
-    public void addQR(int experimentID) {
+    public void addQR(string experimentID) {
         // TODO: get the experiment object and call generateQR()
     }
 
-    public List<Integer> getQR(int experimentID) {
+    public List<Integer> getQR(string experimentID) {
         // Assuming QR code is of Integer type
         // TODO: get all QR codes associated with experiment
     }
@@ -82,22 +82,3 @@ public class ExperimentHandler {
         // TODO: get a list of experiments based on provided filter
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
