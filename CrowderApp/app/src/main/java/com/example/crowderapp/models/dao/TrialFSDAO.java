@@ -15,6 +15,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Observer;
 
+/*
+    Tasks based on guide by Google Developers.
+    https://developers.google.com/android/guides/tasks
+    Licensed under Apache 2.0 License.
+ */
+
 public class TrialFSDAO extends TrialDAO {
 
     // Logging Tag
@@ -29,8 +35,15 @@ public class TrialFSDAO extends TrialDAO {
         super(experiment);
 
         db = FirebaseFirestore.getInstance();
-        trialCollection = db.collection("experiment_trials")
-                                .document(experimentID).collection("trials");
+        CollectionReference allExperimentTrials = db.collection("experiment");
+
+        if (experimentID == null) {
+            // Programmer messed up. Cannot add trials if no experiment in DB yet!
+            throw new NullPointerException("Cannot add trials if experiment has null ID");
+        }
+
+        trialCollection = allExperimentTrials.document(experimentID)
+                            .collection("trials");
     }
 
     /**

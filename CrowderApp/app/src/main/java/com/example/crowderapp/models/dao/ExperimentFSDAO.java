@@ -16,6 +16,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    Tasks based on guide by Google Developers.
+    https://developers.google.com/android/guides/tasks
+    Licensed under Apache 2.0 License.
+ */
+
 public class ExperimentFSDAO extends ExperimentDAO {
 
     // Logging Tag
