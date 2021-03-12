@@ -22,14 +22,14 @@ public abstract class TrialDAO {
 
     /**
      * Gets all the trials for a given experiment.
-     * @return
+     * @return The task that resolves into the list of trials.
      */
     public abstract Task<List<Trial>> getExperimentTrials();
 
     /**
      * Adds a trial for the experiment
      * @param trial
-     * @return
+     * @return The task that resolves into the trial ID.
      */
     public abstract Task<String> addExperimentTrial(Trial trial);
 }

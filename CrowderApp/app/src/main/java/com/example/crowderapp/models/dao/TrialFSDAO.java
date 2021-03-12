@@ -1,6 +1,7 @@
 package com.example.crowderapp.models.dao;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -54,6 +55,8 @@ public class TrialFSDAO extends TrialDAO {
     public Task<List<Trial>> getExperimentTrials() {
         return trialCollection.get().continueWith(task -> {
             return task.getResult().toObjects(Trial.class);
+        }).addOnFailureListener(e -> {
+            Log.e(TAG, "getExperimentTrials: Failed to get all trials for experiment " + experimentID, e);
         });
     }
 
@@ -67,6 +70,8 @@ public class TrialFSDAO extends TrialDAO {
         return trialCollection.add(trial).continueWith(task -> {
             DocumentReference doc = task.getResult();
             return doc.getId();
+        }).addOnFailureListener(e -> {
+            Log.e(TAG, "addExperimentTrial: Failed to add trial to experiment " + experimentID, e);
         });
     }
 }

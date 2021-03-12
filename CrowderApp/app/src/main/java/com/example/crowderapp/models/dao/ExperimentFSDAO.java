@@ -39,6 +39,7 @@ public class ExperimentFSDAO extends ExperimentDAO {
      * Gets an experiment by its ID.
      *
      * @param experimentId The ID of the experiment to fetch.
+     * @return The task that resoles in to the experiment.
      */
     @Override
     public Task<Experiment> getExperiment(String experimentId) {
@@ -67,7 +68,7 @@ public class ExperimentFSDAO extends ExperimentDAO {
     }
 
     /**
-     * Gets a list of all experiments.
+     * @return The task that will resolve to list of experiments.
      */
     @Override
     public Task<List<Experiment>> getAllExperiments() {
@@ -89,8 +90,8 @@ public class ExperimentFSDAO extends ExperimentDAO {
     /**
      * Creates a new experiment.
      *
-     * @param exp The experiment
-     * @return The string representing the experiment ID
+     * @param exp The experiment.
+     * @return The task that resolves to the string representing the experiment ID
      */
     @Override
     public Task<String> createExperiment(Experiment exp) {
@@ -103,7 +104,9 @@ public class ExperimentFSDAO extends ExperimentDAO {
                 taskCompletionSource.setResult(task.getResult().getId());
             }
 
-            return taskCompletionSource.getTask();
+            return taskCompletionSource.getTask().addOnFailureListener(e -> {
+                Log.e(TAG, "createExperiment: Failed to create an experiment.", e);
+            });
         });
     }
 
