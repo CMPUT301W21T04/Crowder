@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,15 +28,25 @@ public class ExperimentHandler {
     }
 
     public void createExperiment() {
+        // TODO: have some code here to generate the id and what not
+        // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
 
-        // TODO: have some code here to generate the id and what not
-
+        experimentFSDAO.createExperiment(newExperiment);
     }
-
 
     public void unPublishExperiment(String experimentID) {
         // TODO: remove experiment from fire store
+
+        // create an async task that listens
+        //Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
+
+        //task.addOnSuccessListener(experiment -> )
+
+    }
+
+    public void unPublishExperiment() {
+
     }
 
 
