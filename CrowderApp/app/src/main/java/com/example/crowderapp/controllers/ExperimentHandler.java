@@ -4,20 +4,24 @@ import android.location.Location;
 
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
-//import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ExperimentHandler {
     ArrayList<Experiment> experiments;
 
     private static ExperimentHandler instance;
     private ExperimentFSDAO experimentFSDAO;
+    private Logger logger;
 
     private ExperimentHandler() {
         experimentFSDAO = new ExperimentFSDAO();
+        logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
     public static ExperimentHandler getInstance() {
@@ -31,17 +35,29 @@ public class ExperimentHandler {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
+        Task<String> task = experimentFSDAO.createExperiment(newExperiment);
 
-        experimentFSDAO.createExperiment(newExperiment);
+        try{
+            String experimentID = Tasks.await(task);
+            newExperiment.setExperimentID(experimentID);
+        } catch(Exception e) {
+            logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
+        }
+
     }
 
     public void unPublishExperiment(String experimentID) {
         // TODO: remove experiment from fire store
 
-        // create an async task that listens
-        //Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
+        //create an async task that listens
+        Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
 
-        //task.addOnSuccessListener(experiment -> )
+        try{
+            Experiment experiment = Tasks.await(task);
+            experimentFSDAO.deleteExperiment(experiment);
+        } catch(Exception e) {
+            logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
+        }
 
     }
 
