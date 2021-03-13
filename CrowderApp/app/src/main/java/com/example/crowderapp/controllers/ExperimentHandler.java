@@ -61,8 +61,9 @@ public class ExperimentHandler {
 
     }
 
-    public void unPublishExperiment() {
-
+    public void unPublishExperiment(Experiment experiment) {
+        experiment.setUnpublished(true);
+        // TODO: need to have a method somewhere to update the experiment in the db
     }
 
 
