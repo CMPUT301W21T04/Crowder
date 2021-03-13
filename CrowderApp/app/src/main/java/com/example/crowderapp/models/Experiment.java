@@ -1,11 +1,17 @@
 package com.example.crowderapp.models;
 
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Experiment {
 
+    @DocumentId // Designate this as document ID in Firestore.
     private String experimentID;
+
     private int minTrials;
     private boolean isEnded;
     private boolean isUnpublished;
@@ -20,7 +26,6 @@ public class Experiment {
         this.isUnpublished = false;
         this.isLocationRequired = false;
         this.ownerID = 0;
-
     }
 
     public Experiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
