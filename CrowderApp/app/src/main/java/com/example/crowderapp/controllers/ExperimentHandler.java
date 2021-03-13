@@ -62,13 +62,15 @@ public class ExperimentHandler {
     }
 
     public void unPublishExperiment(Experiment experiment) {
+
         experiment.setUnpublished(true);
-        // TODO: need to have a method somewhere to update the experiment in the db
+        experimentFSDAO.updateExperiment(experiment);
     }
 
 
     public void endExperiment(String experimentID) {
         // TODO: prevent owner and subscriber from adding a trial
+
     }
 
 
