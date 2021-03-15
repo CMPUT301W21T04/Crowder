@@ -22,10 +22,14 @@ public class User {
     private String phone;
 
     // Experiment Information
-    private List<Integer> subscribedExperiments;
+    private List<String> subscribedExperiments;
 
     public User() {
         subscribedExperiments = new LinkedList<>();
+
+        name = "";
+        email = "";
+        phone = "";
     }
 
     public String getName() {
@@ -60,11 +64,11 @@ public class User {
         this.phone = phone;
     }
 
-    public List<Integer> getSubscribedExperiments() {
+    public List<String> getSubscribedExperiments() {
         return subscribedExperiments;
     }
 
-    public void setSubscribedExperiments(List<Integer> subscribedExperiments) {
+    public void setSubscribedExperiments(List<String> subscribedExperiments) {
         this.subscribedExperiments = subscribedExperiments;
     }
 }

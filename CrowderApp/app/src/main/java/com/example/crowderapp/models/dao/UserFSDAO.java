@@ -19,7 +19,7 @@ public class UserFSDAO extends UserDAO {
     // Firestore collections that has all our users
     private CollectionReference userCollections;
 
-    public void UserDAO() {
+    public UserFSDAO() {
         db = FirebaseFirestore.getInstance();
         userCollections = db.collection("users");
     }
