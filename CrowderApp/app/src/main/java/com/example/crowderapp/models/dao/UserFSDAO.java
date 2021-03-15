@@ -1,11 +1,16 @@
 package com.example.crowderapp.models.dao;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.example.crowderapp.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observer;
 
 /**
  * Firestore implementation for UserDAO
@@ -19,9 +24,13 @@ public class UserFSDAO extends UserDAO {
     // Firestore collections that has all our users
     private CollectionReference userCollections;
 
+    List<Observer> observerList;
+
     public UserFSDAO() {
         db = FirebaseFirestore.getInstance();
         userCollections = db.collection("users");
+
+        observerList = new ArrayList<>();
     }
 
     /**
@@ -62,6 +71,20 @@ public class UserFSDAO extends UserDAO {
     public void updateUser(User user) {
         userCollections.document(user.getUid()).set(user).addOnFailureListener(e -> {
             Log.e(TAG, "updateUser: Failed to update user with ID: " + user.getUid(), e);
+        });
+    }
+
+    /**
+     * Observe a user in Firestore.
+     * @param userId The user to observe.
+     * @param activity The activity observing. Use to prevent leaks.
+     * @param observer Callback to receive user.
+     */
+    @Override
+    public void observeUser(String userId, Activity activity, UserObserver observer) {
+        userCollections.document(userId).addSnapshotListener(activity, (value, error) -> {
+            User user = value.toObject(User.class);
+            observer.update(this, user);
         });
     }
 }

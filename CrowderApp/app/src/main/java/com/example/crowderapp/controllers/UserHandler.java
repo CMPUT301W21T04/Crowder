@@ -1,12 +1,13 @@
 package com.example.crowderapp.controllers;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.SharedPreferences;
 
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.UserDAO;
 import com.example.crowderapp.models.dao.UserFSDAO;
 import com.google.android.gms.tasks.Task;
+
 
 /**
  * Controller class to handle all things about users, whether
@@ -67,6 +68,27 @@ public class UserHandler {
      */
     public  Task<User> getCurrentUser() {
         return currentUserTask;
+    }
+
+    /**
+     * Observes the current user.
+     * @param activity
+     * @param obs
+     */
+    public void observeCurrentUser(Activity activity, UserDAO.UserObserver obs) {
+        currentUserTask.addOnSuccessListener(user -> {
+            syncObserverCurrentUser(user, activity, obs);
+        });
+    }
+
+    /**
+     * Observe a user. Synchronous, no tasks.
+     * @param user
+     * @param activity Activity reference to prevent activity leak.
+     * @param obs The observer
+     */
+    public void syncObserverCurrentUser(User user, Activity activity, UserDAO.UserObserver obs) {
+        userDAO.observeUser(user.getUid(), activity, obs);
     }
 
     /**

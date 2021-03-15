@@ -1,9 +1,20 @@
 package com.example.crowderapp.models.dao;
 
+import android.app.Activity;
+
 import com.example.crowderapp.models.User;
 import com.google.android.gms.tasks.Task;
 
+import java.util.Observer;
+
 public abstract class UserDAO {
+
+    /**
+     * Observer for a user.
+     */
+    public interface UserObserver {
+        void update(UserDAO dao, User user);
+    }
 
     /**
      * Retrieves a single user by a user ID.
@@ -11,6 +22,13 @@ public abstract class UserDAO {
      * @return The user
      */
     public abstract Task<User> getUserByID(String userId);
+
+    /**
+     * Observes a user in storage.
+     * @param userId The user to observe.
+     * @param observer Callback to receive user.
+     */
+    public abstract void observeUser(String userId, Activity activity, UserObserver observer);
 
     /**
      * Creates a new user in storage.

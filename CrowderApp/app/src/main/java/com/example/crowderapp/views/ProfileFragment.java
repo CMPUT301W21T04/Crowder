@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
         phoneBox = view.findViewById(R.id.profile_phone);
         usernameBox = view.findViewById(R.id.profile_username);
 
-        userHandler.getCurrentUser().addOnSuccessListener(user -> {
+        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
             emailBox.setText(user.getEmail());
             phoneBox.setText(user.getPhone());
             usernameBox.setText(user.getUid());
