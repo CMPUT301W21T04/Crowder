@@ -1,5 +1,6 @@
 package com.example.crowderapp.controllers;
 
+import android.content.Intent;
 import android.location.Location;
 
 import com.example.crowderapp.models.Experiment;
@@ -11,26 +12,23 @@ import java.util.Date;
 import java.util.List;
 
 public class ExperimentHandler {
-    ArrayList<Experiment> experiments;
+    private ArrayList<Experiment> experiments = new ArrayList<>();
 
     private static ExperimentHandler instance;
-    private ExperimentFSDAO experimentFSDAO;
 
-    private ExperimentHandler() {
-        experimentFSDAO = new ExperimentFSDAO();
-    }
+    private ExperimentHandler() {}
 
     public static ExperimentHandler getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new ExperimentHandler();
+        }
 
         return instance;
     }
 
-    public void createExperiment() {
-        Experiment newExperiment = new Experiment();
-
+    public void createExperiment(Intent intent) {
         // TODO: have some code here to generate the id and what not
+        // create the appropriate experiment based on the intent provided
 
     }
 
@@ -45,11 +43,17 @@ public class ExperimentHandler {
     }
 
 
+    public ArrayList<Experiment> getExperiments() {
+        return experiments;
+    }
+
+
     public void addTrial(String experimentID, Date date, Location location) {
         // TODO: check if Location needs to be a user-defined class
     }
 
 //    public List<Trial> getData(String experimentID) {
+//        // rename this to getTrials maybe?
 //        // TODO: get trials from the experiment
 //    }
 //
