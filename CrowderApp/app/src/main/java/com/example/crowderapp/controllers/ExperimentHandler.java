@@ -3,6 +3,7 @@ package com.example.crowderapp.controllers;
 import android.location.Location;
 
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 
 import java.util.ArrayList;
