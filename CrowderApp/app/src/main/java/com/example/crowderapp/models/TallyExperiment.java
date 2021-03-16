@@ -1,5 +1,7 @@
 package com.example.crowderapp.models;
 
+import android.location.Location;
+
 import java.util.Date;
 
 public class TallyExperiment extends Experiment {
@@ -15,9 +17,9 @@ public class TallyExperiment extends Experiment {
         super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
-    public void addNonNegativeCount(int count, String experimenter) {
+    public void addNonNegativeCount(int count, String experimenter, Location location) {
         avgTally = (avgTally*tallyCount+count)/(1+tallyCount);
         tallyCount += 1;
-        trials.add(new TallyTrial(experimenter, new Date(), count));
+        trials.add(new TallyTrial(experimenter, new Date(), count, location, this.getExperimentID()));
     }
 }
