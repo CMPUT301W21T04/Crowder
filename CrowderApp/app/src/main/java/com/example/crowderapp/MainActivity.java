@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.views.AllExperimentsFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.ProfileFragment;
+import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.appbar_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_experiment_button:
+                Toast.makeText(this, "yo", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void openFragment(Fragment fragment) {

@@ -9,4 +9,5 @@
     <string name="all_experiments">All Experiments</string>
     <string name="my_experiments">My Experiments</string>
     <string name="profile">Profile</string>
+    <string name="add_experiment">Add Experiment</string>
 </resources>

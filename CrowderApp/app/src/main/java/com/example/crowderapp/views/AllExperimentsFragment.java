@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -63,13 +65,16 @@ public class AllExperimentsFragment extends Fragment {
         }
     };
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        this.setHasOptionsMenu(true);
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -117,5 +122,6 @@ public class AllExperimentsFragment extends Fragment {
             subscribed = user.getSubscribedExperiments();
 
         });
+
     }
 }
