@@ -66,9 +66,9 @@ public class ProfileFragment extends Fragment {
         editBtn.setImageDrawable(editImage);
 
         // Can't edit to begin with
-        emailBox.setEnabled(true);
-        phoneBox.setEnabled(true);
-        usernameBox.setEnabled(true);
+        emailBox.setEnabled(false);
+        phoneBox.setEnabled(false);
+        usernameBox.setEnabled(false);
 
         editBtn.setOnClickListener(v -> {
             if (!editMode) {
