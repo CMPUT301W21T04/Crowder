@@ -34,12 +34,14 @@ public class CustomListAllExperiments extends ArrayAdapter<Experiment> {
     private List<Experiment> experiments;
     private List<String> subscribedExps;
     private Context context;
+    private final CompoundButton.OnCheckedChangeListener listener;
 
-    public CustomListAllExperiments(Context context, List<Experiment> experiments, List<String> subscribedExps) {
+    public CustomListAllExperiments(Context context, List<Experiment> experiments, List<String> subscribedExps, CompoundButton.OnCheckedChangeListener listener) {
         super(context,0,experiments);
         this.experiments = experiments;
         this.context = context;
         this.subscribedExps = subscribedExps;
+        this.listener = listener;
     }
 
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -53,7 +55,7 @@ public class CustomListAllExperiments extends ArrayAdapter<Experiment> {
         TextView expName = view.findViewById(R.id.allExpNameText);
         CheckBox subscribed = view.findViewById(R.id.subscribedButton);
         subscribed.setTag(position);
-        subscribed.setOnCheckedChangeListener(checkListener);
+        subscribed.setOnCheckedChangeListener(listener);
 
         expName.setText(experiment.getName());
         if (subscribedExps.contains(experiment.getName())) {
@@ -65,19 +67,4 @@ public class CustomListAllExperiments extends ArrayAdapter<Experiment> {
 
         return view;
     }
-
-    CompoundButton.OnCheckedChangeListener checkListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            int position = (int) buttonView.getTag();
-            if(isChecked) {
-                Log.d(String.valueOf(position), "onCheckedChanged: 1" );
-                // TODO: Add expname to users subscribed list
-            }
-            else {
-                // TODO: Remove expname from users subscribed list
-                Log.d(String.valueOf(position), "onCheckedChanged: 0" );
-            }
-        }
-    };
 }

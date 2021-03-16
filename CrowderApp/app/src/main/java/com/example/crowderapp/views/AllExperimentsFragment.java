@@ -50,6 +50,19 @@ public class AllExperimentsFragment extends Fragment {
         return fragment;
     }
 
+
+    CompoundButton.OnCheckedChangeListener checkListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            int position = (int) buttonView.getTag();
+            Experiment exp = allExpDataList.get(position);
+            userHandler.subscribeExperiment(exp.getExperimentID());
+            Log.v(String.valueOf(userHandler.getCurrentUser().getResult().getUid()), "Current User");
+            Log.v(String.valueOf(isChecked), "Button changed");
+            Log.v(String.valueOf(position), "At this position");
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,24 +75,6 @@ public class AllExperimentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
-//        View view2 = inflater.inflate(R.layout.all_experiments_custom_list, container, false);
-//
-//        CheckBox sub = view2.findViewById(R.id.subscribedButton);
-//        sub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                int position = (int) buttonView.getTag();
-//                if(isChecked) {
-//                    Log.d(String.valueOf(position), "onCheckedChanged: 1" );
-//                    // TODO: Add expname to users subscribed list
-//                }
-//                else {
-//                    // TODO: Remove expname from users subscribed list
-//                    Log.d(String.valueOf(position), "onCheckedChanged: 0" );
-//                }
-//            }
-//        });
-
         return view;
 
     }
@@ -93,7 +88,7 @@ public class AllExperimentsFragment extends Fragment {
             public void onComplete(@NonNull Task task) {
                 if (allExpTask.isSuccessful()) {
                     allExpDataList = (List<Experiment>) task.getResult();
-                    allExpAdapter = new CustomListAllExperiments(thisContext, allExpDataList, subscribed);
+                    allExpAdapter = new CustomListAllExperiments(thisContext, allExpDataList, subscribed, checkListener);
                     allExpView = getView().findViewById(R.id.all_experiment_list);
                     allExpView.setAdapter(allExpAdapter);
                 }
@@ -103,7 +98,20 @@ public class AllExperimentsFragment extends Fragment {
             }
         });
 
-
+//        sub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                int position = (int) buttonView.getTag();
+//                if(isChecked) {
+//                    Log.e(String.valueOf(position), "onCheckedChanged: 1" );
+//                    // TODO: Add expname to users subscribed list
+//                }
+//                else {
+//                    // TODO: Remove expname from users subscribed list
+//                    Log.e(String.valueOf(position), "onCheckedChanged: 0" );
+//                }
+//            }
+//        });
 
         userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
             subscribed = user.getSubscribedExperiments();
