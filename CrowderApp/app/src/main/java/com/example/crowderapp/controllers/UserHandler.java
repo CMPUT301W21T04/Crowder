@@ -151,4 +151,5 @@ public class UserHandler {
             updateCurrentUser(user);
         });
     }
+
 }
