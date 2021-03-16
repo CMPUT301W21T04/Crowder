@@ -2,10 +2,13 @@ package com.example.crowderapp.views;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +22,7 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +62,28 @@ public class AllExperimentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
+//        View view2 = inflater.inflate(R.layout.all_experiments_custom_list, container, false);
+//
+//        CheckBox sub = view2.findViewById(R.id.subscribedButton);
+//        sub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                int position = (int) buttonView.getTag();
+//                if(isChecked) {
+//                    Log.d(String.valueOf(position), "onCheckedChanged: 1" );
+//                    // TODO: Add expname to users subscribed list
+//                }
+//                else {
+//                    // TODO: Remove expname from users subscribed list
+//                    Log.d(String.valueOf(position), "onCheckedChanged: 0" );
+//                }
+//            }
+//        });
 
         return view;
 
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -73,7 +95,6 @@ public class AllExperimentsFragment extends Fragment {
                     allExpDataList = (List<Experiment>) task.getResult();
                     allExpAdapter = new CustomListAllExperiments(thisContext, allExpDataList, subscribed);
                     allExpView = getView().findViewById(R.id.all_experiment_list);
-
                     allExpView.setAdapter(allExpAdapter);
                 }
                 else {
@@ -81,6 +102,9 @@ public class AllExperimentsFragment extends Fragment {
                 }
             }
         });
+
+
+
         userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
             subscribed = user.getSubscribedExperiments();
 
