@@ -3,6 +3,7 @@ package com.example.crowderapp.controllers;
 import android.location.Location;
 
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -78,18 +79,20 @@ public class ExperimentHandler {
         // TODO: check if Location needs to be a user-defined class
     }
 
-//    public List<Trial> getData(String experimentID) {
-//        // TODO: get trials from the experiment
-//    }
-//
-//    public List<Trial> getData(String experimentID, List<Integer> exclude) {
-//        // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
-//    }
-//
+    public List<Trial> getData(String experimentID) {
+        // TODO: get trials from the experiment
+        return null;
+    }
+
+    public List<Trial> getData(String experimentID, List<Integer> exclude) {
+        // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
+        return null;
+    }
+
 //    public List<User> getAllExperimenters(String experimentID) {
 //        // TODO: get all participating experimenters of the given experiment
 //    }
-//
+
 //    public ExperimentStats getStatistics(String experimentID) {
 //        // TODO: get the corresponding ExperimentStats class for this experiment
 //    }
