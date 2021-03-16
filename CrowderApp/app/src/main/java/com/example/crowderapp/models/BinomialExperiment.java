@@ -1,5 +1,7 @@
 package com.example.crowderapp.models;
 
+import android.location.Location;
+
 import java.util.Date;
 
 public class BinomialExperiment extends Experiment {
@@ -15,13 +17,13 @@ public class BinomialExperiment extends Experiment {
         super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
-    public void addPass(String experimenter) {
+    public void addPass(String experimenter, Location location) {
         totalPass += 1;
-        trials.add(new BinomialTrial(experimenter, new Date(), true));
+        trials.add(new BinomialTrial(experimenter, new Date(), true, location, this.getExperimentID()));
     }
 
-    public void AddFail(String experimenter) {
+    public void AddFail(String experimenter, Location location) {
         totalFail += 1;
-        trials.add(new BinomialTrial(experimenter, new Date(), false));
+        trials.add(new BinomialTrial(experimenter, new Date(), false, location, this.getExperimentID()));
     }
 }
