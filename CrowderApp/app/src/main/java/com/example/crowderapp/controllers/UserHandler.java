@@ -55,6 +55,10 @@ public class UserHandler {
                 newUser.setName(task.getResult());
                 newUser.setUid(task.getResult());
 
+                sharedPreferences.edit()
+                    .putString(USER_ID_KEY, task.getResult())
+                    .apply();
+
                 return newUser;
             });
 
