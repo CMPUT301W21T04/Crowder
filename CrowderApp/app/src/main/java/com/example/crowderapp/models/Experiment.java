@@ -19,7 +19,7 @@ public class Experiment {
     private boolean isEnded;
     private boolean isUnpublished;
     private boolean isLocationRequired;
-    private int ownerID;
+    private String ownerID;
     protected List<Trial> trials = new ArrayList<Trial>();
 
     public Experiment() {
@@ -28,10 +28,10 @@ public class Experiment {
         this.isEnded = false;
         this.isUnpublished = false;
         this.isLocationRequired = false;
-        this.ownerID = 0;
+        this.ownerID = "";
     }
 
-    public Experiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+    public Experiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
         this.experimentID = experimentID;
         this.name = name;
         this.minTrials = minTrials;
@@ -67,11 +67,11 @@ public class Experiment {
         return isLocationRequired;
     }
 
-    public int getOwnerID() {
+    public String getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
+    public void setOwnerID(String ownerID) {
         this.ownerID = ownerID;
     }
 
