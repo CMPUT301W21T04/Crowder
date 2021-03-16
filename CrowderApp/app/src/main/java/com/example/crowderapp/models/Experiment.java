@@ -12,6 +12,9 @@ public class Experiment {
     @DocumentId // Designate this as document ID in Firestore.
     private String experimentID;
 
+
+
+    private String name;
     private int minTrials;
     private boolean isEnded;
     private boolean isUnpublished;
@@ -28,14 +31,17 @@ public class Experiment {
         this.ownerID = 0;
     }
 
-    public Experiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
+    public Experiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
         this.experimentID = experimentID;
+        this.name = name;
         this.minTrials = minTrials;
         this.isEnded = isEnded;
         this.isUnpublished = isUnpublished;
         this.isLocationRequired = isLocationRequired;
         this.ownerID = ownerID;
     }
+
+    public String getName() { return name; }
 
     public int getMinTrials() {
         return minTrials;
