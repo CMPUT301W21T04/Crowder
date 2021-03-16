@@ -56,7 +56,14 @@ public class AllExperimentsFragment extends Fragment {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             int position = (int) buttonView.getTag();
             Experiment exp = allExpDataList.get(position);
-            userHandler.subscribeExperiment(exp.getExperimentID());
+            if(isChecked) {
+                userHandler.subscribeExperiment(exp.getExperimentID());
+                Log.v(String.valueOf(exp.getExperimentID()), "Subscribed to: ");
+            }
+            else {
+                userHandler.unsubscribeExperiment(exp.getExperimentID());
+                Log.v(String.valueOf(exp.getExperimentID()), "Unsubscribed to: ");
+            }
             Log.v(String.valueOf(userHandler.getCurrentUser().getResult().getUid()), "Current User");
             Log.v(String.valueOf(isChecked), "Button changed");
             Log.v(String.valueOf(position), "At this position");
