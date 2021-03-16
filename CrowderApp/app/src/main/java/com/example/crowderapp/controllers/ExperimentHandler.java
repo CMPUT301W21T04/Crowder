@@ -2,9 +2,14 @@ package com.example.crowderapp.controllers;
 
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
+import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
@@ -38,36 +43,39 @@ public class ExperimentHandler {
         Experiment newExperiment = new Experiment();
         Task<String> task = experimentFSDAO.createExperiment(newExperiment);
 
-        try{
-            String experimentID = Tasks.await(task);
-            newExperiment.setExperimentID(experimentID);
-        } catch(Exception e) {
-            logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
-        }
+        task.addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+
+               if (task.isSuccessful()) {
+                   String experimentID = task.getResult();
+                   newExperiment.setExperimentID(experimentID);
+               } else {
+                   Exception e = task.getException();
+                   logger.throwing("Experiment Handler", "error in createExperiment unable to create experiment", e);
+               }
+            }
+        });
 
     }
 
     public void unPublishExperiment(String experimentID) {
         // TODO: remove experiment from fire store
-
-        //create an async task that listens
         Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
 
-        try{
-            Experiment experiment = Tasks.await(task);
-            experimentFSDAO.deleteExperiment(experiment);
-        } catch(Exception e) {
-            logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
-        }
-
+        task.addOnCompleteListener(new OnCompleteListener<Experiment>() {
+            @Override
+            public void onComplete(@NonNull Task<Experiment> task) {
+                if (task.isSuccessful()) {
+                    Experiment experimentToDelete = task.getResult();
+                    experimentFSDAO.deleteExperiment(experimentToDelete);
+                } else {
+                    Exception e = task.getException();
+                    logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
+                }
+            }
+        });
     }
-
-    public void unPublishExperiment(Experiment experiment) {
-
-        experiment.setUnpublished(true);
-        experimentFSDAO.updateExperiment(experiment);
-    }
-
 
     public void endExperiment(String experimentID) {
         // TODO: prevent owner and subscriber from adding a trial
@@ -89,13 +97,21 @@ public class ExperimentHandler {
         return null;
     }
 
-//    public List<User> getAllExperimenters(String experimentID) {
-//        // TODO: get all participating experimenters of the given experiment
-//    }
+    public List<User> getAllExperimenters(String experimentID) {
+        // TODO: get all participating experimenters of the given experiment
+        return null;
+    }
 
 //    public ExperimentStats getStatistics(String experimentID) {
 //        // TODO: get the corresponding ExperimentStats class for this experiment
 //    }
+
+    public Task<List<Experiment>>  getAllExperiments() {
+        Task<List<Experiment>> task = experimentFSDAO.getAllExperiments();
+
+        return task;
+
+    }
 
     public void addQR(String experimentID) {
         // TODO: get the experiment object and call generateQR()
