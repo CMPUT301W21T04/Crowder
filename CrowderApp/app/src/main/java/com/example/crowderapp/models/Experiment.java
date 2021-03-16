@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Experiment {
+public abstract class Experiment {
 
     @DocumentId // Designate this as document ID in Firestore.
     private String experimentID;
@@ -17,7 +17,6 @@ public class Experiment {
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private int ownerID;
-    protected List<Trial> trials = new ArrayList<Trial>();
 
     public Experiment() {
         this.experimentID = null;
@@ -36,6 +35,8 @@ public class Experiment {
         this.isLocationRequired = isLocationRequired;
         this.ownerID = ownerID;
     }
+
+    public abstract List<? extends Trial> getTrials();
 
     public int getMinTrials() {
         return minTrials;
@@ -84,6 +85,8 @@ public class Experiment {
     public void setLocationRequired(boolean locationRequired) {
         isLocationRequired = locationRequired;
     }
+
+    public abstract ExperimentStats getStats();
 
     // this requires attention will need
     // to use some api to generate QR codes
