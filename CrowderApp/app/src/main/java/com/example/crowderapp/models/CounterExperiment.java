@@ -10,8 +10,8 @@ public class CounterExperiment extends Experiment {
         super();
     }
 
-    public CounterExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
-        super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
+    public CounterExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+        super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
     public void incrementCount(String experimenter) {
