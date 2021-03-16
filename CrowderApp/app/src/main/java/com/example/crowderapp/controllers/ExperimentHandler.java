@@ -1,6 +1,7 @@
 package com.example.crowderapp.controllers;
 
 import android.location.Location;
+import android.media.MediaPlayer;
 
 import androidx.annotation.NonNull;
 
@@ -8,6 +9,7 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
+import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +29,6 @@ public class ExperimentHandler {
     private Logger logger;
 
     private ExperimentHandler() {
-        experimentFSDAO = new ExperimentFSDAO();
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
@@ -108,9 +109,30 @@ public class ExperimentHandler {
     }
 
 
-    public void addTrial(String experimentID, Date date, Location location) {
-        // TODO: check if Location needs to be a user-defined class
-    }
+//    public String addTrial(String experimenterID, String experimentID, Date date, Location location) {
+//        // TODO: check if Location needs to be a user-defined class
+//        TrialFSDAO trialFSDAO;
+//        Trial newTrial = new Trial(experimenterID, date, location, experimentID);
+//        Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(newTrial);
+//        Task<Experiment> taskgetExperiment = experimentFSDAO.getExperiment(experimentID);
+//
+//        taskgetExperiment.addOnSuccessListener(new OnSuccessListener<Experiment>() {
+//            @Override
+//            public void onSuccess(Experiment experiment) {
+//                trialFSDDAO
+//            }
+//        })
+//
+//        taskAddTrial.addOnSuccessListener(new OnSuccessListener<String>() {
+//            @Override
+//            public void onSuccess(String s) {
+//                newTrial.setTrialId(taskAddTrial.getResult());
+//            }
+//        });
+//
+//        return newTrial.getTrialId();
+//
+//    }
 
     public List<Trial> getData(String experimentID) {
         // TODO: get trials from the experiment
