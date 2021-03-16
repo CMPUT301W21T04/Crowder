@@ -121,7 +121,7 @@ public class UserHandler {
     public void updateCurrentUser(User user) {
 
         currentUserTask.addOnSuccessListener(currentUser -> {
-            if (user.getUid() != currentUser.getUid()) { // Programmer error
+            if (!user.getUid().equals(currentUser.getUid())) { // Programmer error
                 throw new RuntimeException("Cannot update non-current user.");
             }
             userDAO.updateUser(user);
