@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
@@ -16,6 +17,8 @@ import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.models.CustomListAllExperiments;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +29,11 @@ public class AllExperimentsFragment extends Fragment {
     User user;
     private ListView allExpView;
     private ArrayAdapter<Experiment> allExpAdapter;
+    private List<Experiment> allExpDataList = new ArrayList<Experiment>();
     private ExperimentHandler handler = ExperimentHandler.getInstance();
     private Context thisContext;
+    List<String> subscribed = new ArrayList<String>();
+    Task allExpTask;
 
     public AllExperimentsFragment() {
 
@@ -59,13 +65,25 @@ public class AllExperimentsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
-            List<String> subscribed = user.getSubscribedExperiments();
-            allExpAdapter = new CustomListAllExperiments(thisContext, handler.getAllExperiments(), subscribed);
+        allExpTask = handler.getAllExperiments();
+        allExpTask.addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (allExpTask.isSuccessful()) {
+                    allExpDataList = (List<Experiment>) task.getResult();
+                    allExpAdapter = new CustomListAllExperiments(thisContext, allExpDataList, subscribed);
+                    allExpView = getView().findViewById(R.id.all_experiment_list);
+
+                    allExpView.setAdapter(allExpAdapter);
+                }
+                else {
+                    Exception exception = task.getException();
+                }
+            }
         });
+        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
+            subscribed = user.getSubscribedExperiments();
 
-        allExpView = getView().findViewById(R.id.all_experiment_list);
-
-        allExpView.setAdapter(allExpAdapter);
+        });
     }
 }

@@ -28,15 +28,15 @@ import com.example.crowderapp.models.Experiment;
  */
 public class CustomListAllExperiments extends ArrayAdapter<Experiment> {
 
-    private ArrayList<Experiment> experiments;
+    private List<Experiment> experiments;
     private List<String> subscribedExps;
     private Context context;
-    UserHandler userHandler;
 
-    public CustomListAllExperiments(Context context, ArrayList<Experiment> experiments, List<String> subscribedExps) {
+    public CustomListAllExperiments(Context context, List<Experiment> experiments, List<String> subscribedExps) {
         super(context,0,experiments);
         this.experiments = experiments;
         this.context = context;
+        this.subscribedExps = subscribedExps;
     }
 
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
