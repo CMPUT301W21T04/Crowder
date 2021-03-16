@@ -1,50 +1,85 @@
 package com.example.crowderapp.controllers;
 
-import android.content.Intent;
 import android.location.Location;
+
+import androidx.annotation.NonNull;
 
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
+import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ExperimentHandler {
-    private ArrayList<Experiment> experiments = new ArrayList<>();
+    ArrayList<Experiment> experiments;
 
     private static ExperimentHandler instance;
+    private ExperimentFSDAO experimentFSDAO;
+    private Logger logger;
 
-    private ExperimentHandler() {}
+    private ExperimentHandler() {
+        experimentFSDAO = new ExperimentFSDAO();
+        logger = Logger.getLogger(ExperimentHandler.class.getName());
+    }
 
     public static ExperimentHandler getInstance() {
-        if (instance == null) {
+        if (instance == null)
             instance = new ExperimentHandler();
-        }
 
         return instance;
     }
 
-    public void createExperiment(Intent intent) {
+    public void createExperiment() {
         // TODO: have some code here to generate the id and what not
-        // create the appropriate experiment based on the intent provided
+        // TODO: fill in parameters in the experiment.
+        Experiment newExperiment = new Experiment();
+        Task<String> task = experimentFSDAO.createExperiment(newExperiment);
+
+        task.addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+
+               if (task.isSuccessful()) {
+                   String experimentID = task.getResult();
+                   newExperiment.setExperimentID(experimentID);
+               } else {
+                   Exception e = task.getException();
+                   logger.throwing("Experiment Handler", "error in createExperiment unable to create experiment", e);
+               }
+            }
+        });
 
     }
-
 
     public void unPublishExperiment(String experimentID) {
         // TODO: remove experiment from fire store
-    }
+        Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
 
+        task.addOnCompleteListener(new OnCompleteListener<Experiment>() {
+            @Override
+            public void onComplete(@NonNull Task<Experiment> task) {
+                if (task.isSuccessful()) {
+                    Experiment experimentToDelete = task.getResult();
+                    experimentFSDAO.deleteExperiment(experimentToDelete);
+                } else {
+                    Exception e = task.getException();
+                    logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
+                }
+            }
+        });
+    }
 
     public void endExperiment(String experimentID) {
         // TODO: prevent owner and subscriber from adding a trial
-    }
 
-
-    public ArrayList<Experiment> getExperiments() {
-        return experiments;
     }
 
 
@@ -52,22 +87,31 @@ public class ExperimentHandler {
         // TODO: check if Location needs to be a user-defined class
     }
 
-//    public List<Trial> getData(String experimentID) {
-//        // rename this to getTrials maybe?
-//        // TODO: get trials from the experiment
-//    }
-//
-//    public List<Trial> getData(String experimentID, List<Integer> exclude) {
-//        // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
-//    }
-//
-//    public List<User> getAllExperimenters(String experimentID) {
-//        // TODO: get all participating experimenters of the given experiment
-//    }
-//
+    public List<Trial> getData(String experimentID) {
+        // TODO: get trials from the experiment
+        return null;
+    }
+
+    public List<Trial> getData(String experimentID, List<Integer> exclude) {
+        // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
+        return null;
+    }
+
+    public List<User> getAllExperimenters(String experimentID) {
+        // TODO: get all participating experimenters of the given experiment
+        return null;
+    }
+
 //    public ExperimentStats getStatistics(String experimentID) {
 //        // TODO: get the corresponding ExperimentStats class for this experiment
 //    }
+
+    public Task<List<Experiment>>  getAllExperiments() {
+        Task<List<Experiment>> task = experimentFSDAO.getAllExperiments();
+
+        return task;
+
+    }
 
     public void addQR(String experimentID) {
         // TODO: get the experiment object and call generateQR()
