@@ -88,4 +88,10 @@ public class ExperimentMockDAO extends ExperimentDAO {
             }
         }
     }
+
+    @Override
+    public Task<List<Experiment>> getUserExperiments(String userId) {
+        // TODO
+        return null;
+    }
 }
