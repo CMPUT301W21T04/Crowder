@@ -88,6 +88,18 @@ public class ExperimentFSDAO extends ExperimentDAO {
     }
 
     /**
+     * Gets all the experiments the user is subscribed to.
+     * @param userId The user's ID
+     * @return
+     */
+    @Override
+    public Task<List<Experiment>> getUserExperiments(String userId) {
+        return experimentCollection.whereEqualTo("ownerID", userId).get().continueWith(task -> {
+            return task.getResult().toObjects(Experiment.class);
+        });
+    }
+
+    /**
      * Creates a new experiment.
      *
      * @param exp The experiment.
