@@ -8,21 +8,27 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.models.AllExperimentListItem;
+import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CustomListAllExperiments;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.ChipGroup;
@@ -87,6 +93,12 @@ public class AllExperimentsFragment extends Fragment {
 
     }
 
+    public void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
 
     @Override
@@ -123,6 +135,13 @@ public class AllExperimentsFragment extends Fragment {
                                 allExpAdapter = new CustomListAllExperiments(thisContext, allExperimentListItems, checkListener);
                                 allExpView = getView().findViewById(R.id.all_experiment_list);
                                 allExpView.setAdapter(allExpAdapter);
+                                allExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                        openFragment(BinomialTrialFragment.newInstance());
+                                    }
+                                });
                             }
                             else {
                                 Exception exception = task.getException();

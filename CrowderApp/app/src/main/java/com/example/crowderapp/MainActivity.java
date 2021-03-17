@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
     FloatingActionButton fab;
+    Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +56,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.appbar_menu, menu);
+        mMenu = menu;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_experiment_button:
+            case R.id.location_item:
                 Toast.makeText(this, "yo", Toast.LENGTH_SHORT).show();
                 break;
 

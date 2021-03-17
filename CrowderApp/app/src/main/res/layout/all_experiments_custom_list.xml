@@ -21,6 +21,7 @@
         android:id="@+id/subscribedButton"
         android:layout_width="216dp"
         android:layout_height="wrap_content"
-        android:text="Subscribed" />
+        android:text="Subscribed"
+        android:focusable="false"/>
 
 </LinearLayout>
