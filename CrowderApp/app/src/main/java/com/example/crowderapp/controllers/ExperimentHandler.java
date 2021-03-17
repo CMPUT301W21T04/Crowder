@@ -1,7 +1,5 @@
 package com.example.crowderapp.controllers;
 
-import android.location.Location;
-
 import androidx.annotation.NonNull;
 
 import com.example.crowderapp.controllers.callbackInterfaces.addQRCallBack;
@@ -19,6 +17,7 @@ import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCal
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.updateExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;

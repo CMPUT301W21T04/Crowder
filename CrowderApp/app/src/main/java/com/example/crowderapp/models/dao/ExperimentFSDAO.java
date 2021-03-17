@@ -4,16 +4,22 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.crowderapp.models.BinomialExperiment;
+import com.example.crowderapp.models.CounterExperiment;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.MeasurementExperiment;
+import com.example.crowderapp.models.TallyExperiment;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -33,6 +39,31 @@ public class ExperimentFSDAO extends ExperimentDAO {
     public ExperimentFSDAO() {
         db = FirebaseFirestore.getInstance();
         experimentCollection = db.collection("experiment");
+    }
+
+    public ExperimentFSDAO(FirebaseFirestore db) {
+        this.db = db;
+        experimentCollection = db.collection("experiment");
+    }
+
+    public Experiment createProperExperiment(DocumentSnapshot doc) {
+        String type = doc.get("experimentType").toString();
+
+        if (type.equals("Binomial")) {
+            return doc.toObject(BinomialExperiment.class);
+        }
+        else if (type.equals("Count")) {
+            return doc.toObject(CounterExperiment.class);
+        }
+        else if (type.equals("Non-Negative Integer")) {
+            return doc.toObject(TallyExperiment.class);
+        }
+        else if (type.equals("Measurement")) {
+            return doc.toObject(MeasurementExperiment.class);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown Experiment Type: " + type);
+        }
     }
 
     /**
@@ -55,7 +86,7 @@ public class ExperimentFSDAO extends ExperimentDAO {
                 for (QueryDocumentSnapshot doc : query) {
                     if (doc.getId().equals(experimentId)) {
                         // This is the experiment we're looking for.
-                        taskCompletionSource.setResult(doc.toObject(Experiment.class));
+                        taskCompletionSource.setResult(createProperExperiment(doc));
                         break;
                     }
                 }
@@ -69,21 +100,22 @@ public class ExperimentFSDAO extends ExperimentDAO {
 
     /**
      * @return The task that will resolve to list of experiments.
+     *         List is null if exception.
      */
     @Override
     public Task<List<Experiment>> getAllExperiments() {
-        return experimentCollection.get().continueWithTask(task -> {
-            TaskCompletionSource<List<Experiment>> taskCompletionSource = new TaskCompletionSource<>();
-
-            if (!task.isSuccessful()) {
-                // Something bad happened... Fail the task.
-                taskCompletionSource.setException(task.getException());
+        return experimentCollection.get().continueWith(task -> {
+            List<Experiment> list = null;
+            if (task.isSuccessful()) {
+                list = new LinkedList<>();
+                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                    list.add(createProperExperiment(doc));
+                }
             } else {
-                QuerySnapshot query = task.getResult();
-                taskCompletionSource.setResult(query.toObjects(Experiment.class));
+                Log.e(TAG, "getAllExperiments: Failed to get all experiments.", task.getException());
             }
 
-            return taskCompletionSource.getTask();
+            return list;
         });
     }
 
@@ -95,7 +127,17 @@ public class ExperimentFSDAO extends ExperimentDAO {
     @Override
     public Task<List<Experiment>> getUserExperiments(String userId) {
         return experimentCollection.whereEqualTo("ownerID", userId).get().continueWith(task -> {
-            return task.getResult().toObjects(Experiment.class);
+            List<Experiment> list = null;
+            if (task.isSuccessful()) {
+                list = new LinkedList<>();
+                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                    list.add(createProperExperiment(doc));
+                }
+            } else {
+                Log.e(TAG, "getAllExperiments: Failed to get all user experiments.", task.getException());
+            }
+
+            return list;
         });
     }
 
