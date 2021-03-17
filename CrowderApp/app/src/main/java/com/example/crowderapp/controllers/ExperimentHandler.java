@@ -17,6 +17,7 @@ import com.example.crowderapp.controllers.callbackInterfaces.getTrialsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.updateExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
@@ -146,17 +147,16 @@ public class ExperimentHandler {
 
     }
 
-    public void addTrial(String experimenterID, String experimentID, Date date, Location location, addTrialCallBack callBack) {
+    public void addTrial(Trial trial, addTrialCallBack callBack) {
         // TODO: check if Location needs to be a user-defined class
 
-        getExperiment(experimentID, new getExperimentCallBack() {
+        getExperiment(trial.getExperimentID(), new getExperimentCallBack() {
             @Override
             public void callBackResult(Experiment experiment) {
 
                 TrialFSDAO trialFSDAO;
-                Trial newTrial = new Trial(experimenterID, date, location, experimentID);
                 trialFSDAO = new TrialFSDAO(experiment);
-                Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(newTrial);
+                Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(trial);
 
                 taskAddTrial.addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -170,6 +170,12 @@ public class ExperimentHandler {
                 });
             }
         });
+
+    }
+
+    public void updateExperiment(Experiment experiment) {
+
+        experimentFSDAO.updateExperiment(experiment);
 
     }
 
