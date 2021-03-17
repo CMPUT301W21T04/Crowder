@@ -53,6 +53,11 @@ public class ExperimentHandler {
 
     /**
      * creates an experiment
+     * @param experimentName experiment name
+     * @param isLocationRequired is the location required flag
+     * @param minTrials minimum trials count
+     * @param experimentType the type of experiment
+     * @param callBack the callback interface for the async call
      */
     public void createExperiment(String experimentName, boolean isLocationRequired,
                                  int minTrials, String experimentType,
