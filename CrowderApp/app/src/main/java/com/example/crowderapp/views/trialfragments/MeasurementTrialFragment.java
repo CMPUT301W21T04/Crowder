@@ -13,9 +13,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
+import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
+import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.views.AllExperimentsFragment;
 
 public class MeasurementTrialFragment extends Fragment {
+
+    Experiment experiment;
+    private ExperimentHandler handler = ExperimentHandler.getInstance();
 
     public MeasurementTrialFragment() {
 
@@ -23,8 +29,6 @@ public class MeasurementTrialFragment extends Fragment {
 
     public static MeasurementTrialFragment newInstance() {
         MeasurementTrialFragment fragment = new MeasurementTrialFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -49,6 +53,13 @@ public class MeasurementTrialFragment extends Fragment {
             case R.id.location_item:
                 Log.e("yo", "yo");
                 break;
+            case R.id.unpublish_item:
+                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
+                    @Override
+                    public void callBackResult() {
+                        getFragmentManager().popBackStack();
+                    }
+                });
 
         }
         return super.onOptionsItemSelected(item);
@@ -62,5 +73,7 @@ public class MeasurementTrialFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        experiment = (Experiment) bundle.getSerializable("Experiment");
     }
 }

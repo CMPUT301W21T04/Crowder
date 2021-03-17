@@ -3,11 +3,12 @@ package com.example.crowderapp.models;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Experiment {
+public class Experiment implements Serializable {
 
     @DocumentId // Designate this as document ID in Firestore.
     private String experimentID;

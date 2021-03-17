@@ -45,7 +45,7 @@ public class MyExperimentsFragment extends Fragment {
     private Context thisContext;
     private List<String> subscribed = new ArrayList<String>();
     private List<Experiment> subExperiments = new ArrayList<Experiment>();
-
+    Experiment currentExperiment;
     Task userTask;
 
     public MyExperimentsFragment() {
@@ -106,7 +106,8 @@ public class MyExperimentsFragment extends Fragment {
                                 public void onItemClick(AdapterView<?> parent, View view,
                                                             int position, long id) {
                                     Log.e("Click", "yo");
-                                    String experimentType = subExperiments.get(position).getExperimentType();
+                                    currentExperiment = subExperiments.get(position);
+                                    String experimentType = currentExperiment.getExperimentType();
                                     switch (experimentType) {
                                         case "Count":
                                             openFragment(CountTrialFragment.newInstance());
@@ -137,7 +138,16 @@ public class MyExperimentsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("log", "Called");
+    }
+
     public void openFragment(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Experiment", currentExperiment);
+        fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
