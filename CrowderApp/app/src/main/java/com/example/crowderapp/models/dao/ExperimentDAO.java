@@ -29,6 +29,13 @@ public abstract class ExperimentDAO {
     public abstract Task<String> createExperiment(Experiment exp);
 
     /**
+     * Gets all the experiments that a user has subscribed to.
+     * @param userId The user's ID
+     * @return
+     */
+    public abstract Task<List<Experiment>> getUserExperiments(String userId);
+
+    /**
      * Removes an existing experiment.
      * @param exp The experiment
      */

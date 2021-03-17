@@ -1,6 +1,8 @@
 package com.example.crowderapp.models;
 
 import java.util.ArrayList;
+import android.location.Location;
+
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +16,8 @@ public class MeasurementExperiment extends Experiment {
         super();
     }
 
-    public MeasurementExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
-        super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
+    public MeasurementExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+        super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
     @Override
@@ -28,9 +30,9 @@ public class MeasurementExperiment extends Experiment {
         return new MeasurementStats(trials);
     }
 
-    public void addMeasurement(double meas, String experimenter) {
+    public void addMeasurement(double meas, String experimenter, Location location) {
         averageMeasurement = (averageMeasurement*measurementCount+meas)/(1+measurementCount);
         measurementCount += 1;
-        trials.add(new MeasurementTrial(experimenter, new Date(), meas));
+        trials.add(new MeasurementTrial(experimenter, new Date(), meas, location, this.getExperimentID()));
     }
 }

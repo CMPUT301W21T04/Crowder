@@ -22,6 +22,9 @@ public class UserHandler {
 
     // Key for items in shared preferences
     final private String USER_ID_KEY = "USER_DATA_ID";
+    final private String USER_NAME = "USER_DATA_NAME";
+    final private String USER_EMAIL = "USER_DATA_EMAIL";
+    final private String USER_PHONE = "USER_DATA_PHONE";
 
     private UserDAO userDAO;
     private SharedPreferences sharedPreferences;
@@ -50,8 +53,11 @@ public class UserHandler {
             currentUserTask = userDAO.createUser(newUser).continueWith(task -> {
                 // User name will also be ID
                 newUser.setName(task.getResult());
-
                 newUser.setUid(task.getResult());
+
+                sharedPreferences.edit()
+                    .putString(USER_ID_KEY, task.getResult())
+                    .apply();
 
                 return newUser;
             });
@@ -60,6 +66,12 @@ public class UserHandler {
             // Returning user
             currentUserTask = getUserByID(userId);
         }
+    }
+
+    public UserHandler(SharedPreferences pref, UserDAO dao, Task<User> currentUser) {
+        sharedPreferences = pref;
+        userDAO = dao;
+        currentUserTask = currentUser;
     }
 
     /**
@@ -109,7 +121,7 @@ public class UserHandler {
     public void updateCurrentUser(User user) {
 
         currentUserTask.addOnSuccessListener(currentUser -> {
-            if (user.getUid() != currentUser.getUid()) { // Programmer error
+            if (!user.getUid().equals(currentUser.getUid())) { // Programmer error
                 throw new RuntimeException("Cannot update non-current user.");
             }
             userDAO.updateUser(user);
@@ -127,6 +139,17 @@ public class UserHandler {
             user.getSubscribedExperiments().add(experimentID);
             updateCurrentUser(user);
         });
-
     }
+
+    /**
+     * Removes an experiment (by ID) from a user's subscription.
+     * @param experimentID
+     */
+    public void unsubscribeExperiment(String experimentID) {
+        currentUserTask.addOnSuccessListener(user -> {
+            user.getSubscribedExperiments().remove(experimentID);
+            updateCurrentUser(user);
+        });
+    }
+
 }

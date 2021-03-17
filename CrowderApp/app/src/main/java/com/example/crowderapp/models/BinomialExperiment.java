@@ -1,6 +1,8 @@
 package com.example.crowderapp.models;
 
 import java.util.ArrayList;
+import android.location.Location;
+
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +16,8 @@ public class BinomialExperiment extends Experiment {
         super();
     }
 
-    public BinomialExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
-        super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
+    public BinomialExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+        super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
     @Override
@@ -28,13 +30,13 @@ public class BinomialExperiment extends Experiment {
         return new BinomialStats(trials);
     }
 
-    public void addPass(String experimenter) {
+    public void addPass(String experimenter, Location location) {
         totalPass += 1;
-        trials.add(new BinomialTrial(experimenter, new Date(), true));
+        trials.add(new BinomialTrial(experimenter, new Date(), true, location, this.getExperimentID()));
     }
 
-    public void AddFail(String experimenter) {
+    public void AddFail(String experimenter, Location location) {
         totalFail += 1;
-        trials.add(new BinomialTrial(experimenter, new Date(), false));
+        trials.add(new BinomialTrial(experimenter, new Date(), false, location, this.getExperimentID()));
     }
 }

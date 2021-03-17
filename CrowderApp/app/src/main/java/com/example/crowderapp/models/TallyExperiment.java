@@ -1,6 +1,8 @@
 package com.example.crowderapp.models;
 
 import java.util.ArrayList;
+import android.location.Location;
+
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +16,8 @@ public class TallyExperiment extends Experiment {
         super();
     }
 
-    public TallyExperiment(String experimentID, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, int ownerID) {
-        super(experimentID, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
+    public TallyExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+        super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
     @Override
@@ -28,9 +30,9 @@ public class TallyExperiment extends Experiment {
         return new TallyStats(trials);
     }
 
-    public void addNonNegativeCount(int count, String experimenter) {
+    public void addNonNegativeCount(int count, String experimenter, Location location) {
         avgTally = (avgTally*tallyCount+count)/(1+tallyCount);
         tallyCount += 1;
-        trials.add(new TallyTrial(experimenter, new Date(), count));
+        trials.add(new TallyTrial(experimenter, new Date(), count, location, this.getExperimentID()));
     }
 }
