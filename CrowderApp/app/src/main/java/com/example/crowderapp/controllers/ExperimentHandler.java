@@ -1,7 +1,5 @@
 package com.example.crowderapp.controllers;
 
-import android.location.Location;
-
 import androidx.annotation.NonNull;
 
 import com.example.crowderapp.controllers.callbackInterfaces.addQRCallBack;
@@ -17,18 +15,15 @@ import com.example.crowderapp.controllers.callbackInterfaces.getTrialsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
-import com.example.crowderapp.controllers.callbackInterfaces.updateExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
-import com.example.crowderapp.models.User;
+import com.example.crowderapp.models.dao.ExperimentDAO;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,21 +32,19 @@ public class ExperimentHandler {
     ArrayList<Experiment> experiments;
 
     private static ExperimentHandler instance;
-    private ExperimentFSDAO experimentFSDAO;
+    private ExperimentDAO experimentDAO;
     private Logger logger;
 
-    private ExperimentHandler() {
-        experimentFSDAO = new ExperimentFSDAO();
+    public ExperimentHandler() {
+        experimentDAO = new ExperimentFSDAO();
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
-    public static ExperimentHandler getInstance() {
-        if (instance == null)
-            instance = new ExperimentHandler();
-
-        return instance;
+    public ExperimentHandler(ExperimentDAO dao) {
+        experimentDAO = dao;
+        logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
-
+    
     /**
      * creates an experiment
      * @param experimentName experiment name
@@ -70,7 +63,7 @@ public class ExperimentHandler {
         newExperiment.setLocationRequired(isLocationRequired);
         newExperiment.setMinTrials(minTrials);
         newExperiment.setExperimentType(experimentType);
-        Task<String> task = experimentFSDAO.createExperiment(newExperiment);
+        Task<String> task = experimentDAO.createExperiment(newExperiment);
 
         task.addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
@@ -88,14 +81,14 @@ public class ExperimentHandler {
      */
     public void unPublishExperiment(String experimentID, unPublishExperimentCallBack callback) {
         // TODO: remove experiment from fire store
-        Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
+        Task<Experiment> task = experimentDAO.getExperiment(experimentID);
 
         task.addOnCompleteListener(new OnCompleteListener<Experiment>() {
             @Override
             public void onComplete(@NonNull Task<Experiment> task) {
                 if (task.isSuccessful()) {
                     Experiment experimentToDelete = task.getResult();
-                    experimentFSDAO.deleteExperiment(experimentToDelete);
+                    experimentDAO.deleteExperiment(experimentToDelete);
                     callback.callBackResult();
                 } else {
                     Exception e = task.getException();
@@ -111,7 +104,7 @@ public class ExperimentHandler {
      */
     public void getAllSubscribedExperiments(String userID, getAllSubscribedExperimentsCallBack callback) {
 
-        Task<List<Experiment>> task = experimentFSDAO.getUserExperiments(userID);
+        Task<List<Experiment>> task = experimentDAO.getUserExperiments(userID);
 
         task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
             @Override
@@ -132,7 +125,7 @@ public class ExperimentHandler {
 
 
     public void getExperiment(String experimentID, getExperimentCallBack callback){
-        Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
+        Task<Experiment> task = experimentDAO.getExperiment(experimentID);
 
         task.addOnCompleteListener(new OnCompleteListener<Experiment>() {
             @Override
@@ -175,7 +168,7 @@ public class ExperimentHandler {
 
     public void updateExperiment(Experiment experiment) {
 
-        experimentFSDAO.updateExperiment(experiment);
+        experimentDAO.updateExperiment(experiment);
 
     }
 
@@ -197,7 +190,7 @@ public class ExperimentHandler {
 //    }
 
     public void getAllExperiments(allExperimentsCallBack callback) {
-        Task<List<Experiment>> task = experimentFSDAO.getAllExperiments();
+        Task<List<Experiment>> task = experimentDAO.getAllExperiments();
 
         task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
             @Override
