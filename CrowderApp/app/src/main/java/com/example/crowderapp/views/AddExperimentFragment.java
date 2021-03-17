@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,6 +26,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.crowderapp.R;
+import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.models.Experiment;
 
 public class AddExperimentFragment extends DialogFragment {
 
@@ -33,9 +38,10 @@ public class AddExperimentFragment extends DialogFragment {
     private Spinner dropdown;
     private EditText minTrialsEditText;
     private EditText experimentNameEditText;
+    private CheckBox locationRequiredCheckBox;
 
+    private ExperimentHandler handler = ExperimentHandler.getInstance();
     private OnFragmentInteractionListener listener;
-    private int optionSelection;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
@@ -59,6 +65,7 @@ public class AddExperimentFragment extends DialogFragment {
 
         minTrialsEditText = view.findViewById(R.id.min_trials_EditText);
         experimentNameEditText = view.findViewById(R.id.experiment_name_EditText);
+        locationRequiredCheckBox = view.findViewById(R.id.location_required_CheckBox);
 
         dropdown = view.findViewById(R.id.dropdown);
         // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
@@ -113,15 +120,30 @@ public class AddExperimentFragment extends DialogFragment {
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dropdown.getSelectedItem().toString() == options[0] ||
-                        minTrialsEditText.getText().toString().matches("") ||
-                        experimentNameEditText.getText().toString().matches("")) {
+                String experimentType = dropdown.getSelectedItem().toString();
+                String experimentName = experimentNameEditText.getText().toString();
+                String minTrials = minTrialsEditText.getText().toString();
+                Boolean isLocationRequired;
+                if(locationRequiredCheckBox.isChecked())
+                    isLocationRequired = true;
+                else
+                    isLocationRequired = false;
+
+                if(experimentType == options[0] || minTrials.matches("") ||
+                        experimentName.matches("")) {
                     Context context = getContext();
                     CharSequence text = "Missing Fields";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
+                    handler.createExperiment(experimentName, isLocationRequired,
+                            Integer.valueOf(minTrials), new createExperimentCallBack() {
+                        @Override
+                        public void callBackResult(Experiment experiment) {
+
+                        }
+                    });
                     ad.dismiss();
                 }
             }

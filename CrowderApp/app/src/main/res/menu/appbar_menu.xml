@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_notification1"
+    <item android:id="@+id/more_item"
         android:icon="@drawable/ic_baseline_more_vert_24"
         app:showAsAction="always"
         android:visible="false"
