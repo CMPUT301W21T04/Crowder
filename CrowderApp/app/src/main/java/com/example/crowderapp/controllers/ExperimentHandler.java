@@ -29,6 +29,7 @@ public class ExperimentHandler {
     private Logger logger;
 
     private ExperimentHandler() {
+        experimentFSDAO = new ExperimentFSDAO();
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
