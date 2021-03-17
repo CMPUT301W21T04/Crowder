@@ -4,6 +4,6 @@ import com.example.crowderapp.models.Experiment;
 
 import java.util.List;
 
-public interface allExperimentsCallBack {
+public interface getAllSubscribedExperimentsCallBack {
     public void callBackResult(List<Experiment> experimentList);
 }
