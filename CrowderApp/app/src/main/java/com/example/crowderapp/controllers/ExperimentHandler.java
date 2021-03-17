@@ -4,11 +4,18 @@ import android.location.Location;
 
 import androidx.annotation.NonNull;
 
+import com.example.crowderapp.controllers.callbackInterfaces.addQRCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getAllExperimentersCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getQRCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getTrialsCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
@@ -108,9 +115,8 @@ public class ExperimentHandler {
 
     }
 
-    public void endExperiment(String experimentID) {
+    public void endExperiment(String experimentID, endExperimentCallBack callback) {
         // TODO: prevent owner and subscriber from adding a trial
-
     }
 
 
@@ -157,19 +163,17 @@ public class ExperimentHandler {
 
     }
 
-    public List<Trial> getData(String experimentID) {
+    public void getTrials(String experimentID, getTrialsCallBack callback) {
         // TODO: get trials from the experiment
-        return null;
     }
 
-    public List<Trial> getData(String experimentID, List<Integer> exclude) {
+    public void getTrials(String experimentID, List<Integer> exclude, getTrialsCallBack callback) {
         // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
-        return null;
+
     }
 
-    public List<User> getAllExperimenters(String experimentID) {
+    public void getAllExperimenters(String experimentID, getAllExperimentersCallBack callback) {
         // TODO: get all participating experimenters of the given experiment
-        return null;
     }
 
 //    public ExperimentStats getStatistics(String experimentID) {
@@ -191,27 +195,23 @@ public class ExperimentHandler {
         });
     }
 
-    public void addQR(String experimentID) {
+    public void addQR(String experimentID, addQRCallBack callback) {
         // TODO: get the experiment object and call generateQR()
     }
 
-    public List<Integer> getQR(String experimentID) {
+    public void getQR(String experimentID, getQRCallBack callback) {
         // Assuming QR code is of Integer type
         // TODO: get all QR codes associated with experiment
-
-        return null;
     }
 
     // similar to the generateQR we will
     // need some api to read barcodes in
-    public void registerBarcode() {
+    public void registerBarcode(registerBarcodeCallBack callback) {
         // TODO: register a pre-existing barcode.
 
     }
 
-    public List<Experiment> searchExperiment(List<String> filterStrings) {
+    public void searchExperiment(List<String> filterStrings, searchExperimentCallBack callback) {
         // TODO: get a list of experiments based on provided filter
-
-        return null;
     }
 }
