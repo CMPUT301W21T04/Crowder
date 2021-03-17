@@ -131,14 +131,8 @@ public class BinomialTrialFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(BinomialTrial trial : trials) {
-                    handler.addTrial(trial, new addTrialCallBack() {
-                        @Override
-                        public void callBackResult(String trialID) {
-                            // TODO: Toast message saying trials were added??
-                        }
-                    });
-                }
+                // TODO: Toast message saying trials were added??
+                handler.updateExperiment(experiment);
                 // Reset values
                 trials = new ArrayList<>();
                 succView = 0;
