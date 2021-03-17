@@ -13,8 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
+import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
+import com.example.crowderapp.models.Experiment;
 
 public class CountTrialFragment extends Fragment {
+
+    Experiment experiment;
+    private ExperimentHandler handler = ExperimentHandler.getInstance();
 
     public CountTrialFragment() {
 
@@ -22,8 +28,6 @@ public class CountTrialFragment extends Fragment {
 
     public static CountTrialFragment newInstance() {
         CountTrialFragment fragment = new CountTrialFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -48,6 +52,13 @@ public class CountTrialFragment extends Fragment {
             case R.id.location_item:
                 Log.e("yo", "yo");
                 break;
+            case R.id.unpublish_item:
+                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
+                    @Override
+                    public void callBackResult() {
+                        getFragmentManager().popBackStack();
+                    }
+                });
 
         }
         return super.onOptionsItemSelected(item);
@@ -61,5 +72,7 @@ public class CountTrialFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        experiment = (Experiment) bundle.getSerializable("Experiment");
     }
 }

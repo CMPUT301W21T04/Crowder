@@ -155,8 +155,6 @@ public class AllExperimentsFragment extends Fragment {
             }
         });
 
-
-
 //        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
 //            subscribed = user.getSubscribedExperiments();
 //

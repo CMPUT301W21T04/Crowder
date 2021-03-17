@@ -145,6 +145,7 @@ public class AddExperimentFragment extends DialogFragment {
 
                         }
                     });
+                    listener.onOkPressed();
                     ad.dismiss();
                 }
             }
