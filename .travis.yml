@@ -24,8 +24,8 @@ android:
 before_install:
 
 before_script:
-  - chmod +x gradlew
   - cd CrowderApp
+  - chmod +x gradlew
 
 script:
   - ./gradlew clean build
