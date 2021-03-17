@@ -25,6 +25,7 @@ before_install:
 
 before_script:
   - cd CrowderApp
+  - yes | sdkmanager "platforms;android-30"
   - chmod +x gradlew
 
 script:
