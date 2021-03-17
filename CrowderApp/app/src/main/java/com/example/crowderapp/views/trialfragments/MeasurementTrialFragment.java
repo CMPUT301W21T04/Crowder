@@ -18,10 +18,8 @@ import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperiment
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.views.AllExperimentsFragment;
 
-public class MeasurementTrialFragment extends Fragment {
+public class MeasurementTrialFragment extends TrialFragment {
 
-    Experiment experiment;
-    private ExperimentHandler handler = ExperimentHandler.getInstance();
 
     public MeasurementTrialFragment() {
 
@@ -32,38 +30,6 @@ public class MeasurementTrialFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        // You can hide the state of the menu item here if you call getActivity().supportInvalidateOptionsMenu(); somewhere in your code
-        MenuItem menuItem = menu.findItem(R.id.more_item);
-        menuItem.setVisible(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.location_item:
-                Log.e("yo", "yo");
-                break;
-            case R.id.unpublish_item:
-                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
-                    @Override
-                    public void callBackResult() {
-                        getFragmentManager().popBackStack();
-                    }
-                });
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
