@@ -147,6 +147,7 @@ public class MyExperimentsFragment extends Fragment {
     public void openFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Experiment", currentExperiment);
+        bundle.putSerializable("User", user);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
