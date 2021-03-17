@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 
 import androidx.annotation.NonNull;
 
+import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
@@ -153,11 +154,17 @@ public class ExperimentHandler {
 //        // TODO: get the corresponding ExperimentStats class for this experiment
 //    }
 
-    public Task<List<Experiment>>  getAllExperiments() {
+    public void getAllExperiments(allExperimentsCallBack allReturnedExperiments) {
         Task<List<Experiment>> task = experimentFSDAO.getAllExperiments();
 
-        return task;
-
+        task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Experiment>> task) {
+                if (task.isSuccessful()) {
+                    allReturnedExperiments.allExperiments(task.getResult());
+                }
+            }
+        });
     }
 
     public void addQR(String experimentID) {
