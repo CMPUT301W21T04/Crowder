@@ -23,6 +23,7 @@ import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
 import com.example.crowderapp.models.AllExperimentListItem;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CustomListAllExperiments;
@@ -50,7 +51,6 @@ public class AllExperimentsFragment extends Fragment {
     List<String> subscribed = new ArrayList<String>();
 
     Task userTask;
-    Task allExpTask;
 
     public AllExperimentsFragment() {
 
@@ -108,6 +108,17 @@ public class AllExperimentsFragment extends Fragment {
         return view;
     }
 
+    private void updateSubs() {
+        for(Experiment exp : allExpDataList) {
+            if(subscribed.contains(exp.getExperimentID())) {
+                allExperimentListItems.add(new AllExperimentListItem(exp, true));
+            }
+            else {
+                allExperimentListItems.add(new AllExperimentListItem(exp, false));
+            }
+        }
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         userTask = userHandler.getCurrentUser();
@@ -118,34 +129,14 @@ public class AllExperimentsFragment extends Fragment {
                     user = (User) task.getResult();
                     subscribed = user.getSubscribedExperiments();
 
-                    allExpTask = handler.getAllExperiments();
-                    allExpTask.addOnCompleteListener(new OnCompleteListener() {
+                    handler.getAllExperiments(new allExperimentsCallBack() {
                         @Override
-                        public void onComplete(@NonNull Task task) {
-                            if (allExpTask.isSuccessful()) {
-                                allExpDataList = (List<Experiment>) task.getResult();
-                                for(Experiment exp : allExpDataList) {
-                                    if(subscribed.contains(exp.getExperimentID())) {
-                                        allExperimentListItems.add(new AllExperimentListItem(exp, true));
-                                    }
-                                    else {
-                                        allExperimentListItems.add(new AllExperimentListItem(exp, false));
-                                    }
-                                }
-                                allExpAdapter = new CustomListAllExperiments(thisContext, allExperimentListItems, checkListener);
-                                allExpView = getView().findViewById(R.id.all_experiment_list);
-                                allExpView.setAdapter(allExpAdapter);
-                                allExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                        openFragment(BinomialTrialFragment.newInstance());
-                                    }
-                                });
-                            }
-                            else {
-                                Exception exception = task.getException();
-                            }
+                        public void callBackResult(List<Experiment> experimentList) {
+                            allExpDataList = experimentList;
+                            updateSubs();
+                            allExpAdapter = new CustomListAllExperiments(thisContext, allExperimentListItems, checkListener);
+                            allExpView = getView().findViewById(R.id.all_experiment_list);
+                            allExpView.setAdapter(allExpAdapter);
                         }
                     });
                 }
@@ -156,25 +147,9 @@ public class AllExperimentsFragment extends Fragment {
             }
         });
 
-
-//        sub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                int position = (int) buttonView.getTag();
-//                if(isChecked) {
-//                    Log.e(String.valueOf(position), "onCheckedChanged: 1" );
-//                    // TODO: Add expname to users subscribed list
-//                }
-//                else {
-//                    // TODO: Remove expname from users subscribed list
-//                    Log.e(String.valueOf(position), "onCheckedChanged: 0" );
-//                }
-//            }
+//        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
+//            subscribed = user.getSubscribedExperiments();
+//
 //        });
-
-        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
-            subscribed = user.getSubscribedExperiments();
-
-        });
     }
 }
