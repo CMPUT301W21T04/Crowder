@@ -69,6 +69,7 @@ public class AddExperimentFragment extends DialogFragment {
 
         dropdown = view.findViewById(R.id.dropdown);
         // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
+        
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options) {
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
