@@ -31,6 +31,10 @@ public class Experiment {
         this.ownerID = "";
     }
 
+    public Experiment(String name) {
+        this.name = name;
+    }
+
     public Experiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
         this.experimentID = experimentID;
         this.name = name;

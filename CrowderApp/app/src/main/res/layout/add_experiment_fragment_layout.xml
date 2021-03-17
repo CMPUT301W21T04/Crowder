@@ -24,7 +24,7 @@
         android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/experiment_name2" />
+        android:text="" />
 
     <TextView
         android:id="@+id/trial_type_TextView"

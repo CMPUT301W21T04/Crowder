@@ -29,18 +29,16 @@ import com.example.crowderapp.models.Experiment;
 
     Custom list adapter to show multiple fields in the main list view
  */
-public class CustomListAllExperiments extends ArrayAdapter<Experiment> {
+public class CustomListAllExperiments extends ArrayAdapter<AllExperimentListItem> {
 
-    private List<Experiment> experiments;
-    private List<String> subscribedExps;
+    private List<AllExperimentListItem> experiments;
     private Context context;
     private final CompoundButton.OnCheckedChangeListener listener;
 
-    public CustomListAllExperiments(Context context, List<Experiment> experiments, List<String> subscribedExps, CompoundButton.OnCheckedChangeListener listener) {
+    public CustomListAllExperiments(Context context, List<AllExperimentListItem> experiments, CompoundButton.OnCheckedChangeListener listener) {
         super(context,0,experiments);
         this.experiments = experiments;
         this.context = context;
-        this.subscribedExps = subscribedExps;
         this.listener = listener;
     }
 
@@ -51,14 +49,17 @@ public class CustomListAllExperiments extends ArrayAdapter<Experiment> {
             view = LayoutInflater.from(context).inflate(R.layout.all_experiments_custom_list, parent, false);
         }
 
-        Experiment experiment = experiments.get(position);
+        AllExperimentListItem experimentItem = experiments.get(position);
+        Experiment experiment = experimentItem.getExperiment();
+
         TextView expName = view.findViewById(R.id.allExpNameText);
         CheckBox subscribed = view.findViewById(R.id.subscribedButton);
+
         subscribed.setTag(position);
         subscribed.setOnCheckedChangeListener(listener);
 
         expName.setText(experiment.getName());
-        if (subscribedExps.contains(experiment.getName())) {
+        if (experimentItem.getIsSubscribed()) {
             subscribed.setChecked(true);
         }
         else {

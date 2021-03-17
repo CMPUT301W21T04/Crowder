@@ -139,6 +139,17 @@ public class UserHandler {
             user.getSubscribedExperiments().add(experimentID);
             updateCurrentUser(user);
         });
-
     }
+
+    /**
+     * Removes an experiment (by ID) from a user's subscription.
+     * @param experimentID
+     */
+    public void unsubscribeExperiment(String experimentID) {
+        currentUserTask.addOnSuccessListener(user -> {
+            user.getSubscribedExperiments().remove(experimentID);
+            updateCurrentUser(user);
+        });
+    }
+
 }

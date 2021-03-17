@@ -1,6 +1,7 @@
 package com.example.crowderapp.controllers;
 
 import android.location.Location;
+import android.media.MediaPlayer;
 
 import androidx.annotation.NonNull;
 
@@ -8,6 +9,7 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
+import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -16,6 +18,7 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ExperimentHandler {
@@ -37,7 +40,10 @@ public class ExperimentHandler {
         return instance;
     }
 
-    public void createExperiment() {
+    /**
+     * creates an experiment
+     */
+    public Experiment createExperiment() {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
@@ -57,8 +63,19 @@ public class ExperimentHandler {
             }
         });
 
+        if (newExperiment.getExperimentID() == "") {
+            //logger.throwing("Experiment Handler", "error in createExperiment no ID found");
+            logger.log(Level.SEVERE, "Experiment Handler error in createExperiment no ID found");
+        }
+
+        return newExperiment;
+
     }
 
+    /**
+     * Unpublishes or deletes the experiment in the db
+     * @param experimentID contains the experiment ID
+     */
     public void unPublishExperiment(String experimentID) {
         // TODO: remove experiment from fire store
         Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
@@ -76,6 +93,16 @@ public class ExperimentHandler {
             }
         });
     }
+    /**
+     * creates and returns the task for all experiments the user is subscribed to.
+     * @param userID contains the userID
+     */
+    public Task<List<Experiment>> getAllSubscribedExperiments(String userID) {
+
+        Task<List<Experiment>> task = experimentFSDAO.getUserExperiments(userID);
+        return task;
+
+    }
 
     public void endExperiment(String experimentID) {
         // TODO: prevent owner and subscriber from adding a trial
@@ -83,9 +110,30 @@ public class ExperimentHandler {
     }
 
 
-    public void addTrial(String experimentID, Date date, Location location) {
-        // TODO: check if Location needs to be a user-defined class
-    }
+//    public String addTrial(String experimenterID, String experimentID, Date date, Location location) {
+//        // TODO: check if Location needs to be a user-defined class
+//        TrialFSDAO trialFSDAO;
+//        Trial newTrial = new Trial(experimenterID, date, location, experimentID);
+//        Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(newTrial);
+//        Task<Experiment> taskgetExperiment = experimentFSDAO.getExperiment(experimentID);
+//
+//        taskgetExperiment.addOnSuccessListener(new OnSuccessListener<Experiment>() {
+//            @Override
+//            public void onSuccess(Experiment experiment) {
+//                trialFSDDAO
+//            }
+//        })
+//
+//        taskAddTrial.addOnSuccessListener(new OnSuccessListener<String>() {
+//            @Override
+//            public void onSuccess(String s) {
+//                newTrial.setTrialId(taskAddTrial.getResult());
+//            }
+//        });
+//
+//        return newTrial.getTrialId();
+//
+//    }
 
     public List<Trial> getData(String experimentID) {
         // TODO: get trials from the experiment
