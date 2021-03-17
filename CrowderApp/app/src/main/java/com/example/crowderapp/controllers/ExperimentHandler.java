@@ -1,10 +1,15 @@
 package com.example.crowderapp.controllers;
 
 import android.location.Location;
-import android.media.MediaPlayer;
 
 import androidx.annotation.NonNull;
 
+import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
@@ -13,7 +18,6 @@ import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,40 +47,28 @@ public class ExperimentHandler {
     /**
      * creates an experiment
      */
-    public Experiment createExperiment() {
+    public void createExperiment(String experimentName, createExperimentCallBack callBack) {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
+        newExperiment.setName(experimentName);
         Task<String> task = experimentFSDAO.createExperiment(newExperiment);
 
         task.addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
-
-               if (task.isSuccessful()) {
-                   String experimentID = task.getResult();
-                   newExperiment.setExperimentID(experimentID);
-               } else {
-                   Exception e = task.getException();
-                   logger.throwing("Experiment Handler", "error in createExperiment unable to create experiment", e);
-               }
+                if (task.isSuccessful()) {
+                    callBack.callBackResult(newExperiment);
+                }
             }
         });
-
-        if (newExperiment.getExperimentID() == "") {
-            //logger.throwing("Experiment Handler", "error in createExperiment no ID found");
-            logger.log(Level.SEVERE, "Experiment Handler error in createExperiment no ID found");
-        }
-
-        return newExperiment;
-
     }
 
     /**
      * Unpublishes or deletes the experiment in the db
      * @param experimentID contains the experiment ID
      */
-    public void unPublishExperiment(String experimentID) {
+    public void unPublishExperiment(String experimentID, unPublishExperimentCallBack callback) {
         // TODO: remove experiment from fire store
         Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
 
@@ -86,6 +78,7 @@ public class ExperimentHandler {
                 if (task.isSuccessful()) {
                     Experiment experimentToDelete = task.getResult();
                     experimentFSDAO.deleteExperiment(experimentToDelete);
+                    callback.callBackResult();
                 } else {
                     Exception e = task.getException();
                     logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
@@ -93,14 +86,25 @@ public class ExperimentHandler {
             }
         });
     }
+
     /**
      * creates and returns the task for all experiments the user is subscribed to.
      * @param userID contains the userID
      */
-    public Task<List<Experiment>> getAllSubscribedExperiments(String userID) {
+    public void getAllSubscribedExperiments(String userID, getAllSubscribedExperimentsCallBack callback) {
 
         Task<List<Experiment>> task = experimentFSDAO.getUserExperiments(userID);
-        return task;
+
+        task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Experiment>> task) {
+                if (task.isSuccessful()){
+                    callback.callBackResult(task.getResult());
+                } else {
+                    logger.log(Level.SEVERE, "Error in get all subscribed experiments in handler");
+                }
+            }
+        });
 
     }
 
@@ -110,30 +114,48 @@ public class ExperimentHandler {
     }
 
 
-//    public String addTrial(String experimenterID, String experimentID, Date date, Location location) {
-//        // TODO: check if Location needs to be a user-defined class
-//        TrialFSDAO trialFSDAO;
-//        Trial newTrial = new Trial(experimenterID, date, location, experimentID);
-//        Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(newTrial);
-//        Task<Experiment> taskgetExperiment = experimentFSDAO.getExperiment(experimentID);
-//
-//        taskgetExperiment.addOnSuccessListener(new OnSuccessListener<Experiment>() {
-//            @Override
-//            public void onSuccess(Experiment experiment) {
-//                trialFSDDAO
-//            }
-//        })
-//
-//        taskAddTrial.addOnSuccessListener(new OnSuccessListener<String>() {
-//            @Override
-//            public void onSuccess(String s) {
-//                newTrial.setTrialId(taskAddTrial.getResult());
-//            }
-//        });
-//
-//        return newTrial.getTrialId();
-//
-//    }
+    public void getExperiment(String experimentID, getExperimentCallBack callback){
+        Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
+
+        task.addOnCompleteListener(new OnCompleteListener<Experiment>() {
+            @Override
+            public void onComplete(@NonNull Task<Experiment> task) {
+                if (task.isSuccessful()) {
+                    callback.callBackResult(task.getResult());
+                } else {
+                    logger.log(Level.SEVERE, "Error in get experiment in handler");
+                }
+            }
+        });
+
+    }
+
+    public void addTrial(String experimenterID, String experimentID, Date date, Location location, addTrialCallBack callBack) {
+        // TODO: check if Location needs to be a user-defined class
+
+        getExperiment(experimentID, new getExperimentCallBack() {
+            @Override
+            public void callBackResult(Experiment experiment) {
+
+                TrialFSDAO trialFSDAO;
+                Trial newTrial = new Trial(experimenterID, date, location, experimentID);
+                trialFSDAO = new TrialFSDAO(experiment);
+                Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(newTrial);
+
+                taskAddTrial.addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            callBack.callBackResult(task.getResult());
+                        } else {
+                            logger.log(Level.SEVERE, "Error in add trial in handler");
+                        }
+                    }
+                });
+            }
+        });
+
+    }
 
     public List<Trial> getData(String experimentID) {
         // TODO: get trials from the experiment
@@ -154,11 +176,19 @@ public class ExperimentHandler {
 //        // TODO: get the corresponding ExperimentStats class for this experiment
 //    }
 
-    public Task<List<Experiment>>  getAllExperiments() {
+    public void getAllExperiments(allExperimentsCallBack callback) {
         Task<List<Experiment>> task = experimentFSDAO.getAllExperiments();
 
-        return task;
-
+        task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Experiment>> task) {
+                if (task.isSuccessful()) {
+                    callback.callBackResult(task.getResult());
+                } else {
+                    logger.log(Level.SEVERE, "Error in get all experiments in handler");
+                }
+            }
+        });
     }
 
     public void addQR(String experimentID) {
