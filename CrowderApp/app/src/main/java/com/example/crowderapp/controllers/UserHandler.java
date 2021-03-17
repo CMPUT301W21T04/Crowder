@@ -136,8 +136,10 @@ public class UserHandler {
      */
     public void subscribeExperiment(String experimentID) {
         currentUserTask.addOnSuccessListener(user -> {
-            user.getSubscribedExperiments().add(experimentID);
-            updateCurrentUser(user);
+            if(!user.getSubscribedExperiments().contains(experimentID)) {
+                user.getSubscribedExperiments().add(experimentID);
+                updateCurrentUser(user);
+            }
         });
     }
 
