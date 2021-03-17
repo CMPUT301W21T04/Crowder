@@ -42,6 +42,7 @@
         android:layout_marginStart="22dp" />
 
     <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/location_required_CheckBox"
         android:text="Location Required?"
         android:layout_width="wrap_content"
         android:layout_marginLeft="25dp"

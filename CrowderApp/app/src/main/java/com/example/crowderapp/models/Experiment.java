@@ -15,6 +15,7 @@ public class Experiment {
 
 
     private String name;
+    private String experimentType;
     private int minTrials;
     private boolean isEnded;
     private boolean isUnpublished;
@@ -29,6 +30,7 @@ public class Experiment {
         this.isUnpublished = false;
         this.isLocationRequired = false;
         this.ownerID = "";
+        this.experimentType = "";
     }
 
     public Experiment(String name) {
@@ -96,6 +98,10 @@ public class Experiment {
     public void setLocationRequired(boolean locationRequired) {
         isLocationRequired = locationRequired;
     }
+
+    public String getExperimentType() { return experimentType; }
+
+    public void setExperimentType(String experimentType) { this.experimentType = experimentType; }
 
     // this requires attention will need
     // to use some api to generate QR codes

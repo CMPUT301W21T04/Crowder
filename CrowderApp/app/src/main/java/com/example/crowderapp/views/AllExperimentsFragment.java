@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,6 +52,7 @@ public class AllExperimentsFragment extends Fragment {
     List<String> subscribed = new ArrayList<String>();
 
     Task userTask;
+    MenuItem menuItem;
 
     public AllExperimentsFragment() {
 
@@ -137,6 +139,12 @@ public class AllExperimentsFragment extends Fragment {
                             allExpAdapter = new CustomListAllExperiments(thisContext, allExperimentListItems, checkListener);
                             allExpView = getView().findViewById(R.id.all_experiment_list);
                             allExpView.setAdapter(allExpAdapter);
+                            allExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                    ((MainActivity)getActivity()).fab.hide();
+                                }
+                            });
                         }
                     });
                 }
@@ -146,6 +154,8 @@ public class AllExperimentsFragment extends Fragment {
 
             }
         });
+
+
 
 //        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
 //            subscribed = user.getSubscribedExperiments();

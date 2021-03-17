@@ -54,11 +54,16 @@ public class ExperimentHandler {
     /**
      * creates an experiment
      */
-    public void createExperiment(String experimentName, createExperimentCallBack callBack) {
+    public void createExperiment(String experimentName, boolean isLocationRequired,
+                                 int minTrials, String experimentType,
+                                 createExperimentCallBack callBack) {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
         newExperiment.setName(experimentName);
+        newExperiment.setLocationRequired(isLocationRequired);
+        newExperiment.setMinTrials(minTrials);
+        newExperiment.setExperimentType(experimentType);
         Task<String> task = experimentFSDAO.createExperiment(newExperiment);
 
         task.addOnCompleteListener(new OnCompleteListener<String>() {
