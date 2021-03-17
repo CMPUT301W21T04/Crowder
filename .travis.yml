@@ -18,7 +18,6 @@ android:
 before_install:
 - openssl aes-256-cbc -K $encrypted_ba513513456f_key -iv $encrypted_ba513513456f_iv
   -in google-services.json.enc -out CrowderApp/app/google-services.json -d
-before_script:
 - cd CrowderApp
 - yes | sdkmanager "platforms;android-30"
 - chmod +x gradlew
