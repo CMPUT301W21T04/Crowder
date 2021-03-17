@@ -69,7 +69,7 @@ public class AllExperimentsFragment extends Fragment {
                 userHandler.unsubscribeExperiment(exp.getExperimentID());
                 Log.v(String.valueOf(exp.getExperimentID()), "Unsubscribed to: ");
             }
-            Log.v(String.valueOf(userHandler.getCurrentUser().getResult().getUid()), "Current User");
+            Log.v(String.valueOf(user.getUid()), "Current User");
             Log.v(String.valueOf(isChecked), "Button changed");
             Log.v(String.valueOf(position), "At this position");
         }
@@ -93,8 +93,6 @@ public class AllExperimentsFragment extends Fragment {
         View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
         return view;
     }
-
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
