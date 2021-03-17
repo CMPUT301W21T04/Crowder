@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -75,17 +77,17 @@ public class AllExperimentsFragment extends Fragment {
         }
     };
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
+        this.setHasOptionsMenu(true);
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,5 +137,25 @@ public class AllExperimentsFragment extends Fragment {
             }
         });
 
+
+//        sub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                int position = (int) buttonView.getTag();
+//                if(isChecked) {
+//                    Log.e(String.valueOf(position), "onCheckedChanged: 1" );
+//                    // TODO: Add expname to users subscribed list
+//                }
+//                else {
+//                    // TODO: Remove expname from users subscribed list
+//                    Log.e(String.valueOf(position), "onCheckedChanged: 0" );
+//                }
+//            }
+//        });
+
+        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
+            subscribed = user.getSubscribedExperiments();
+
+        });
     }
 }
