@@ -1,7 +1,5 @@
 package com.example.crowderapp.models;
 
-import android.location.Location;
-
 import java.util.Date;
 
 public class CounterExperiment extends Experiment {
@@ -21,4 +19,18 @@ public class CounterExperiment extends Experiment {
         trials.add(new CounterTrial(experimenter, new Date(), location, this.getExperimentID()));
     }
 
+    /**
+     * @return The sum of all the counts.
+     */
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    /**
+     * Set the sum of all the counts
+     * @param totalCount
+     */
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 }

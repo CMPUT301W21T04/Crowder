@@ -1,8 +1,8 @@
 package com.example.crowderapp.models;
 
-import android.location.Location;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
 
@@ -14,7 +14,11 @@ public class Trial {
     private String experimenter;
     private Date date;
     private String experimentID;
+
     private Location location;
+
+    public Trial() {
+    }
 
     public Trial(String experimenter, Date date, Location location, String experimentID) {
         this.experimenter = experimenter;

@@ -1,7 +1,5 @@
 package com.example.crowderapp.models;
 
-import android.location.Location;
-
 import java.util.Date;
 
 public class BinomialExperiment extends Experiment {
@@ -25,5 +23,21 @@ public class BinomialExperiment extends Experiment {
     public void AddFail(String experimenter, Location location) {
         totalFail += 1;
         trials.add(new BinomialTrial(experimenter, new Date(), false, location, this.getExperimentID()));
+    }
+
+    /**
+     * Gets the sum of failure trials.
+     * @return
+     */
+    public int getTotalFail() {
+        return totalFail;
+    }
+
+    /**
+     * Gets the passes, which are sum of successful trials.
+     * @return
+     */
+    public int getTotalPass() {
+        return totalPass;
     }
 }

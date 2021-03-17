@@ -1,7 +1,5 @@
 package com.example.crowderapp.models;
 
-import android.location.Location;
-
 import java.util.Date;
 
 public class MeasurementExperiment extends Experiment {
@@ -21,5 +19,34 @@ public class MeasurementExperiment extends Experiment {
         averageMeasurement = (averageMeasurement*measurementCount+meas)/(1+measurementCount);
         measurementCount += 1;
         trials.add(new MeasurementTrial(experimenter, new Date(), meas, location, this.getExperimentID()));
+    }
+
+    /**
+     * @return The average of all the real measurements.
+     */
+    public double getAverageMeasurement() {
+        return averageMeasurement;
+    }
+
+    /**
+     * @param averageMeasurement
+     */
+    public void setAverageMeasurement(double averageMeasurement) {
+        this.averageMeasurement = averageMeasurement;
+    }
+
+    /**
+     * @return How many measurements have been made.
+     */
+    public int getMeasurementCount() {
+        return measurementCount;
+    }
+
+    /**
+     * Directly set the number of measurements made.
+     * @param measurementCount
+     */
+    public void setMeasurementCount(int measurementCount) {
+        this.measurementCount = measurementCount;
     }
 }
