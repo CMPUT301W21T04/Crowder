@@ -17,7 +17,6 @@ import com.example.crowderapp.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class BinomialTrialFragment extends Fragment {
-    FloatingActionButton fab;
 
     public BinomialTrialFragment() {
 

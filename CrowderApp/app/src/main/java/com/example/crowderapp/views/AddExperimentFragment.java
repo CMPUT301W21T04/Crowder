@@ -33,7 +33,7 @@ import com.example.crowderapp.models.Experiment;
 public class AddExperimentFragment extends DialogFragment {
 
     private static final String[] options = new String[]{
-            "Select Trial Type", "Count", "Binary", "Non-Negative Integer", "Measurement"};
+            "Select Trial Type", "Count", "Binomial", "Non-Negative Integer", "Measurement"};
 
     private Spinner dropdown;
     private EditText minTrialsEditText;
@@ -138,7 +138,8 @@ public class AddExperimentFragment extends DialogFragment {
                     toast.show();
                 } else {
                     handler.createExperiment(experimentName, isLocationRequired,
-                            Integer.valueOf(minTrials), new createExperimentCallBack() {
+                            Integer.valueOf(minTrials), experimentType,
+                            new createExperimentCallBack() {
                         @Override
                         public void callBackResult(Experiment experiment) {
 

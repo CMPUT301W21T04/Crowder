@@ -2,23 +2,32 @@ package com.example.crowderapp.views;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
+import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CustomListAllExperiments;
 import com.example.crowderapp.models.CustomListMyExperiments;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
+import com.example.crowderapp.views.trialfragments.CountTrialFragment;
+import com.example.crowderapp.views.trialfragments.MeasurementTrialFragment;
+import com.example.crowderapp.views.trialfragments.NonNegativeCountTrialFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -91,6 +100,32 @@ public class MyExperimentsFragment extends Fragment {
                             myExpAdapter = new CustomListMyExperiments(thisContext, subExperiments);
                             myExpView = getView().findViewById(R.id.my_experiment_list);
                             myExpView.setAdapter(myExpAdapter);
+
+                            myExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view,
+                                                            int position, long id) {
+                                    Log.e("Click", "yo");
+                                    String experimentType = subExperiments.get(position).getExperimentType();
+                                    switch (experimentType) {
+                                        case "Count":
+                                            openFragment(CountTrialFragment.newInstance());
+                                            break;
+                                        case "Binomial":
+                                            openFragment(BinomialTrialFragment.newInstance());
+                                            break;
+                                        case "Non-Negative Integer":
+                                            openFragment(NonNegativeCountTrialFragment.newInstance());
+                                            break;
+                                        case "Measurement":
+                                            openFragment(MeasurementTrialFragment.newInstance());
+                                            break;
+                                        default:
+                                            break;
+
+                                    }
+                                }
+                            });
                         }
                     });
                 }
@@ -100,5 +135,12 @@ public class MyExperimentsFragment extends Fragment {
 
             }
         });
+    }
+
+    public void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
