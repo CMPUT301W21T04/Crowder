@@ -2,13 +2,14 @@ package com.example.crowderapp.models;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.Date;
 
 public class BinomialExperiment extends Experiment {
 
     private int totalPass = 0;
     private int totalFail = 0;
-    private double successRate;
+    private double successRate = 0;
 
     public BinomialExperiment() {
         super();

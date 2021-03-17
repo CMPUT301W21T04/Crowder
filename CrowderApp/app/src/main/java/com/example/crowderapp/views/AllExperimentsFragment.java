@@ -51,7 +51,6 @@ public class AllExperimentsFragment extends Fragment {
     private ExperimentHandler handler = ExperimentHandler.getInstance();
     private Context thisContext;
     List<String> subscribed = new ArrayList<String>();
-    //LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
     Task userTask;
     MenuItem menuItem;
