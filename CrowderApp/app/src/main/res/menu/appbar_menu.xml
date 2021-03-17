@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_notification1"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        app:showAsAction="always"
+        android:visible="false"
+        android:title="action_notification">
+        <menu>
+            <item android:id="@+id/location_item"
+                android:icon="@drawable/ic_baseline_location_on_24"
+                android:title="Location Heatmap" />
+            <item android:id="@+id/barcode_item"
+                android:icon="@drawable/ic_baseline_local_bar_24"
+                android:title="Barcodes" />
+            <item android:id="@+id/qr_code_item"
+                android:icon="@drawable/ic_baseline_qr_code_24"
+                android:title="QR Codes" />
+            <item android:id="@+id/comment_item"
+                android:icon="@drawable/ic_baseline_mode_comment_24"
+                android:title="Comments" />
+            <item android:id="@+id/plot_item"
+                android:icon="@drawable/ic_baseline_scatter_plot_24"
+                android:title="See Plot" />
+            <item android:id="@+id/histogram_item"
+                android:icon="@drawable/ic_baseline_bar_chart_24"
+                android:title="See Histogram" />
+            <item android:id="@+id/stats_item"
+                android:icon="@drawable/ic_baseline_trending_up_24"
+                android:title="Location Heatmap" />
+            <item android:id="@+id/unpublish_item"
+                android:icon="@drawable/ic_baseline_delete_24"
+                android:title="Unpublish Experiment" />
+            <item android:id="@+id/end_item"
+                android:icon="@drawable/ic_baseline_stop_circle_24"
+                android:title="End Experiment" />
+        </menu>
+    </item>
+
+
+</menu>
