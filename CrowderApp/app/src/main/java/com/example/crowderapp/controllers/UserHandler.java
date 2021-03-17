@@ -139,7 +139,7 @@ public class UserHandler {
             if(!user.getSubscribedExperiments().contains(experimentID)) {
                 user.getSubscribedExperiments().add(experimentID);
                 updateCurrentUser(user);
-            }   
+            }
         });
     }
 
