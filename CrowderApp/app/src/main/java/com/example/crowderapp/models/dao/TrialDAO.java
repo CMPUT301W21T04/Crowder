@@ -12,12 +12,17 @@ import java.util.List;
 public abstract class TrialDAO {
 
     protected String experimentID;
+    protected String experimentType;
 
     /**
      * @param experiment The experiment whose trials to manipulate/view.
      */
     public TrialDAO(Experiment experiment) {
         experimentID = experiment.getExperimentID();
+        experimentType = experiment.getExperimentType();
+        if (experimentType == null) {
+            throw new IllegalArgumentException("Invalid experiment type: " + experimentType);
+        }
     }
 
     /**
