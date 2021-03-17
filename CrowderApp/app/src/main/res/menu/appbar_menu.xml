@@ -4,7 +4,7 @@
     <item
         android:title="Add Experiment"
         android:icon="@drawable/ic_baseline_add_24"
-        android:id="@+id/add_experiment_button"
+        android:id="@+id/filler"
         app:showAsAction="never"
         android:visible="false">
 

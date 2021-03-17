@@ -8,9 +8,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +25,11 @@ import androidx.annotation.Nullable;
 import com.example.crowderapp.R;
 
 public class AddExperimentFragment extends DialogFragment {
-    private EditText cityName;
-    private EditText provinceName;
+    private Spinner dropdown;
+    private static final String[] options = new String[]{
+                    "Select Trial Type", "Count", "Binary", "Non-Negative Integer", "Measurement"};
     private OnFragmentInteractionListener listener;
+    private int optionSelection;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
@@ -41,19 +50,42 @@ public class AddExperimentFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_experiment_fragment_layout, null);
+        dropdown = view.findViewById(R.id.dropdown);
+        // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options) {
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View v = null;
 
+                // If this is the initial dummy entry, make it hidden
+                if (position == 0) {
+                    TextView tv = new TextView(getContext());
+                    tv.setHeight(0);
+                    tv.setVisibility(View.GONE);
+                    v = tv;
+                } else {
+                    v = super.getDropDownView(position, null, parent);
+                }
 
+                return v;
+            }
+        };
+        //set the spinners adapter to the previously created one.
+        dropdown.setAdapter(adapter);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("Add City")
+                .setTitle("Add Experiment")
+                .setIcon(R.drawable.baseline_science_24)
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        String city = cityName.getText().toString();
-//                        String province = provinceName.getText().toString();
-//                        listener.onOkPressed(new City(city, province));
-                    }}).create();
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.e("Selection", dropdown.getSelectedItem().toString());
+                    }
+                }).create();
     }
+
+
+
 }
