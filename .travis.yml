@@ -22,7 +22,7 @@ android:
       - 'google-gdk-license-.+'
 
 before_install:
-
+  openssl aes-256-cbc -K $encrypted_fd8d34b142d0_key -iv $encrypted_fd8d34b142d0_iv -in google-services.json.enc -out CrowderApp/app/google-services.json -d
 before_script:
   - cd CrowderApp
   - yes | sdkmanager "platforms;android-30"
