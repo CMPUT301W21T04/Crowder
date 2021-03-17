@@ -3,6 +3,7 @@ package com.example.crowderapp.controllers;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
+import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.UserDAO;
 import com.example.crowderapp.models.dao.UserFSDAO;
@@ -64,7 +65,7 @@ public class UserHandler {
 
         } else {
             // Returning user
-            currentUserTask = getUserByID(userId);
+            currentUserTask = userDAO.getUserByID(userId);
         }
     }
 
@@ -78,7 +79,18 @@ public class UserHandler {
      * Gets the user tied to the phone.
      * @return The user
      */
-    public  Task<User> getCurrentUser() {
+    public void getCurrentUser(getUserByIDCallBack cb) {
+        currentUserTask.addOnSuccessListener(user -> {
+            cb.callBackResult(user);
+        });
+    }
+
+    /**
+     * Gets the user tied to the phone.
+     * @deprecated
+     * @return The task to the user.
+     */
+    public Task<User> getCurrentUser() {
         return currentUserTask;
     }
 
@@ -89,7 +101,7 @@ public class UserHandler {
      */
     public void observeCurrentUser(Activity activity, UserDAO.UserObserver obs) {
         currentUserTask.addOnSuccessListener(user -> {
-            syncObserverCurrentUser(user, activity, obs);
+            observerUser(user, activity, obs);
         });
     }
 
@@ -99,7 +111,7 @@ public class UserHandler {
      * @param activity Activity reference to prevent activity leak.
      * @param obs The observer
      */
-    public void syncObserverCurrentUser(User user, Activity activity, UserDAO.UserObserver obs) {
+    public void observerUser(User user, Activity activity, UserDAO.UserObserver obs) {
         userDAO.observeUser(user.getUid(), activity, obs);
     }
 
@@ -108,9 +120,9 @@ public class UserHandler {
      * @param userId
      * @return
      */
-    public Task<User> getUserByID(String userId) {
-        return userDAO.getUserByID(userId).continueWith(task -> {
-            return task.getResult();
+    public void getUserByID(String userId, getUserByIDCallBack cb) {
+        userDAO.getUserByID(userId).addOnCompleteListener(task -> {
+            cb.callBackResult(task.getResult());
         });
     }
 
