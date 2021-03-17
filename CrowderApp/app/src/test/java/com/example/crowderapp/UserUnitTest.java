@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 import com.example.crowderapp.controllers.UserHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.UserDAO;
 import com.example.crowderapp.models.dao.UserFSDAO;
@@ -15,20 +16,14 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowLooper;
 
-import java.util.concurrent.CountDownLatch;
 
 @Config(sdk = 27)
 @RunWith(RobolectricTestRunner.class)
@@ -107,5 +102,29 @@ public class UserUnitTest {
         finishAllTasks();
 
         Mockito.verify(mockedDao, Mockito.times(1)).observeUser(Mockito.same("TEST"), Mockito.same(mockedActivity), Mockito.any());
+    }
+
+    /*
+        Argument Capture based on
+        https://stackoverflow.com/questions/13616547/calling-callbacks-with-mockito
+        By: Dawood ibn Kareem https://stackoverflow.com/users/1081110/dawood-ibn-kareem
+        CC BY 2.5
+     */
+
+    @Test
+    public void testGetUser() {
+        handler = new UserHandler(mockedPref, mockedDao);
+        getUserByIDCallBack mockedCb = Mockito.mock(getUserByIDCallBack.class);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+        handler.getUserByID("TEST", mockedCb);
+
+        finishAllTasks();
+
+        // Verify it goes to DB
+        Mockito.verify(mockedDao, Mockito.times(1)).getUserByID(captor.capture());
+
+        // Verify the request has proper user
+        Assert.assertEquals("TEST", captor.getValue());
     }
 }
