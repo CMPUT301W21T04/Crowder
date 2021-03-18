@@ -165,6 +165,31 @@ public class ExperimentHandlerUnitTest {
 
         verify(getExperimentCB, times(1)).callBackResult(any());
 
+    }
+
+    @Test
+    public void getAllExperimentsTest() {
+        ExperimentFSDAO dao = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
+        Task<List<Experiment>> task = mock(Task.class, RETURNS_DEEP_STUBS);
+        ExperimentHandler handler = new ExperimentHandler(dao);
+
+        when(dao.getAllExperiments()).thenReturn(task);
+
+        ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
+        allExperimentsCallBack getExperimentAllExperimentsCB = mock(allExperimentsCallBack.class);
+
+        handler.getAllExperiments(getExperimentAllExperimentsCB);
+
+        finishAllTasks();
+
+        verify(dao, times(1)).getAllExperiments();
+        verify(task, times(1)).addOnCompleteListener(captor.capture());
+
+        when(task.isSuccessful()).thenReturn(true);
+
+        captor.getValue().onComplete(task);
+
+        verify(getExperimentAllExperimentsCB, times(1)).callBackResult(any());
 
     }
 
