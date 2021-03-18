@@ -57,6 +57,7 @@ public class ExperimentSubscriptionTest {
         solo.clickOnText(expname);
         View dropdown = solo.getView(R.id.more_item);
         solo.clickOnView(dropdown);
+        solo.sleep(500);
         View remove = solo.getView(R.id.unpublish_item);
         solo.clickOnView(remove);
         UiTestHelperFunctions.goToAllExperiments(solo);
