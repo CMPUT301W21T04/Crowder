@@ -17,6 +17,7 @@ import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCal
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
+import com.example.crowderapp.models.Search;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.dao.ExperimentDAO;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
@@ -121,10 +122,13 @@ public class ExperimentHandler {
 
     }
 
-    public void endExperiment(String experimentID, endExperimentCallBack callback) {
+    public void endExperiment(Experiment experiment) {
         // TODO: prevent owner and subscriber from adding a trial
-    }
 
+        experiment.setEnded(true);
+        experimentDAO.updateExperiment(experiment);
+
+    }
 
     public void getExperiment(String experimentID, getExperimentCallBack callback){
         Task<Experiment> task = experimentDAO.getExperiment(experimentID);
@@ -224,5 +228,16 @@ public class ExperimentHandler {
 
     public void searchExperiment(List<String> filterStrings, searchExperimentCallBack callback) {
         // TODO: get a list of experiments based on provided filter
+
+        Search search = new Search();
+
+        getAllExperiments(new allExperimentsCallBack() {
+            @Override
+            public void callBackResult(List<Experiment> experimentList) {
+                List<Experiment> filteredExperiments = search.searchExperiments((ArrayList<String>) filterStrings, experimentList);
+                callback.callBackResult(filteredExperiments);
+            }
+        });
+
     }
 }
