@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BinomialTrialFragment extends Fragment {
+public class BinomialTrialFragment extends TrialFragment {
     private User user;
-    private BinomialExperiment experiment;
+    private BinomialExperiment binomialExperiment;
     private ExperimentHandler handler = new ExperimentHandler();
     private List<BinomialTrial> trials = new ArrayList<BinomialTrial>();
     private Location location = new Location();
@@ -55,36 +55,6 @@ public class BinomialTrialFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-        location.setLatitude(53.49591130578844);
-        location.setLongitude(-113.52409008650696);
-
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        // You can hide the state of the menu item here if you call getActivity().supportInvalidateOptionsMenu(); somewhere in your code
-        MenuItem menuItem = menu.findItem(R.id.more_item);
-        menuItem.setVisible(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.location_item:
-                Log.e("yo", "yo");
-                break;
-            case R.id.unpublish_item:
-                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
-                    @Override
-                    public void callBackResult() {
-                        getFragmentManager().popBackStack();
-                    }
-                });
-
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -108,7 +78,8 @@ public class BinomialTrialFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle bundle = getArguments();
-        experiment = (BinomialExperiment) bundle.getSerializable("Experiment");
+        experiment = (Experiment) bundle.getSerializable("Experiment");
+        binomialExperiment = (BinomialExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 
         this.succView = 0;
@@ -132,7 +103,7 @@ public class BinomialTrialFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO: Toast message saying trials were added??
-                handler.updateExperiment(experiment);
+                handler.updateExperiment(binomialExperiment);
                 for(Trial trial : trials) {
                     Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
                     handler.addTrial(trial, new addTrialCallBack() {
@@ -165,8 +136,8 @@ public class BinomialTrialFragment extends Fragment {
             public void onClick(View v) {
                 //TODO: Update Passes and Update Success Rate
                 //TODO: Add a success trial to the "trials" list
-                experiment.addPass(user.getUid(), location);
-                trials.add(new BinomialTrial(user.getUid(), new Date(), true, new Location(), experiment.getExperimentID()));
+                binomialExperiment.addPass(user.getUid(), location);
+                trials.add(new BinomialTrial(user.getUid(), new Date(), true, new Location(), binomialExperiment.getExperimentID()));
                 succView += 1;
                 updateSuccessRate();
                 passes.setText("Successes: " + String.valueOf(succView));
@@ -181,8 +152,8 @@ public class BinomialTrialFragment extends Fragment {
             public void onClick(View v) {
                 //TODO: Update Fails and Update Success Rate
                 //TODO: Add a fail trial to the "trials" list
-                experiment.addFail(user.getUid(), location);
-                trials.add(new BinomialTrial(user.getUid(), new Date(), false, new Location(), experiment.getExperimentID()));
+                binomialExperiment.addFail(user.getUid(), location);
+                trials.add(new BinomialTrial(user.getUid(), new Date(), false, new Location(), binomialExperiment.getExperimentID()));
                 failView += 1;
                 updateSuccessRate();
                 fails.setText("Fails : " + String.valueOf(failView));

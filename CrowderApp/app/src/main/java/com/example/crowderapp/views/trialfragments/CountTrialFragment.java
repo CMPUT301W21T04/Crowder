@@ -96,8 +96,5 @@ public class CountTrialFragment extends TrialFragment {
 
             }
         });
-
-
-
     }
 }
