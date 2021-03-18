@@ -103,30 +103,34 @@ public class BinomialTrialFragment extends TrialFragment {
             @Override
             public void onClick(View v) {
                 // TODO: Toast message saying trials were added??
-                handler.updateExperiment(binomialExperiment);
-                for(Trial trial : trials) {
-                    Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                    handler.addTrial(trial, new addTrialCallBack() {
-                        @Override
-                        public void callBackResult(String trialID) {
-                            Log.v(trialID, "Trial ID returned");
-                        }
-                    });
-                }
-                // Reset values
-                trials = new ArrayList<>();
-                succView = 0;
-                failView = 0;
-                succRateView = 0;
-                updateSuccessRate();
+                if (binomialExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    handler.updateExperiment(binomialExperiment);
+                    for (Trial trial : trials) {
+                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                        handler.addTrial(trial, new addTrialCallBack() {
+                            @Override
+                            public void callBackResult(String trialID) {
+                                Log.v(trialID, "Trial ID returned");
+                            }
+                        });
+                    }
+                    // Reset values
+                    trials = new ArrayList<>();
+                    succView = 0;
+                    failView = 0;
+                    succRateView = 0;
+                    updateSuccessRate();
 
-                // Refresh UI elements to 0
-                passes.setText("Successes: " + String.valueOf(succView));
-                fails.setText("Fails : " + String.valueOf(failView));
-                successRate.setText("Success Rate: " + String.valueOf(succRateView));
-                passes.invalidate();
-                fails.invalidate();
-                successRate.invalidate();
+                    // Refresh UI elements to 0
+                    passes.setText("Successes: " + String.valueOf(succView));
+                    fails.setText("Fails : " + String.valueOf(failView));
+                    successRate.setText("Success Rate: " + String.valueOf(succRateView));
+                    passes.invalidate();
+                    fails.invalidate();
+                    successRate.invalidate();
+                }
             }
         });
 
@@ -136,14 +140,18 @@ public class BinomialTrialFragment extends TrialFragment {
             public void onClick(View v) {
                 //TODO: Update Passes and Update Success Rate
                 //TODO: Add a success trial to the "trials" list
-                binomialExperiment.addPass(user.getUid(), location);
-                trials.add(new BinomialTrial(user.getUid(), new Date(), true, new Location(), binomialExperiment.getExperimentID()));
-                succView += 1;
-                updateSuccessRate();
-                passes.setText("Successes: " + String.valueOf(succView));
-                successRate.setText("Success Rate: " + String.valueOf(succRateView));
-                passes.invalidate();
-                successRate.invalidate();
+                if (binomialExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    binomialExperiment.addPass(user.getUid(), location);
+                    trials.add(new BinomialTrial(user.getUid(), new Date(), true, new Location(), binomialExperiment.getExperimentID()));
+                    succView += 1;
+                    updateSuccessRate();
+                    passes.setText("Successes: " + String.valueOf(succView));
+                    successRate.setText("Success Rate: " + String.valueOf(succRateView));
+                    passes.invalidate();
+                    successRate.invalidate();
+                }
             }
         });
         Button failBtn = view.findViewById(R.id.binomialFailButton);
@@ -152,14 +160,18 @@ public class BinomialTrialFragment extends TrialFragment {
             public void onClick(View v) {
                 //TODO: Update Fails and Update Success Rate
                 //TODO: Add a fail trial to the "trials" list
-                binomialExperiment.addFail(user.getUid(), location);
-                trials.add(new BinomialTrial(user.getUid(), new Date(), false, new Location(), binomialExperiment.getExperimentID()));
-                failView += 1;
-                updateSuccessRate();
-                fails.setText("Fails : " + String.valueOf(failView));
-                successRate.setText("Success Rate: " + String.valueOf(succRateView));
-                fails.invalidate();
-                successRate.invalidate();
+                if(binomialExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    binomialExperiment.addFail(user.getUid(), location);
+                    trials.add(new BinomialTrial(user.getUid(), new Date(), false, new Location(), binomialExperiment.getExperimentID()));
+                    failView += 1;
+                    updateSuccessRate();
+                    fails.setText("Fails : " + String.valueOf(failView));
+                    successRate.setText("Success Rate: " + String.valueOf(succRateView));
+                    fails.invalidate();
+                    successRate.invalidate();
+                }
             }
         });
     }

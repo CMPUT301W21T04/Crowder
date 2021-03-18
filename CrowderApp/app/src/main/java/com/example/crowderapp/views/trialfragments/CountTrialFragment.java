@@ -2,6 +2,7 @@ package com.example.crowderapp.views.trialfragments;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,13 +67,19 @@ public class CountTrialFragment extends TrialFragment {
         countButton = view.findViewById(R.id.count_button);
         saveButton = view.findViewById(R.id.count_save_Button);
 
+
+
         countButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalCount++;
-                totalCountTextView.setText(String.valueOf(totalCount));
-                countExperiment.incrementCount(user.getUid(), new Location());
-                trials.add(new CounterTrial(user.getUid(), new Date(), new Location(), countExperiment.getExperimentID()));
+                if(countExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    totalCount++;
+                    totalCountTextView.setText(String.valueOf(totalCount));
+                    countExperiment.incrementCount(user.getUid(), new Location());
+                    trials.add(new CounterTrial(user.getUid(), new Date(), new Location(), countExperiment.getExperimentID()));
+                }
 
             }
         });
@@ -79,21 +87,25 @@ public class CountTrialFragment extends TrialFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.updateExperiment(countExperiment);
-                for(Trial trial : trials) {
-                    Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                    handler.addTrial(trial, new addTrialCallBack() {
-                        @Override
-                        public void callBackResult(String trialID) {
-                            Log.v(trialID, "Trial ID returned");
-                        }
-                    });
+                if(countExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    handler.updateExperiment(countExperiment);
+                    for (Trial trial : trials) {
+                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                        handler.addTrial(trial, new addTrialCallBack() {
+                            @Override
+                            public void callBackResult(String trialID) {
+                                Log.v(trialID, "Trial ID returned");
+                            }
+                        });
+                    }
+
+                    trials = new ArrayList<>();
+                    totalCount = 0;
+
+                    totalCountTextView.setText(String.valueOf(totalCount));
                 }
-
-                trials = new ArrayList<>();
-                totalCount = 0;
-
-                totalCountTextView.setText(String.valueOf(totalCount));
 
             }
         });
