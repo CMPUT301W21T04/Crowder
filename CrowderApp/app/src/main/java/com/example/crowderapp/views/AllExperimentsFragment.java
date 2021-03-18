@@ -41,7 +41,7 @@ import java.util.List;
 
 public class AllExperimentsFragment extends Fragment {
 
-    UserHandler userHandler;
+    public UserHandler userHandler;
 
     User user;
     private ListView allExpView;
@@ -93,37 +93,6 @@ public class AllExperimentsFragment extends Fragment {
         this.setHasOptionsMenu(true);
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
-
-    }
-
-    public void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        thisContext = container.getContext();
-        View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
-        return view;
-    }
-
-    private void updateSubs() {
-        for(Experiment exp : allExpDataList) {
-            if(subscribed.contains(exp.getExperimentID())) {
-                allExperimentListItems.add(new AllExperimentListItem(exp, true));
-            }
-            else {
-                allExperimentListItems.add(new AllExperimentListItem(exp, false));
-            }
-        }
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
         userTask = userHandler.getCurrentUser();
         userTask.addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -155,10 +124,76 @@ public class AllExperimentsFragment extends Fragment {
 
             }
         });
+    }
 
-//        userHandler.observeCurrentUser(getActivity(), (dao, user) -> {
-//            subscribed = user.getSubscribedExperiments();
+    public void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        thisContext = container.getContext();
+        View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
+        return view;
+    }
+
+    private boolean alreadyExists(Experiment exp) {
+        for(AllExperimentListItem expItem : allExperimentListItems) {
+            if(expItem.getExperiment().getExperimentID().equals(exp.getExperimentID())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void updateSubs() {
+        for(Experiment exp : allExpDataList) {
+            if (!alreadyExists(exp)) {
+                if (subscribed.contains(exp.getExperimentID())) {
+                    allExperimentListItems.add(new AllExperimentListItem(exp, true));
+                } else {
+                    allExperimentListItems.add(new AllExperimentListItem(exp, false));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        userTask = userHandler.getCurrentUser();
+//        userTask.addOnCompleteListener(new OnCompleteListener() {
+//            @Override
+//            public void onComplete(@NonNull Task task) {
+//                if (userTask.isSuccessful()) {
+//                    user = (User) task.getResult();
+//                    subscribed = user.getSubscribedExperiments();
 //
+//                    handler.getAllExperiments(new allExperimentsCallBack() {
+//                        @Override
+//                        public void callBackResult(List<Experiment> experimentList) {
+//                            allExpDataList = experimentList;
+//                            updateSubs();
+//                            allExpAdapter = new CustomListAllExperiments(thisContext, allExperimentListItems, checkListener);
+//                            allExpView = getView().findViewById(R.id.all_experiment_list);
+//                            allExpView.setAdapter(allExpAdapter);
+//                            allExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                @Override
+//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+////                                    ((MainActivity)getActivity()).fab.hide();
+//                                }
+//                            });
+//                        }
+//                    });
+//                }
+//                else {
+//                    Exception exception = task.getException();
+//                }
+//
+//            }
 //        });
     }
 }
