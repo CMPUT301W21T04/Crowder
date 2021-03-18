@@ -19,11 +19,13 @@ public class UiTestHelperFunctions {
 
     public static void createExperiment(Solo solo, String expName, int minTrialAmt, expTypes type) {
         FloatingActionButton addExpButton = (FloatingActionButton) solo.getView(R.id.add_experiment_button);
+
+        solo.clickOnView(addExpButton);
+
         EditText expNameText = (EditText) solo.getView(R.id.experiment_name_EditText);
         Spinner dropDown = (Spinner) solo.getView(R.id.dropdown);
         EditText minTrials = (EditText) solo.getView(R.id.min_trials_EditText);
 
-        solo.clickOnView(addExpButton);
         solo.enterText(expNameText, expName);
         solo.clickOnView(dropDown);
 
@@ -45,10 +47,23 @@ public class UiTestHelperFunctions {
         }
 
         solo.enterText(minTrials, String.valueOf(minTrialAmt));
-        solo.clickOnText("OK");
+        // https://stackoverflow.com/questions/10359192/how-to-select-which-button-to-click-on-robotium-for-an-alert-dialog/10858118
+        solo.clickOnView(solo.getView(android.R.id.button1));
     }
 
     public static void createExperiment(Solo solo, String expName, int minTrialAmt) {
         createExperiment(solo, expName, minTrialAmt, expTypes.COUNT);
+    }
+
+    public static void goToProfile(Solo solo) {
+        solo.clickOnText("Profile");
+    }
+
+    public static void goToMyExperiments(Solo solo) {
+        solo.clickOnText("My Experiments");
+    }
+
+    public static void goToAllExperiments(Solo solo) {
+        solo.clickOnText("All Experiments");
     }
 }
