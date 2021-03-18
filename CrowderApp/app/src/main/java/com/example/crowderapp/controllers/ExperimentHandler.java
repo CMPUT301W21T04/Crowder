@@ -70,6 +70,7 @@ public class ExperimentHandler {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (task.isSuccessful()) {
+                    newExperiment.setExperimentID(task.getResult());
                     callBack.callBackResult(newExperiment);
                 }
             }
