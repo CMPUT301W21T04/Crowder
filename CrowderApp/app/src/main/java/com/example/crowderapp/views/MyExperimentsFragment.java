@@ -42,7 +42,7 @@ public class MyExperimentsFragment extends Fragment {
     private ListView myExpView;
     private ArrayAdapter<Experiment> myExpAdapter;
     private List<Experiment> allExpDataList = new ArrayList<Experiment>();
-    private ExperimentHandler handler = ExperimentHandler.getInstance();
+    private ExperimentHandler handler = new ExperimentHandler();
     private Context thisContext;
     private List<String> subscribed = new ArrayList<String>();
     private List<Experiment> subExperiments = new ArrayList<Experiment>();

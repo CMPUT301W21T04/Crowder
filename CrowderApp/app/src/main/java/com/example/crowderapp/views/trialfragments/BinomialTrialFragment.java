@@ -35,7 +35,7 @@ import java.util.List;
 public class BinomialTrialFragment extends Fragment {
     private User user;
     private BinomialExperiment experiment;
-    private ExperimentHandler handler = ExperimentHandler.getInstance();
+    private ExperimentHandler handler = new ExperimentHandler();
     private List<BinomialTrial> trials = new ArrayList<BinomialTrial>();
     private Location location = new Location();
     private int succView;
