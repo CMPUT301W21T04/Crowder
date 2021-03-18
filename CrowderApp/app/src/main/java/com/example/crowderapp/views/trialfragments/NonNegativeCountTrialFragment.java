@@ -83,6 +83,11 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         enterButton = view.findViewById(R.id.non_neg_button_enter);
         saveButton = view.findViewById(R.id.non_neg_button_save);
 
+        if(tallyExperiment.isEnded()) {
+            integerValueEditText.setEnabled(false);
+            integerValueEditText.setText("Experiment Ended");
+        }
+
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,5 +142,6 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         average = (average*numCounts+(double)currentCount)/(double)(1+numCounts);
         averageString = df.format(average);
     }
+
 
 }
