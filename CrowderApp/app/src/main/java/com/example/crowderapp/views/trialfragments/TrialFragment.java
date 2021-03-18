@@ -81,13 +81,7 @@ public class TrialFragment extends Fragment {
             case R.id.stats_item:
                 // TODO show stats
             case R.id.end_item:
-                handler.endExperiment(experiment.getExperimentID(), new endExperimentCallBack() {
-                    @Override
-                    public void callBackResult() {
-                        //userHandler.unsubscribeExperiment(experiment.getExperimentID());
-                        openFragment(MyExperimentsFragment.newInstance());
-                    }
-                });
+                handler.endExperiment(experiment);
                 break;
 
 
