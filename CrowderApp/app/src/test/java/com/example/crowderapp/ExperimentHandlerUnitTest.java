@@ -109,4 +109,35 @@ public class ExperimentHandlerUnitTest {
         Assert.assertEquals(2, experiments.size());
         Assert.assertEquals(experiments.get(1).getExperimentID(), expID);
     }
+
+    @Test
+    public void unPublishExperimentTest(){
+
+        // setup
+        ExperimentFSDAO dao = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
+        Task<Experiment> task = mock(Task.class, RETURNS_DEEP_STUBS);
+        ExperimentHandler handler = new ExperimentHandler(dao);
+
+        when(dao.getExperiment(any())).thenReturn(task);
+
+        ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
+        unPublishExperimentCallBack mockedExperimentCB = mock(unPublishExperimentCallBack.class);
+
+        handler.unPublishExperiment(any(), mockedExperimentCB);
+
+        finishAllTasks();
+
+        //testing
+
+        verify(dao, times(1)).getExperiment(any()); // checks if this is called once
+        verify(task, times(1)).addOnCompleteListener(captor.capture());
+        when(task.isSuccessful()).thenReturn(true);
+        captor.getValue().onComplete(task);
+
+        verify(mockedExperimentCB, times(1)).callBackResult(); //callback check
+
+
+    }
+
+
 }
