@@ -66,25 +66,7 @@ public class MyExperimentsFragment extends Fragment {
 
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        thisContext = container.getContext();
-        View view = inflater.inflate(R.layout.my_experiments_fragment, container, false);
-        return view;
-    }
-
-    private void createSubList() {
-        for(Experiment exp : allExpDataList) {
-            if (subscribed.contains(exp.getExperimentID())) {
-                subExperiments.add(exp);
-            }
-        }
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
         userTask = userHandler.getCurrentUser();
         userTask.addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -105,7 +87,7 @@ public class MyExperimentsFragment extends Fragment {
                             myExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view,
-                                                            int position, long id) {
+                                                        int position, long id) {
                                     Log.e("Click", "yo");
                                     currentExperiment = subExperiments.get(position);
                                     String experimentType = currentExperiment.getExperimentType();
@@ -140,10 +122,20 @@ public class MyExperimentsFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.e("log", "Called");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        thisContext = container.getContext();
+        View view = inflater.inflate(R.layout.my_experiments_fragment, container, false);
+        return view;
     }
+
+    private void createSubList() {
+        for(Experiment exp : allExpDataList) {
+            if (subscribed.contains(exp.getExperimentID()) && !subExperiments.contains(exp.getExperimentID())) {
+                subExperiments.add(exp);
+            }
+        }
+    }
+    
 
     public void openFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
