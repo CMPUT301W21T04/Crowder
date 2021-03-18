@@ -16,10 +16,11 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.views.AllExperimentsFragment;
 
 public class MeasurementTrialFragment extends TrialFragment {
-
+    MeasurementExperiment measurementExperiment;
 
     public MeasurementTrialFragment() {
 
@@ -41,5 +42,7 @@ public class MeasurementTrialFragment extends TrialFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+        measurementExperiment = (MeasurementExperiment) experiment;
+
     }
 }
