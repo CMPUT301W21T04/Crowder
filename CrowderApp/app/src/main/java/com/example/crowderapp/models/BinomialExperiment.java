@@ -1,11 +1,6 @@
 package com.example.crowderapp.models;
 
-<<<<<<< HEAD
-import android.location.Location;
 
-import java.io.Serializable;
-=======
->>>>>>> 2ac3f38fb486501b3441eee9d7ca07f3feab01e4
 import java.util.Date;
 
 public class BinomialExperiment extends Experiment {
@@ -37,17 +32,15 @@ public class BinomialExperiment extends Experiment {
         trials.add(new BinomialTrial(experimenter, new Date(), false, location, this.getExperimentID()));
     }
 
-<<<<<<< HEAD
     // Update the success rate
     private void updateSuccessRate() {
         // Removes possibility of divide by 0
-        if (this.totalPass+this.totalFail == 0) {
+        if (this.totalPass + this.totalFail == 0) {
             this.successRate = 0;
+        } else {
+            this.successRate = new Double(Double.valueOf(this.totalPass) / (Double.valueOf(this.totalPass) + Double.valueOf(this.totalFail))) * 100;
         }
-        else {
-            this.successRate = new Double(Double.valueOf(this.totalPass)/(Double.valueOf(this.totalPass) + Double.valueOf(this.totalFail))) * 100;
-        }
-=======
+    }
     /**
      * Gets the sum of failure trials.
      * @return
@@ -62,6 +55,5 @@ public class BinomialExperiment extends Experiment {
      */
     public int getTotalPass() {
         return totalPass;
->>>>>>> 2ac3f38fb486501b3441eee9d7ca07f3feab01e4
     }
 }

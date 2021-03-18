@@ -1,6 +1,5 @@
 package com.example.crowderapp.views.trialfragments;
 
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +23,7 @@ import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperiment
 import com.example.crowderapp.models.BinomialExperiment;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,7 +37,7 @@ public class BinomialTrialFragment extends Fragment {
     private BinomialExperiment experiment;
     private ExperimentHandler handler = ExperimentHandler.getInstance();
     private List<BinomialTrial> trials = new ArrayList<BinomialTrial>();
-    private Location location = new Location("");
+    private Location location = new Location();
     private int succView;
     private int failView;
     private double succRateView;
@@ -133,6 +133,15 @@ public class BinomialTrialFragment extends Fragment {
             public void onClick(View v) {
                 // TODO: Toast message saying trials were added??
                 handler.updateExperiment(experiment);
+                for(Trial trial : trials) {
+                    Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                    handler.addTrial(trial, new addTrialCallBack() {
+                        @Override
+                        public void callBackResult(String trialID) {
+                            Log.v(trialID, "Trial ID returned");
+                        }
+                    });
+                }
                 // Reset values
                 trials = new ArrayList<>();
                 succView = 0;
@@ -150,13 +159,14 @@ public class BinomialTrialFragment extends Fragment {
             }
         });
 
-        Button successBtn = view.findViewById(R.id.binomialSuccessRate);
+        Button successBtn = view.findViewById(R.id.binomialPassButton);
         successBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: Update Passes and Update Success Rate
                 //TODO: Add a success trial to the "trials" list
                 experiment.addPass(user.getUid(), location);
+                trials.add(new BinomialTrial(user.getUid(), new Date(), true, new Location(), experiment.getExperimentID()));
                 succView += 1;
                 updateSuccessRate();
                 passes.setText("Successes: " + String.valueOf(succView));
@@ -172,6 +182,7 @@ public class BinomialTrialFragment extends Fragment {
                 //TODO: Update Fails and Update Success Rate
                 //TODO: Add a fail trial to the "trials" list
                 experiment.addFail(user.getUid(), location);
+                trials.add(new BinomialTrial(user.getUid(), new Date(), false, new Location(), experiment.getExperimentID()));
                 failView += 1;
                 updateSuccessRate();
                 fails.setText("Fails : " + String.valueOf(failView));
