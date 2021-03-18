@@ -29,9 +29,6 @@ public class TrialFragment extends Fragment {
     User user;
     Experiment experiment;
     ExperimentHandler handler = new ExperimentHandler();
-    private List<BinomialTrial> trials = new ArrayList<BinomialTrial>();
-    private Location location = new Location();
-    private UserHandler userHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

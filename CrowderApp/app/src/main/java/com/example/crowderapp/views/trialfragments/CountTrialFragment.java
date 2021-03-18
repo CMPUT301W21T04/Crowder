@@ -60,6 +60,7 @@ public class CountTrialFragment extends TrialFragment {
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
         countExperiment = (CounterExperiment) experiment;
+        user = (User) bundle.getSerializable("User");
         totalCountTextView = view.findViewById(R.id.count_total_TextView);
         countButton = view.findViewById(R.id.count_button);
         saveButton = view.findViewById(R.id.count_save_Button);
