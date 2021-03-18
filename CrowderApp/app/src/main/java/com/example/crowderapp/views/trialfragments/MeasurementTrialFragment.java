@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -89,44 +90,53 @@ public class MeasurementTrialFragment extends TrialFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                numMeasurements++;
-                currentMeasurement = Double.parseDouble(measurementInput.getText().toString());
-                totalMeasurement += currentMeasurement;
-                calculateAverage();
-                trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, new Location(), measurementExperiment.getExperimentID()));
-                measurementsTextView.setText(String.valueOf(numMeasurements));
-                aveMeasureTextView.setText(aveMeasurementString);
-                measurementInput.setText("");
+                if(measurementExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    numMeasurements++;
+                    currentMeasurement = Double.parseDouble(measurementInput.getText().toString());
+                    totalMeasurement += currentMeasurement;
+                    calculateAverage();
+                    trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, new Location(), measurementExperiment.getExperimentID()));
+                    measurementsTextView.setText(String.valueOf(numMeasurements));
+                    aveMeasureTextView.setText(aveMeasurementString);
+                    measurementInput.setText("");
+                }
             }
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.updateExperiment(measurementExperiment);
-                for(Trial trial : trials) {
-                    Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                    handler.addTrial(trial, new addTrialCallBack() {
-                        @Override
-                        public void callBackResult(String trialID) {
-                            Log.v(trialID, "Trial ID returned");
-                        }
-                    });
+                if(measurementExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    handler.updateExperiment(measurementExperiment);
+                    for (Trial trial : trials) {
+                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                        handler.addTrial(trial, new addTrialCallBack() {
+                            @Override
+                            public void callBackResult(String trialID) {
+                                Log.v(trialID, "Trial ID returned");
+                            }
+                        });
+                    }
+
+                    trials = new ArrayList<>();
+                    numMeasurements = 0;
+                    aveMeasurement = 0;
+                    aveMeasurementString = "";
+                    currentMeasurement = 0;
+                    totalMeasurement = 0;
+
+                    aveMeasureTextView.setText("0");
+                    measurementsTextView.setText("0");
                 }
-
-                trials = new ArrayList<>();
-                numMeasurements = 0;
-                aveMeasurement = 0;
-                aveMeasurementString = "";
-                currentMeasurement = 0;
-                totalMeasurement = 0;
-
-                aveMeasureTextView.setText("0");
-                measurementsTextView.setText("0");
             }
         });
 
     }
+
 
     private void calculateAverage() {
         aveMeasurement = (double)totalMeasurement/(double)numMeasurements;

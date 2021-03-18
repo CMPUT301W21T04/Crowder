@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -85,39 +86,47 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                numCounts++;
-                numCountTextView.setText(String.valueOf(numCounts));
-                integerValueString = integerValueEditText.getText().toString();
-                currentCount = Integer.valueOf(integerValueString);
-                calculateAverage();
-                tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), new Location());
-                aveCountTextView.setText(averageString);
-                integerValueEditText.setText("");
+                if (tallyExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    numCountTextView.setText(String.valueOf(numCounts));
+                    integerValueString = integerValueEditText.getText().toString();
+                    currentCount = Integer.valueOf(integerValueString);
+                    calculateAverage();
+                    numCounts++;
+                    tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), new Location());
+                    aveCountTextView.setText(averageString);
+                    integerValueEditText.setText("");
+                }
             }
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.updateExperiment(tallyExperiment);
-                for(Trial trial : trials) {
-                    Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                    handler.addTrial(trial, new addTrialCallBack() {
-                        @Override
-                        public void callBackResult(String trialID) {
-                            Log.v(trialID, "Trial ID returned");
-                        }
-                    });
-                }
-                trials = new ArrayList<>();
-                integerValueString = "";
-                numCounts = 0;
-                currentCount = 0;
-                average = 0;
-                averageString = "";
+                if(tallyExperiment.isEnded()) {
+                    Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
+                } else {
+                    handler.updateExperiment(tallyExperiment);
+                    for (Trial trial : trials) {
+                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                        handler.addTrial(trial, new addTrialCallBack() {
+                            @Override
+                            public void callBackResult(String trialID) {
+                                Log.v(trialID, "Trial ID returned");
+                            }
+                        });
+                    }
+                    trials = new ArrayList<>();
+                    integerValueString = "";
+                    numCounts = 0;
+                    currentCount = 0;
+                    average = 0;
+                    averageString = "";
 
-                numCountTextView.setText("0");
-                aveCountTextView.setText("0");
+                    numCountTextView.setText("0");
+                    aveCountTextView.setText("0");
+                }
             }
         });
 
@@ -125,7 +134,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
     }
 
     private void calculateAverage() {
-        average = (average*numCounts+(double)currentCount)/(double)numCounts;
+        average = (average*numCounts+(double)currentCount)/(double)(1+numCounts);
         averageString = df.format(average);
     }
 

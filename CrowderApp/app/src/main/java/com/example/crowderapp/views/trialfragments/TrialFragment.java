@@ -28,6 +28,7 @@ public class TrialFragment extends Fragment {
 
     User user;
     Experiment experiment;
+    Menu menu;
     ExperimentHandler handler = new ExperimentHandler();
     UserHandler userHandler;
 
@@ -44,9 +45,14 @@ public class TrialFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        this.menu = menu;
         MenuItem menuItem = menu.findItem(R.id.more_item);
         menuItem.setVisible(true);
+        if(experiment.isEnded()) {
+            menu.findItem(R.id.end_item).setVisible(false);
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -82,12 +88,14 @@ public class TrialFragment extends Fragment {
                 // TODO show stats
             case R.id.end_item:
                 handler.endExperiment(experiment);
+                item.setVisible(false);
                 break;
 
 
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
