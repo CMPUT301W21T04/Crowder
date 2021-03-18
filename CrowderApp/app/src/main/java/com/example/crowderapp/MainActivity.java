@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
     public FloatingActionButton fab;
+    AllExperimentsFragment allExpFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        openFragment(AllExperimentsFragment.newInstance());
+        allExpFrag = AllExperimentsFragment.newInstance();
+        openFragment(allExpFrag);
     }
 
     @Override
@@ -87,7 +89,8 @@ public class MainActivity extends AppCompatActivity
                     switch (item.getItemId()) {
                         case R.id.navigation_all_experiments:
                             fab.show();
-                            openFragment(AllExperimentsFragment.newInstance());
+                            allExpFrag = AllExperimentsFragment.newInstance();
+                            openFragment(allExpFrag);
                             return true;
                         case R.id.navigation_my_experiments:
                             fab.hide();
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onOkPressed() {
-
+        allExpFrag.onCreate(new Bundle());
     }
 
 }
