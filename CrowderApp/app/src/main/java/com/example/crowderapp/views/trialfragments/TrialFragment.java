@@ -16,7 +16,7 @@ import com.example.crowderapp.models.Experiment;
 public class TrialFragment extends Fragment {
 
     Experiment experiment;
-    private ExperimentHandler handler = ExperimentHandler.getInstance();
+    private ExperimentHandler handler = new ExperimentHandler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

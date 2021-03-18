@@ -40,7 +40,7 @@ public class AddExperimentFragment extends DialogFragment {
     private EditText experimentNameEditText;
     private CheckBox locationRequiredCheckBox;
 
-    private ExperimentHandler handler = ExperimentHandler.getInstance();
+    private ExperimentHandler handler = new ExperimentHandler();
     private OnFragmentInteractionListener listener;
 
     public interface OnFragmentInteractionListener {

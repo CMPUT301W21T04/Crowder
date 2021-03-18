@@ -18,6 +18,7 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
+import com.example.crowderapp.models.BinomialExperiment;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CustomListAllExperiments;
 import com.example.crowderapp.models.CustomListMyExperiments;
@@ -41,7 +42,7 @@ public class MyExperimentsFragment extends Fragment {
     private ListView myExpView;
     private ArrayAdapter<Experiment> myExpAdapter;
     private List<Experiment> allExpDataList = new ArrayList<Experiment>();
-    private ExperimentHandler handler = ExperimentHandler.getInstance();
+    private ExperimentHandler handler = new ExperimentHandler();
     private Context thisContext;
     private List<String> subscribed = new ArrayList<String>();
     private List<Experiment> subExperiments = new ArrayList<Experiment>();
@@ -147,6 +148,7 @@ public class MyExperimentsFragment extends Fragment {
     public void openFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Experiment", currentExperiment);
+        bundle.putSerializable("User", user);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);

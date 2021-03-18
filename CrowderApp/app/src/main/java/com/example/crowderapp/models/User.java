@@ -2,6 +2,7 @@ package com.example.crowderapp.models;
 
 import com.google.firebase.firestore.DocumentId;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +12,7 @@ import io.perfmark.Link;
 /**
  * Represents the current user using the app, or other users who have the app.
  */
-public class User {
+public class User implements Serializable {
 
     @DocumentId // Tell Firebase to use this as UUID
     private String uid;

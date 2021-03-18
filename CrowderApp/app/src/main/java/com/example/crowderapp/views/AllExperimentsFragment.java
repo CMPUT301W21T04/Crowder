@@ -1,6 +1,7 @@
 package com.example.crowderapp.views;
 
 import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ public class AllExperimentsFragment extends Fragment {
     private ArrayAdapter<AllExperimentListItem> allExpAdapter;
     private List<Experiment> allExpDataList = new ArrayList<Experiment>();
     private List<AllExperimentListItem> allExperimentListItems = new ArrayList<AllExperimentListItem>();
-    private ExperimentHandler handler = ExperimentHandler.getInstance();
+    private ExperimentHandler handler = new ExperimentHandler();
     private Context thisContext;
     List<String> subscribed = new ArrayList<String>();
 
