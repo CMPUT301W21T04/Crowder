@@ -29,7 +29,8 @@ public class TrialFragment extends Fragment {
     User user;
     Experiment experiment;
     ExperimentHandler handler = new ExperimentHandler();
-
+    UserHandler userHandler;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
