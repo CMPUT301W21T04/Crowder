@@ -58,7 +58,8 @@ public class CountTrialFragment extends TrialFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
-        countExperiment = (CounterExperiment) bundle.getSerializable("Experiment");
+        experiment = (Experiment) bundle.getSerializable("Experiment");
+        countExperiment = (CounterExperiment) experiment;
         user = (User) bundle.getSerializable("User");
         totalCountTextView = view.findViewById(R.id.count_total_TextView);
         countButton = view.findViewById(R.id.count_button);
