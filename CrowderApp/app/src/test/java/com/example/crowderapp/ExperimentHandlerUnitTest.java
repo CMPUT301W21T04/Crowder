@@ -1,36 +1,48 @@
 package com.example.crowderapp;
 
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.dao.ExperimentMockDAO;
 
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowLooper;
 
+import java.util.concurrent.TimeUnit;
 
+@Config(sdk = 27)
+@RunWith(RobolectricTestRunner.class)
 public class ExperimentHandlerUnitTest {
 
-    /**
-     * Check that an instance is returned
-     */
-    @Test
-    public void testInstance() {
-        ExperimentHandler instance = ExperimentHandler.getInstance();
-        Assert.assertNotNull(instance);
+    public void finishAllTasks() {
+        ShadowLooper sl = ShadowLooper.shadowMainLooper();
+        sl.runToEndOfTasks();
     }
 
-    /**
-     * Check that an experiment can be created
-     */
     @Test
-    public void testCreateExperiment() {
-        ExperimentHandler expHandler = ExperimentHandler.getInstance();
+    public void testCreateExperiment() throws InterruptedException {
+        ExperimentMockDAO dao = new ExperimentMockDAO();
+        ExperimentHandler handler = new ExperimentHandler(dao);
 
-//        Assert.assertTrue(expHandler.getExperiments().isEmpty());
+        String expName = "Dan";
+        boolean loc = false;
+        int minT = 0;
+        String eType = "BinomialTrial";
 
-        // check if experiment is in the local cache
 
-        // check if experiment is in firestore
+        handler.createExperiment(expName, loc, minT, eType, new createExperimentCallBack() {
+            @Override
+            public void callBackResult(Experiment experiment) {
+                System.out.println("Name: " + experiment.getName());
+            }
+        });
+
+
+        finishAllTasks();
+
     }
-
-
-
 }
