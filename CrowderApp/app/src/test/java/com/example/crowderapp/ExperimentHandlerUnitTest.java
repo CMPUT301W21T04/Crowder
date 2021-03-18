@@ -12,15 +12,12 @@ import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.example.crowderapp.models.dao.ExperimentMockDAO;
 import com.example.crowderapp.models.dao.TrialFSDAO;
-import com.example.crowderapp.models.dao.UserFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
-import org.mockito.Captor;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
@@ -29,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Config(sdk = 27)
 @RunWith(RobolectricTestRunner.class)
@@ -227,7 +223,6 @@ public class ExperimentHandlerUnitTest {
     @Test
     public void addTrialTest() {
         ExperimentFSDAO eDAO = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
-        TrialFSDAO tDAO = mock(TrialFSDAO.class, RETURNS_DEEP_STUBS);
         Trial trial = mock(Trial.class, RETURNS_DEEP_STUBS);
         ExperimentHandler handler = new ExperimentHandler(eDAO);
 
