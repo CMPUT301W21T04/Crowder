@@ -67,7 +67,7 @@ public class ExperimentSubscriptionTest {
     public void testSubscriptionOnExisting() {
         solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
 
-        solo.sleep(2000);
+        solo.sleep(3000);
 
         ListView experimentsList = (ListView) solo.getView(R.id.all_experiment_list);
         ArrayAdapter adapter = (ArrayAdapter) experimentsList.getAdapter();

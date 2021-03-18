@@ -29,6 +29,8 @@ public class UiTestHelperFunctions {
         solo.enterText(expNameText, expName);
         solo.clickOnView(dropDown);
 
+        solo.sleep(1000);
+
         switch (type) {
             case COUNT:
                 solo.clickOnText("Count");
