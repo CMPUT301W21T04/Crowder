@@ -1,14 +1,17 @@
 package com.example.crowderapp;
 
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.example.crowderapp.models.dao.ExperimentMockDAO;
-import com.example.crowderapp.models.dao.UserFSDAO;
+import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -23,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Config(sdk = 27)
 @RunWith(RobolectricTestRunner.class)
@@ -194,4 +196,44 @@ public class ExperimentHandlerUnitTest {
     }
 
 
+    @Test
+    public void getAllSubscribedExperimentsTest() {
+        ExperimentFSDAO dao = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
+        Task<List<Experiment>> task = mock(Task.class, RETURNS_DEEP_STUBS);
+        ExperimentHandler handler = new ExperimentHandler(dao);
+
+        when(dao.getUserExperiments(any())).thenReturn(task);
+        when(task.isSuccessful()).thenReturn(true);
+
+        ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
+        getAllSubscribedExperimentsCallBack cb = mock(getAllSubscribedExperimentsCallBack.class);
+
+        handler.getAllSubscribedExperiments(any(), cb);
+
+        finishAllTasks();
+
+        verify(dao, times(1)).getUserExperiments(any());
+        verify(task, times(1)).addOnCompleteListener(captor.capture());
+
+        captor.getValue().onComplete(task);
+        verify(cb, times(1)).callBackResult(any());
+    }
+
+
+    @Test
+    public void addTrialTest() {
+        ExperimentFSDAO eDAO = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
+        Trial trial = mock(Trial.class, RETURNS_DEEP_STUBS);
+        ExperimentHandler handler = new ExperimentHandler(eDAO);
+
+        when(trial.getExperimenter()).thenReturn("1");
+
+        addTrialCallBack cb = mock(addTrialCallBack.class);
+
+        handler.addTrial(trial, cb);
+
+        finishAllTasks();
+
+        verify(trial, times(1)).getExperimentID();
+    }
 }
