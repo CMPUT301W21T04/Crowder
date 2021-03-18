@@ -1,21 +1,26 @@
 package com.example.crowderapp;
 
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.example.crowderapp.models.dao.ExperimentMockDAO;
+import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.example.crowderapp.models.dao.UserFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
+import org.mockito.Captor;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
@@ -216,5 +221,24 @@ public class ExperimentHandlerUnitTest {
 
         captor.getValue().onComplete(task);
         verify(cb, times(1)).callBackResult(any());
+    }
+
+
+    @Test
+    public void addTrialTest() {
+        ExperimentFSDAO eDAO = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
+        TrialFSDAO tDAO = mock(TrialFSDAO.class, RETURNS_DEEP_STUBS);
+        Trial trial = mock(Trial.class, RETURNS_DEEP_STUBS);
+        ExperimentHandler handler = new ExperimentHandler(eDAO);
+
+        when(trial.getExperimenter()).thenReturn("1");
+
+        addTrialCallBack cb = mock(addTrialCallBack.class);
+
+        handler.addTrial(trial, cb);
+
+        finishAllTasks();
+
+        verify(trial, times(1)).getExperimentID();
     }
 }
