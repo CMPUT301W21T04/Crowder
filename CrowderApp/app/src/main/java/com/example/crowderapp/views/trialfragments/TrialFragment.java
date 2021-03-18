@@ -18,6 +18,7 @@ import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperiment
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
+import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.MyExperimentsFragment;
 
@@ -58,7 +59,7 @@ public class TrialFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.location_item:
-                Log.e("yo", "yo");
+//                Log.e("yo", "yo");
                 break;
             case R.id.unpublish_item:
                 handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {

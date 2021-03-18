@@ -87,6 +87,11 @@ public class MeasurementTrialFragment extends TrialFragment {
         saveButton = view.findViewById(R.id.measurement_button_save);
         measurementInput = view.findViewById(R.id.measurement_value_editText);
 
+        if(measurementExperiment.isEnded()) {
+            measurementInput.setEnabled(false);
+            measurementInput.setText("Experiment Ended");
+        }
+
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
