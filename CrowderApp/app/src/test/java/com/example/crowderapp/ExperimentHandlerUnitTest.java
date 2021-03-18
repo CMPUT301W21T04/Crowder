@@ -3,6 +3,7 @@ package com.example.crowderapp;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
@@ -194,4 +195,26 @@ public class ExperimentHandlerUnitTest {
     }
 
 
+    @Test
+    public void getAllSubscribedExperimentsTest() {
+        ExperimentFSDAO dao = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
+        Task<List<Experiment>> task = mock(Task.class, RETURNS_DEEP_STUBS);
+        ExperimentHandler handler = new ExperimentHandler(dao);
+
+        when(dao.getUserExperiments(any())).thenReturn(task);
+        when(task.isSuccessful()).thenReturn(true);
+
+        ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
+        getAllSubscribedExperimentsCallBack cb = mock(getAllSubscribedExperimentsCallBack.class);
+
+        handler.getAllSubscribedExperiments(any(), cb);
+
+        finishAllTasks();
+
+        verify(dao, times(1)).getUserExperiments(any());
+        verify(task, times(1)).addOnCompleteListener(captor.capture());
+
+        captor.getValue().onComplete(task);
+        verify(cb, times(1)).callBackResult(any());
+    }
 }
