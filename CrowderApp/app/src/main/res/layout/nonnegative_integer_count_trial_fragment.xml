@@ -7,86 +7,98 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/num_count_textView"
+        android:id="@+id/non_neg_count_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="124dp"
+        android:layout_marginBottom="14dp"
         android:text="Number of Counts: "
+        app:layout_constraintBottom_toTopOf="@+id/ave_non_neg_textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.431"
+        app:layout_constraintHorizontal_bias="0.413"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/num_measurements_value_textView2"
+        android:id="@+id/ave_non_neg_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="124dp"
-        android:layout_marginBottom="24dp"
-        android:text="0"
-        app:layout_constraintBottom_toTopOf="@+id/ave_measurement_value_textView2"
-        app:layout_constraintStart_toEndOf="@+id/num_count_textView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/ave_measurement_textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
-        android:text="Average per count:"
-        app:layout_constraintBottom_toTopOf="@+id/count_value_editText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.438"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/ave_measurement_value_textView2"
-        android:layout_width="8dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginEnd="145dp"
-        android:layout_marginRight="145dp"
-        android:layout_marginBottom="76dp"
-        android:text="0"
-        app:layout_constraintBottom_toTopOf="@+id/count_value_editText"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="77dp"
+        android:text="Average per Trial:"
+        app:layout_constraintBottom_toTopOf="@+id/non_neg_value_editText"
+        app:layout_constraintEnd_toStartOf="@+id/ave_non_neg_value_textView"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ave_measurement_textView2" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/non_neg_count_textView" />
+
+    <TextView
+        android:id="@+id/ave_non_neg_value_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="132dp"
+        android:layout_marginRight="132dp"
+        android:layout_marginBottom="68dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/non_neg_value_editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ave_non_neg_textView" />
+
+    <TextView
+        android:id="@+id/num_non_neg_value_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="123dp"
+        android:layout_marginBottom="30dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/ave_non_neg_value_textView"
+        app:layout_constraintStart_toEndOf="@+id/non_neg_count_textView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/count_value_editText"
+        android:id="@+id/non_neg_value_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="96dp"
+        android:layout_marginTop="70dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Count Value"
-        app:layout_constraintBottom_toTopOf="@+id/nonnegative_button_undo"
+        android:inputType="number"
+        android:hint="Measurement Value"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ave_non_neg_textView" />
 
     <Button
-        android:id="@+id/nonnegative_button_undo"
+        android:id="@+id/non_neg_button_enter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="23dp"
-        android:text="Undo"
-        app:layout_constraintBottom_toTopOf="@+id/nonnegative_button_save"
+        android:layout_marginBottom="24dp"
+        android:text="Enter"
+        app:layout_constraintBottom_toTopOf="@+id/non_neg_button_save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/non_neg_value_editText"
+        app:layout_constraintVertical_bias="1.0"
+        android:gravity="center"/>
 
     <Button
-        android:id="@+id/nonnegative_button_save"
+        android:id="@+id/non_neg_button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="192dp"
-        android:text="@string/save"
+        android:layout_marginTop="24dp"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/non_neg_button_enter" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
