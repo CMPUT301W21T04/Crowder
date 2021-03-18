@@ -121,10 +121,13 @@ public class ExperimentHandler {
 
     }
 
-    public void endExperiment(String experimentID, endExperimentCallBack callback) {
+    public void endExperiment(Experiment experiment) {
         // TODO: prevent owner and subscriber from adding a trial
-    }
 
+        experiment.setEnded(true);
+        experimentDAO.updateExperiment(experiment);
+
+    }
 
     public void getExperiment(String experimentID, getExperimentCallBack callback){
         Task<Experiment> task = experimentDAO.getExperiment(experimentID);
