@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,15 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:layout_marginTop="?attr/actionBarSize">
 
         <EditText
             android:id="@+id/search_EditText"
             android:layout_width="275dp"
-            android:layout_height="115dp"
+            android:layout_height="wrap_content"
             android:hint="Enter Keyword"
-            android:paddingLeft="10dp"
-            android:paddingTop="?attr/actionBarSize">
+            android:paddingLeft="10dp">
 
         </EditText>
 
@@ -32,8 +35,21 @@
     <ListView
         android:id="@+id/all_experiment_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"
-        android:paddingBottom="?attr/actionBarSize" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:descendantFocusability="blocksDescendants" />
 
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_experiment_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_gravity="bottom|end"
+        android:elevation="10dp"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:backgroundTint="@color/purple_200"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+</FrameLayout>

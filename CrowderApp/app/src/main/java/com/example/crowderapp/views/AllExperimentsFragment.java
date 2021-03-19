@@ -45,6 +45,7 @@ import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -68,6 +69,8 @@ public class AllExperimentsFragment extends Fragment {
     // Search box
     private EditText searchEditText;
     private Button searchBtn;
+
+    private FloatingActionButton fab;
 
     MenuItem menuItem;
 
@@ -122,7 +125,6 @@ public class AllExperimentsFragment extends Fragment {
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
-        update();
 
     }
 
@@ -130,7 +132,16 @@ public class AllExperimentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
-
+        userHandler = new UserHandler(getActivity().getSharedPreferences(
+                UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
+        update();
+        fab = view.findViewById(R.id.add_experiment_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddExperimentFragment().show(getFragmentManager(), "ADD_EXPR");
+            }
+        });
         // Search Setup
         searchEditText = view.findViewById(R.id.search_EditText);
         searchBtn = view.findViewById(R.id.search_btn);
@@ -235,7 +246,7 @@ public class AllExperimentsFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 String expID = allExperimentListItems.get(position).getExperiment().getExperimentID();
-                                openFragmentWithExperimentID(QuestionsFragment.newInstance(), expID);
+                                openFragmentWithExperimentIDAndUser(QuestionsFragment.newInstance(), user.getUid(), expID);
                             }
                         });
                     }
@@ -244,12 +255,13 @@ public class AllExperimentsFragment extends Fragment {
         });
     }
 
-    private void openFragmentWithExperimentID(Fragment fragment, String experimentID) {
+    private void openFragmentWithExperimentIDAndUser(Fragment fragment, String uid, String experimentID) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ExperimentID", experimentID);
+        bundle.putSerializable("UserId",uid);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
+        transaction.replace(R.id.container, fragment, "Questions");
         transaction.addToBackStack(null);
         transaction.commit();
     }

@@ -78,6 +78,6 @@ public class CommentFSDAO extends CommentDAO {
      */
     @Override
     public void updateQuestionForExperiment(String expId, Question question) {
-        getExperimentCommentsColl(expId).document(question.getCommendId()).set(question);
+        getExperimentCommentsColl(expId).document(question.getCommentId()).set(question);
     }
 }
