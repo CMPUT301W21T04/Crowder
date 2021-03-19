@@ -73,10 +73,11 @@ public class QuestionsFragment extends Fragment {
     }
 
 
-    private void openFragment(Fragment fragment, Question question, String uid) {
+    private void openFragment(Fragment fragment, Question question, String uid, String experimentID) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Question", question);
         bundle.putSerializable("UserID", uid);
+        bundle.putSerializable("ExperimentID", experimentID);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment, "Replies");
@@ -111,7 +112,7 @@ public class QuestionsFragment extends Fragment {
                 questionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        openFragment(ReplyFragment.newInstance(), questionAdapter.getItem(position), userId);
+                        openFragment(ReplyFragment.newInstance(), questionAdapter.getItem(position), userId, experimentId);
                     }
                 });
             }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.crowderapp.models.AllExperimentListItem;
 import com.example.crowderapp.models.BinomialTrial;
+import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.views.AddExperimentFragment;
 import com.example.crowderapp.views.AddQuestionFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
@@ -96,16 +97,17 @@ public class MainActivity extends AppCompatActivity
             };
 
     @Override
+    public void onOkPressed(Question question) {
+        ReplyFragment replyFragment = (ReplyFragment) getSupportFragmentManager().findFragmentByTag("Replies");
+        replyFragment.update(question);
+    }
+
+    @Override
     public void onOkPressed() {
 //        allExpFrag.update();
         QuestionsFragment questionFrag = (QuestionsFragment) getSupportFragmentManager().findFragmentByTag("Questions");
-        ReplyFragment replyFragment = (ReplyFragment) getSupportFragmentManager().findFragmentByTag("Replies");
         if(questionFrag != null && questionFrag.isVisible()) {
             questionFrag.update();
-            return;
-        }
-        else if (replyFragment != null && replyFragment.isVisible()) {
-            replyFragment.update();
             return;
         }
         openFragment(AllExperimentsFragment.newInstance());

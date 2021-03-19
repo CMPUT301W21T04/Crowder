@@ -31,6 +31,7 @@ public class ReplyFragment extends Fragment {
     private ArrayAdapter<Reply> replyAdapter;
     private Question question;
     private String userID;
+    private String experimentID;
     private FloatingActionButton fab;
     private CommentHandler commentHandler = new CommentHandler();
     private UserHandler userHandler;
@@ -46,9 +47,9 @@ public class ReplyFragment extends Fragment {
         return fragment;
     }
 
-    public void update() {
-        replyList.clear();
-        replyList.addAll(question.getReplyList());
+    public void update(Question question) {
+        //replyList.clear();
+        //replyList.addAll(question.getReplyList());
         replyAdapter.notifyDataSetChanged();
     }
 
@@ -59,6 +60,7 @@ public class ReplyFragment extends Fragment {
         Bundle bundle = getArguments();
         question = (Question) bundle.getSerializable("Question");
         userID = bundle.getString("UserID");
+        experimentID = bundle.getString("ExperimentID");
 
     }
 
@@ -79,13 +81,11 @@ public class ReplyFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AddReplyFragment().newInstance(question, userID).show(getFragmentManager(), "ADD_REPLY");
+                new AddReplyFragment().newInstance(question, userID, experimentID).show(getFragmentManager(), "ADD_REPLY");
             }
         });
 
         replyList = question.getReplyList();
-//        Reply reply = new Reply("Yes it does", "76S5iUPzQ1Lhlmh819nv", question.getCommentId());
-//        replyList.add(reply);
         replyAdapter = new CustomListReply(getContext(), replyList);
         repliesView = view.findViewById(R.id.reply_list);
         repliesView.setAdapter(replyAdapter);

@@ -27,6 +27,7 @@ public class AddReplyFragment extends DialogFragment {
     private String userID;
     private EditText newReplyField;
     private String newReply;
+    String experimentID;
     private CommentHandler commentHandler = new CommentHandler();
 
     private AddQuestionFragment.OnFragmentInteractionListener listener;
@@ -46,10 +47,11 @@ public class AddReplyFragment extends DialogFragment {
         }
     }
 
-    static AddReplyFragment newInstance(Question question, String uid) {
+    static AddReplyFragment newInstance(Question question, String uid, String experimentID) {
         Bundle args = new Bundle();
         args.putSerializable("Question", question);
         args.putSerializable("UserID", uid);
+        args.putSerializable("ExperimentID", experimentID);
         AddReplyFragment fragment = new AddReplyFragment();
         fragment.setArguments(args);
         return fragment;
@@ -60,6 +62,7 @@ public class AddReplyFragment extends DialogFragment {
         Bundle args = getArguments();
         question = (Question) args.getSerializable("Question");
         userID = args.getString("UserID");
+        experimentID = args.getString("ExperimentID");
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_reply_fragment, null);
 
         newReplyField = view.findViewById(R.id.reply_EditText);
@@ -93,8 +96,8 @@ public class AddReplyFragment extends DialogFragment {
                 if (newReply.matches("")) {
                     Toast.makeText(getContext(), "Invalid Question", Toast.LENGTH_LONG);
                 } else {
-                    commentHandler.updateQuestionForExperiment(question.getCommentId(), question);
-                    listener.onOkPressed();
+                    commentHandler.updateQuestionForExperiment(experimentID, question);
+                    listener.onOkPressed(question);
                     ad.dismiss();
                 }
             }
