@@ -112,7 +112,7 @@ public class AllExperimentsFragment extends Fragment {
                             allExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                    ((MainActivity)getActivity()).fab.hide();
+                                    openFragment(CommentFragment.newInstance());
                                 }
                             });
                         }
