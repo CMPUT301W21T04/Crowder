@@ -43,6 +43,8 @@ public class CustomListAllExperiments extends ArrayAdapter<AllExperimentListItem
         this.listener = listener;
     }
 
+
+
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
