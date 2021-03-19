@@ -24,6 +24,11 @@ public class CustomListReply extends ArrayAdapter<Reply> {
     public UserHandler userHandler;
     private User user;
 
+    /**
+     * Constructor
+     * @param context context
+     * @param replies List of replies to show
+     */
     public CustomListReply(Context context, List<Reply> replies) {
         super(context, 0, replies);
         this.context = context;
@@ -48,8 +53,6 @@ public class CustomListReply extends ArrayAdapter<Reply> {
                 userText.setText(user.getName());
             }
         });
-
-
 
         return view;
     }

@@ -36,6 +36,12 @@ public class CustomListAllExperiments extends ArrayAdapter<AllExperimentListItem
     private Context context;
     private final View.OnClickListener listener;
 
+    /**
+     * Constructor
+     * @param context context
+     * @param experiments List of All Experiments to show
+     * @param listener Listener for the subscribe button
+     */
     public CustomListAllExperiments(Context context, List<AllExperimentListItem> experiments, View.OnClickListener listener) {
         super(context,0,experiments);
         this.experiments = experiments;

@@ -18,6 +18,11 @@ public class CustomListMyExperiments extends ArrayAdapter<Experiment> {
     private List<Experiment> experiments;
     private Context context;
 
+    /**
+     * Constructor
+     * @param context context
+     * @param experiments List of experiments to show in My Experiments
+     */
     public CustomListMyExperiments(Context context, List<Experiment> experiments) {
         super(context, 0, experiments);
         this.context = context;

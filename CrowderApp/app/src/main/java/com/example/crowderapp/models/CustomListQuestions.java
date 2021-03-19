@@ -19,6 +19,11 @@ public class CustomListQuestions extends ArrayAdapter<Question> {
     private List<Question> questions;
     private Context context;
 
+    /**
+     * Constructor
+     * @param context context
+     * @param questions List of questions to show
+     */
     public CustomListQuestions(Context context, List<Question> questions) {
         super(context, 0, questions);
         this.context = context;
