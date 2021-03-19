@@ -144,11 +144,22 @@ public class AllExperimentsFragment extends Fragment {
         searchEditText = view.findViewById(R.id.search_EditText);
         searchBtn = view.findViewById(R.id.search_btn);
         // Init search adapter
-        searchListAdapter = new SearchListAdapter(thisContext, allExperimentListItems, listener);
+        searchListAdapter = new SearchListAdapter(thisContext, allExperimentListItems, listener, userId -> openUserFragment(userId));
 
         searchBtn.setOnClickListener(v -> handleSearch());
 
         return view;
+    }
+
+    /**
+     * Opens an immutable user fragment.
+     * @param userId The ID of user whose profile to open
+     */
+    public void openUserFragment(String userId) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, ImmutableProfileFragment.newInstance(userId));
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     /**
