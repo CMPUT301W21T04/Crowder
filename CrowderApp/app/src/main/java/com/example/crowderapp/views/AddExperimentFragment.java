@@ -143,11 +143,10 @@ public class AddExperimentFragment extends DialogFragment {
                             new createExperimentCallBack() {
                         @Override
                         public void callBackResult(Experiment experiment) {
-
+                            listener.onOkPressed();
+                            ad.dismiss();
                         }
                     });
-                    listener.onOkPressed();
-                    ad.dismiss();
                 }
             }
         });

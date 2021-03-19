@@ -15,6 +15,7 @@ import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
@@ -65,8 +66,12 @@ public class TrialFragment extends Fragment {
                 handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
                     @Override
                     public void callBackResult() {
-                        userHandler.unsubscribeExperiment(experiment.getExperimentID());
-                        openFragment(MyExperimentsFragment.newInstance());
+                        userHandler.unsubscribeExperiment(experiment.getExperimentID(), new unsubscribedExperimentCallBack() {
+                            @Override
+                            public void callBackResult() {
+                                openFragment(MyExperimentsFragment.newInstance());
+                            }
+                        });
                     }
                 });
                 break;

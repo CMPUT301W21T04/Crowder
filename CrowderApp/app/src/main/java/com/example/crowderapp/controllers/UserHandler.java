@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.UserDAO;
 import com.example.crowderapp.models.dao.UserFSDAO;
@@ -146,11 +148,12 @@ public class UserHandler {
      * Adds an experiment (by ID) to the user's subscription.
      * @param experimentID
      */
-    public void subscribeExperiment(String experimentID) {
+    public void subscribeExperiment(String experimentID, subscribeExperimentCallBack callback) {
         currentUserTask.addOnSuccessListener(user -> {
             if(!user.getSubscribedExperiments().contains(experimentID)) {
                 user.getSubscribedExperiments().add(experimentID);
                 updateCurrentUser(user);
+                callback.callBackResult();
             }
         });
     }
@@ -159,10 +162,11 @@ public class UserHandler {
      * Removes an experiment (by ID) from a user's subscription.
      * @param experimentID
      */
-    public void unsubscribeExperiment(String experimentID) {
+    public void unsubscribeExperiment(String experimentID, unsubscribedExperimentCallBack callback) {
         currentUserTask.addOnSuccessListener(user -> {
             user.getSubscribedExperiments().remove(experimentID);
             updateCurrentUser(user);
+            callback.callBackResult();
         });
     }
 

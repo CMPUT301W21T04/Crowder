@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -33,9 +34,9 @@ public class CustomListAllExperiments extends ArrayAdapter<AllExperimentListItem
 
     private List<AllExperimentListItem> experiments;
     private Context context;
-    private final CompoundButton.OnCheckedChangeListener listener;
+    private final View.OnClickListener listener;
 
-    public CustomListAllExperiments(Context context, List<AllExperimentListItem> experiments, CompoundButton.OnCheckedChangeListener listener) {
+    public CustomListAllExperiments(Context context, List<AllExperimentListItem> experiments, View.OnClickListener listener) {
         super(context,0,experiments);
         this.experiments = experiments;
         this.context = context;
@@ -53,17 +54,17 @@ public class CustomListAllExperiments extends ArrayAdapter<AllExperimentListItem
         Experiment experiment = experimentItem.getExperiment();
 
         TextView expName = view.findViewById(R.id.allExpNameText);
-        CheckBox subscribed = view.findViewById(R.id.subscribedButton);
+        Button subscribed = view.findViewById(R.id.subscribeButton);
 
         subscribed.setTag(position);
-        subscribed.setOnCheckedChangeListener(listener);
+        subscribed.setOnClickListener(listener);
 
         expName.setText(experiment.getName());
         if (experimentItem.getIsSubscribed()) {
-            subscribed.setChecked(true);
+            subscribed.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
         else {
-            subscribed.setChecked(false);
+            subscribed.setBackgroundColor(context.getResources().getColor(R.color.teal_200));
         }
 
         return view;

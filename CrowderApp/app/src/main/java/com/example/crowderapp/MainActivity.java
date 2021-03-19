@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.crowderapp.models.AllExperimentListItem;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.views.AddExperimentFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
@@ -107,7 +108,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onOkPressed() {
-        allExpFrag.onCreate(new Bundle());
+//        allExpFrag.update();
+        openFragment(AllExperimentsFragment.newInstance());
     }
 
 }
