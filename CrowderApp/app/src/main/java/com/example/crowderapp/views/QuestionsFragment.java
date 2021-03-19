@@ -55,7 +55,8 @@ public class QuestionsFragment extends Fragment {
         commentHandler.getExperimentQuestions(experimentId, new getExperimentQuestionsCallBack() {
             @Override
             public void callBackResult(List<Question> questionList) {
-                questionsList = questionList;
+                questionsList.clear();
+                questionsList.addAll(questionList);
                 questionAdapter.notifyDataSetChanged();
             }
         });
