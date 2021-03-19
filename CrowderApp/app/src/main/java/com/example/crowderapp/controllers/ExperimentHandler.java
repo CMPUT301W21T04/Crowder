@@ -46,17 +46,18 @@ public class ExperimentHandler {
         experimentDAO = dao;
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
-    
+
     /**
      * creates an experiment
      * @param experimentName experiment name
      * @param isLocationRequired is the location required flag
      * @param minTrials minimum trials count
      * @param experimentType the type of experiment
+     * @param ownerID the ownerID string
      * @param callBack the callback interface for the async call
      */
     public void createExperiment(String experimentName, boolean isLocationRequired,
-                                 int minTrials, String experimentType,
+                                 int minTrials, String experimentType, String ownerID,
                                  createExperimentCallBack callBack) {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
@@ -65,6 +66,7 @@ public class ExperimentHandler {
         newExperiment.setLocationRequired(isLocationRequired);
         newExperiment.setMinTrials(minTrials);
         newExperiment.setExperimentType(experimentType);
+        newExperiment.setOwnerID(ownerID);
         Task<String> task = experimentDAO.createExperiment(newExperiment);
 
         task.addOnCompleteListener(new OnCompleteListener<String>() {
@@ -81,6 +83,7 @@ public class ExperimentHandler {
     /**
      * Unpublishes or deletes the experiment in the db
      * @param experimentID contains the experiment ID
+     * @param callback
      */
     public void unPublishExperiment(String experimentID, unPublishExperimentCallBack callback) {
         // TODO: remove experiment from fire store
@@ -104,6 +107,7 @@ public class ExperimentHandler {
     /**
      * creates and returns the task for all experiments the user is subscribed to.
      * @param userID contains the userID
+     * @param callback the callback function that is called when the async call finish
      */
     public void getAllSubscribedExperiments(String userID, getAllSubscribedExperimentsCallBack callback) {
 
@@ -122,6 +126,10 @@ public class ExperimentHandler {
 
     }
 
+    /**
+     * ends experiment then passes the updated experiment to be updated in the db
+     * @param experiment the experiment to be ended
+     */
     public void endExperiment(Experiment experiment) {
         // TODO: prevent owner and subscriber from adding a trial
 
@@ -130,6 +138,11 @@ public class ExperimentHandler {
 
     }
 
+    /**
+     * This grabs the experiment in the database given the experiment ID
+     * @param experimentID the experiment ID that is to be grabbed
+     * @param callback the callback function when the async call is done
+     */
     public void getExperiment(String experimentID, getExperimentCallBack callback){
         Task<Experiment> task = experimentDAO.getExperiment(experimentID);
 
@@ -146,6 +159,11 @@ public class ExperimentHandler {
 
     }
 
+    /**
+     * This adds a trial to an experiment
+     * @param trial the trial to be added
+     * @param callBack the callback function when the async call is finished
+     */
     public void addTrial(Trial trial, addTrialCallBack callBack) {
         // TODO: check if Location needs to be a user-defined class
 
@@ -172,6 +190,10 @@ public class ExperimentHandler {
 
     }
 
+    /**
+     * updates the experiments
+     * @param experiment the experiment to be updated
+     */
     public void updateExperiment(Experiment experiment) {
 
         experimentDAO.updateExperiment(experiment);
@@ -195,6 +217,10 @@ public class ExperimentHandler {
 //        // TODO: get the corresponding ExperimentStats class for this experiment
 //    }
 
+    /**
+     * grabs all the experiments
+     * @param callback the callback function when all experiments are grabbed
+     */
     public void getAllExperiments(allExperimentsCallBack callback) {
         Task<List<Experiment>> task = experimentDAO.getAllExperiments();
 
@@ -226,6 +252,11 @@ public class ExperimentHandler {
 
     }
 
+    /**
+     * Seraches all experiments for a particular string in any field in the experiment object
+     * @param filterStrings the strings to be searched
+     * @param callback the callback function when the async call finishes
+     */
     public void searchExperiment(List<String> filterStrings, searchExperimentCallBack callback) {
         // TODO: get a list of experiments based on provided filter
 
