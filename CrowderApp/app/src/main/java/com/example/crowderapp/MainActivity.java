@@ -99,8 +99,13 @@ public class MainActivity extends AppCompatActivity
     public void onOkPressed() {
 //        allExpFrag.update();
         QuestionsFragment questionFrag = (QuestionsFragment) getSupportFragmentManager().findFragmentByTag("Questions");
+        ReplyFragment replyFragment = (ReplyFragment) getSupportFragmentManager().findFragmentByTag("Replies");
         if(questionFrag != null && questionFrag.isVisible()) {
             questionFrag.update();
+            return;
+        }
+        else if (replyFragment != null && replyFragment.isVisible()) {
+            replyFragment.update();
             return;
         }
         openFragment(AllExperimentsFragment.newInstance());
