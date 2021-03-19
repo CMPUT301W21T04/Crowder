@@ -49,7 +49,7 @@ public class ExperimentSubscriptionTest {
 
         solo.sleep(2000);
 
-        solo.clickOnCheckBox(count-1);
+        UiTestHelperFunctions.toggleSubExperiment(solo, count-1);
 
         UiTestHelperFunctions.goToMyExperiments(solo);
         Assert.assertTrue(solo.searchText(expname));
@@ -58,8 +58,7 @@ public class ExperimentSubscriptionTest {
         View dropdown = solo.getView(R.id.more_item);
         solo.clickOnView(dropdown);
         solo.sleep(500);
-        View remove = solo.getView(R.id.unpublish_item);
-        solo.clickOnView(remove);
+        solo.clickOnText("Unpublish Experiment");
         UiTestHelperFunctions.goToAllExperiments(solo);
     }
 
@@ -85,13 +84,17 @@ public class ExperimentSubscriptionTest {
         Experiment exp = expItem.getExperiment();
         String currentName = exp.getName();
 
-        solo.clickOnCheckBox(0);
+        UiTestHelperFunctions.toggleSubExperiment(solo, 0);
 
         UiTestHelperFunctions.goToMyExperiments(solo);
 
         Assert.assertTrue(solo.searchText(currentName));
 
         UiTestHelperFunctions.goToAllExperiments(solo);
-        solo.clickOnCheckBox(0);
+        UiTestHelperFunctions.toggleSubExperiment(solo, 0);
+
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        Assert.assertFalse(solo.searchText(currentName));
+        UiTestHelperFunctions.goToAllExperiments(solo);
     }
 }

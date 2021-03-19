@@ -1,7 +1,9 @@
 package com.example.crowderapp;
 
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 
@@ -67,5 +69,40 @@ public class UiTestHelperFunctions {
 
     public static void goToAllExperiments(Solo solo) {
         solo.clickOnText("All Experiments");
+    }
+
+    public static void toggleSubExperiment(Solo solo, int buttonPos) { solo.clickOnCheckBox(buttonPos); }
+
+    public static void initExp(Solo solo, String expname, UiTestHelperFunctions.expTypes type) {
+        solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
+
+        createExperiment(solo, expname, 1, type);
+
+        solo.sleep(2000);
+
+        ListView experimentsList = (ListView) solo.getView(R.id.all_experiment_list);
+        ArrayAdapter adapter = (ArrayAdapter) experimentsList.getAdapter();
+
+        int count = adapter.getCount();
+
+        solo.sleep(2000);
+
+        toggleSubExperiment(solo, count-1);
+        goToMyExperiments(solo);
+        solo.clickOnText(expname);
+    }
+
+    public static void endExp(Solo solo) {
+        View dropdown = solo.getView(R.id.more_item);
+        solo.clickOnView(dropdown);
+        solo.sleep(1500);
+        solo.clickOnText("End Experiment");
+    }
+
+    public static void unpublishExp(Solo solo) {
+        View dropdown = solo.getView(R.id.more_item);
+        solo.clickOnView(dropdown);
+        solo.sleep(1500);
+        solo.clickOnText("Unpublish Experiment");
     }
 }
