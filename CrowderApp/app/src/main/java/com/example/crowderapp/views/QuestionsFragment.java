@@ -48,25 +48,10 @@ public class QuestionsFragment extends Fragment {
         Bundle bundle = getArguments();
         experimentId = (String) bundle.getSerializable("ExperimentID");
 
-        commentHandler.getExperimentQuestions(experimentId, new getExperimentQuestionsCallBack() {
-            @Override
-            public void callBackResult(List<Question> questionList) {
-                questionsList = questionList;
-
-                questionAdapter = new CustomListQuestions(thisContext, questionsList);
-                questionsView = getView().findViewById(R.id.question_list);
-                questionsView.setAdapter(questionAdapter);
-                questionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        openFragment(ReplyFragment.newInstance(), questionAdapter.getItem(position));
-                    }
-                });
-            }
-        });
 
 
     }
+
 
     private void openFragment(Fragment fragment, Question question) {
         Bundle bundle = new Bundle();
@@ -82,6 +67,28 @@ public class QuestionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.questions_fragment, container, false);
+        Question question = new Question();
+//        question.setBody("Does This work?");
+//        question.setUsername("YOOOOOO");
+
+        commentHandler.getExperimentQuestions(experimentId, new getExperimentQuestionsCallBack() {
+            @Override
+            public void callBackResult(List<Question> questionList) {
+                questionsList = questionList;
+//                questionsList.add(question);
+                questionAdapter = new CustomListQuestions(thisContext, questionsList);
+                questionsView = getView().findViewById(R.id.question_list);
+                questionsView.setAdapter(questionAdapter);
+                questionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        openFragment(ReplyFragment.newInstance(), questionAdapter.getItem(position));
+                    }
+                });
+            }
+        });
         return view;
     }
+
+
 }

@@ -49,10 +49,6 @@ public class ReplyFragment extends Fragment {
         Bundle bundle = getArguments();
         question = (Question) bundle.getSerializable("Question");
 
-        replyList = question.getReplyList();
-        replyAdapter = new CustomListReply(thisContext, replyList);
-        repliesView.setAdapter(replyAdapter);
-
     }
 
     private void openFragment(Fragment fragment, Question question) {
@@ -65,7 +61,17 @@ public class ReplyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
-        View view = inflater.inflate(R.layout.questions_fragment, container, false);
+        View view = inflater.inflate(R.layout.reply_fragment, container, false);
+
+        replyList = question.getReplyList();
+        Reply reply = new Reply();
+//        reply.setBody("Yes it does");
+//        reply.setUsername("Ray");
+//        replyList.add(reply);
+        replyAdapter = new CustomListReply(getContext(), replyList);
+        repliesView = view.findViewById(R.id.reply_list);
+        repliesView.setAdapter(replyAdapter);
+
         return view;
     }
 }

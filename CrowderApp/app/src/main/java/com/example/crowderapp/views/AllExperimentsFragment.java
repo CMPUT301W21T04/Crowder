@@ -122,7 +122,6 @@ public class AllExperimentsFragment extends Fragment {
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
-        update();
 
     }
 
@@ -130,6 +129,9 @@ public class AllExperimentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
+        userHandler = new UserHandler(getActivity().getSharedPreferences(
+                UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
+        update();
 
         // Search Setup
         searchEditText = view.findViewById(R.id.search_EditText);

@@ -65,21 +65,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.location_item:
-//                Toast.makeText(this, "yo", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
+//        transaction.addToBackStack(null);
         transaction.commit();
     }
 
