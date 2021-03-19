@@ -1,6 +1,5 @@
 package com.example.crowderapp.controllers;
 
-
 import androidx.annotation.NonNull;
 
 import com.example.crowderapp.controllers.callbackInterfaces.addQRCallBack;
@@ -103,7 +102,6 @@ public class ExperimentHandler {
                 }
             }
         });
-
     }
 
     /**
