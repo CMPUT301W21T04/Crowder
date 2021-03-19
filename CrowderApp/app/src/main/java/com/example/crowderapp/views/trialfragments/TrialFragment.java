@@ -57,8 +57,12 @@ public class TrialFragment extends Fragment {
             public void callBackResult(User user) {
                 MenuItem menuItem = menu.findItem(R.id.more_item);
                 menuItem.setVisible(true);
-                if(experiment.isEnded() || !experiment.getOwnerID().matches(user.getUid()) ) {
+                boolean isOwner = experiment.getOwnerID().matches(user.getUid());
+                if(experiment.isEnded() || !isOwner ) {
                     menu.findItem(R.id.end_item).setVisible(false);
+                }
+                if(!isOwner) {
+                    menu.findItem(R.id.unpublish_item).setVisible(false);
                 }
             }
         });
@@ -127,7 +131,8 @@ public class TrialFragment extends Fragment {
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
+//        transaction.addToBackStack(null);
         transaction.commit();
+        getFragmentManager().popBackStack();
     }
 }

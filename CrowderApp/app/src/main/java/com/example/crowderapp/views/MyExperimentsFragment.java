@@ -143,4 +143,10 @@ public class MyExperimentsFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        subExperiments.clear();
+    }
 }
