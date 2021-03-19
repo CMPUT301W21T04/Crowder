@@ -3,9 +3,11 @@ package com.example.crowderapp.controllers;
 import androidx.annotation.NonNull;
 
 import com.example.crowderapp.controllers.callbackInterfaces.addQuestionToExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.addReplyToQuestionCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentQuestionsCallBack;
 import com.example.crowderapp.models.dao.CommentFSDAO;
 import com.example.crowderapp.models.posts.Question;
+import com.example.crowderapp.models.posts.Reply;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -59,6 +61,14 @@ public class CommentHandler {
         dao.updateQuestionForExperiment(experimentID, question);
     }
 
-
-
+    /**
+     * This method adds a reply to a question
+     * @param reply the reply object
+     * @param experimentID the experiment ID the reply is binded to
+     * @param questionID the question ID the reply is binded to
+     * @param callback the callback on success
+     */
+    public void addReplyToQuestion(Reply reply, String experimentID, String questionID, addReplyToQuestionCallBack callback) {
+        // TODO ADD IMPLEMENTATION
+    }
 }

@@ -151,7 +151,7 @@ public class AddExperimentFragment extends DialogFragment {
                         public void callBackResult(User user) {
                             thisUser = user;
                             handler.createExperiment(experimentName, isLocationRequired,
-                                    Integer.valueOf(minTrials), experimentType, thisUser.getName(),
+                                    Integer.valueOf(minTrials), experimentType, thisUser.getUid(),
                                     new createExperimentCallBack() {
                                         @Override
                                         public void callBackResult(Experiment experiment) {

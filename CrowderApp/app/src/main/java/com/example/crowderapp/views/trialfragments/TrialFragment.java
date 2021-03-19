@@ -14,6 +14,7 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
 import com.example.crowderapp.models.BinomialTrial;
@@ -48,12 +49,20 @@ public class TrialFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        userHandler = new UserHandler(getActivity().getSharedPreferences(
+                UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
         this.menu = menu;
-        MenuItem menuItem = menu.findItem(R.id.more_item);
-        menuItem.setVisible(true);
-        if(experiment.isEnded()) {
-            menu.findItem(R.id.end_item).setVisible(false);
-        }
+        userHandler.getCurrentUser(new getUserByIDCallBack() {
+            @Override
+            public void callBackResult(User user) {
+                MenuItem menuItem = menu.findItem(R.id.more_item);
+                menuItem.setVisible(true);
+                if(experiment.isEnded() || !experiment.getOwnerID().matches(user.getUid()) ) {
+                    menu.findItem(R.id.end_item).setVisible(false);
+                }
+            }
+        });
+
     }
 
 

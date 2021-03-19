@@ -52,6 +52,7 @@ public class AddQuestionFragment extends DialogFragment {
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
+        void onOkPressed(Question question);
     }
 
     @Override
