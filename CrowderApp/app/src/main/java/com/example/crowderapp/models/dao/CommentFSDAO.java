@@ -29,7 +29,7 @@ public class CommentFSDAO extends CommentDAO {
      */
     public CommentFSDAO(FirebaseFirestore db) {
         this.db = db;
-        commentsReference = db.collection("Experiments");
+        commentsReference = db.collection("experiment");
     }
 
     /**
