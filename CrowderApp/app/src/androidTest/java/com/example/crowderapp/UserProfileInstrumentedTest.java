@@ -32,20 +32,9 @@ public class UserProfileInstrumentedTest {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), testRule.getActivity());
     }
 
-    public void goToProfile() {
-        solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
-        solo.clickOnText("Profile");
-        solo.waitForText("Username");
-    }
-
-    public void goToAllExperiments() {
-        solo.clickOnText("All Experiments");
-        solo.sleep(1);
-    }
-
     @Test
     public void testChangeInfo() {
-        goToProfile();
+        UiTestHelperFunctions.goToProfile(solo);
 
         View editButton = solo.getView(R.id.profile_edit);
         EditText userNameField = (EditText) solo.getView(R.id.profile_username);
@@ -61,8 +50,8 @@ public class UserProfileInstrumentedTest {
         solo.enterText(emailField, "test@email.com");
         solo.clickOnView(editButton);
 
-        goToAllExperiments();
-        goToProfile();
+        UiTestHelperFunctions.goToAllExperiments(solo);
+        UiTestHelperFunctions.goToProfile(solo);
 
         Assert.assertTrue(solo.searchText("Test User 123"));
         Assert.assertTrue(solo.searchText("9991112222"));
