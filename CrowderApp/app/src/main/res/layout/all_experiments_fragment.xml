@@ -4,11 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <EditText
+            android:id="@+id/search_EditText"
+            android:layout_width="275dp"
+            android:layout_height="115dp"
+            android:hint="Enter Keyword"
+            android:paddingLeft="10dp"
+            android:paddingTop="?attr/actionBarSize">
+
+        </EditText>
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="Search" />
+    </TableRow>
+
     <ListView
         android:id="@+id/all_experiment_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?attr/actionBarSize"
-        android:paddingBottom="?attr/actionBarSize"/>
+
+        android:paddingBottom="?attr/actionBarSize" />
 
 </LinearLayout>
