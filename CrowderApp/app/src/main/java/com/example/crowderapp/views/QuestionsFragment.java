@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsFragment extends Fragment {
+public class QuestionsFragment extends Fragment implements AddQuestionFragment.OnFragmentInteractionListener {
 
     private List<Question> questionsList = new ArrayList<Question>();
     private ListView questionsView;
@@ -32,6 +32,7 @@ public class QuestionsFragment extends Fragment {
     private String experimentId;
     private Context thisContext;
     private FloatingActionButton fab;
+    private String userId;
 
     public QuestionsFragment() {}
 
@@ -43,11 +44,23 @@ public class QuestionsFragment extends Fragment {
     }
 
     @Override
+    public void onOkPressed() {
+        commentHandler.getExperimentQuestions(experimentId, new getExperimentQuestionsCallBack() {
+            @Override
+            public void callBackResult(List<Question> questionList) {
+                questionsList = questionList;
+                questionAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getArguments();
         experimentId = (String) bundle.getSerializable("ExperimentID");
+        userId = (String) bundle.getSerializable("UserId");
 
     }
 
@@ -66,14 +79,15 @@ public class QuestionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.questions_fragment, container, false);
-        Question question = new Question("Does This work?", "Ray");
+//        Question question = new Question("Does This work?", "Ray");
 
-        fab = view.findViewById(R.id.add_experiment_button);
+        fab = view.findViewById(R.id.add_question_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("ExperimentID", experimentId);
+//                Bundle args = new Bundle();
+//                args.putString("ExperimentID", experimentId);
+                new AddQuestionFragment().newInstance(experimentId, userId).show(getFragmentManager(), "ADD_QUES");
             }
         });
 
@@ -81,7 +95,7 @@ public class QuestionsFragment extends Fragment {
             @Override
             public void callBackResult(List<Question> questionList) {
                 questionsList = questionList;
-                questionsList.add(question);
+//                questionsList.add(question);
                 questionAdapter = new CustomListQuestions(thisContext, questionsList);
                 questionsView = getView().findViewById(R.id.question_list);
                 questionsView.setAdapter(questionAdapter);

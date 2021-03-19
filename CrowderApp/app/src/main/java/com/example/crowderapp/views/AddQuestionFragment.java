@@ -27,12 +27,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.crowderapp.R;
+import com.example.crowderapp.controllers.CommentHandler;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.addQuestionToExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.models.posts.Question;
 
 public class AddQuestionFragment extends DialogFragment {
 
@@ -41,6 +44,9 @@ public class AddQuestionFragment extends DialogFragment {
     private ExperimentHandler handler = new ExperimentHandler();
     EditText newQuestionField;
     String newQuestion;
+    private CommentHandler commentHandler = new CommentHandler();
+    String experimentID;
+    String userID;
 
     private OnFragmentInteractionListener listener;
 
@@ -59,9 +65,21 @@ public class AddQuestionFragment extends DialogFragment {
         }
     }
 
+    static AddQuestionFragment newInstance(String experimentID, String uid) {
+        Bundle args = new Bundle();
+        args.putSerializable("ExperimentID", experimentID);
+        args.putSerializable("UserId", uid);
+        AddQuestionFragment fragment = new AddQuestionFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        experimentID = args.getString("ExperimentID");
+        userID = args.getString("UserId");
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_question_fragment, null);
 
         userHandler = new UserHandler(getActivity().getSharedPreferences(
@@ -104,7 +122,14 @@ public class AddQuestionFragment extends DialogFragment {
                 if(newQuestion.matches("")) {
                     Toast.makeText(getContext(), "Invalid Question", Toast.LENGTH_LONG);
                 } else {
-
+                    commentHandler.addQuestionToExperiment(experimentID, new Question(newQuestionField.getText().toString(), userID), new addQuestionToExperimentCallBack() {
+                        @Override
+                        public void callBackResult(String questionID) {
+                            Log.v(String.valueOf(questionID), "Question has been added");
+                            listener.onOkPressed();
+                            ad.dismiss();
+                        }
+                    });
                 }
             }
         });

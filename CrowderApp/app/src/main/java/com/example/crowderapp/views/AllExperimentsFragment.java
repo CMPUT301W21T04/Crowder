@@ -246,7 +246,7 @@ public class AllExperimentsFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 String expID = allExperimentListItems.get(position).getExperiment().getExperimentID();
-                                openFragmentWithExperimentID(QuestionsFragment.newInstance(), expID);
+                                openFragmentWithExperimentIDAndUser(QuestionsFragment.newInstance(), user.getUid(), expID);
                             }
                         });
                     }
@@ -255,9 +255,10 @@ public class AllExperimentsFragment extends Fragment {
         });
     }
 
-    private void openFragmentWithExperimentID(Fragment fragment, String experimentID) {
+    private void openFragmentWithExperimentIDAndUser(Fragment fragment, String uid, String experimentID) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ExperimentID", experimentID);
+        bundle.putSerializable("UserId",uid);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment, "Questions");
