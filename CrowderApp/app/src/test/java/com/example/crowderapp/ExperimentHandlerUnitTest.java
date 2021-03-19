@@ -60,8 +60,9 @@ public class ExperimentHandlerUnitTest {
         boolean loc1 = false;
         int minT1 = 0;
         String eType1 = "BinomialTrial";
+        String ownerID = "1";
 
-        handler.createExperiment(expName1, loc1, minT1, eType1, new createExperimentCallBack() {
+        handler.createExperiment(expName1, loc1, minT1, eType1, ownerID , new createExperimentCallBack() {
             @Override
             public void callBackResult(Experiment experiment) {
                 expID = experiment.getExperimentID();
@@ -69,6 +70,7 @@ public class ExperimentHandlerUnitTest {
                 Assert.assertFalse(experiment.isLocationRequired());
                 Assert.assertEquals(experiment.getMinTrials(), minT1);
                 Assert.assertEquals(experiment.getExperimentType(), eType1);
+                Assert.assertEquals(experiment.getOwnerID(), ownerID);
             }
         });
         finishAllTasks();
@@ -89,7 +91,9 @@ public class ExperimentHandlerUnitTest {
         boolean loc2 = true;
         int minT2 = 0;
         String eType2 = "BinomialTrial";
-        handler.createExperiment(expName2, loc2, minT2, eType2, new createExperimentCallBack() {
+        String ownerID2 = "2";
+
+        handler.createExperiment(expName2, loc2, minT2, eType2, ownerID2, new createExperimentCallBack() {
             @Override
             public void callBackResult(Experiment experiment) {
                 expID = experiment.getExperimentID();
@@ -97,6 +101,7 @@ public class ExperimentHandlerUnitTest {
                 Assert.assertTrue(experiment.isLocationRequired());
                 Assert.assertEquals(experiment.getMinTrials(), minT2);
                 Assert.assertEquals(experiment.getExperimentType(), eType2);
+                Assert.assertEquals(experiment.getOwnerID(), ownerID2);
             }
         });
         finishAllTasks();
