@@ -120,7 +120,7 @@ public class ExperimentFSDAO extends ExperimentDAO {
     }
 
     /**
-     * Gets all the experiments the user is subscribed to.
+     * Gets all the experiments the user owns.
      * @param userId The user's ID
      * @return
      */
