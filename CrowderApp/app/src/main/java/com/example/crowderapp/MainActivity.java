@@ -74,11 +74,12 @@ public class MainActivity extends AppCompatActivity
 //        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
-        if(!(fragment instanceof MyExperimentsFragment) || !(fragment instanceof ProfileFragment))
+        if((fragment instanceof MyExperimentsFragment) || (fragment instanceof ProfileFragment))
             if(fm.getBackStackEntryCount() != 0) {
                 transaction.addToBackStack(null);
             }
         transaction.commit();
+
     }
 
 

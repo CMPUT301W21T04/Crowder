@@ -131,7 +131,8 @@ public class TrialFragment extends Fragment {
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
+//        transaction.addToBackStack(null);
         transaction.commit();
+        getFragmentManager().popBackStack();
     }
 }
