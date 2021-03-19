@@ -67,11 +67,13 @@ public class UiTestHelperFunctions {
     }
 
     public static void goToMyExperiments(Solo solo) {
-        solo.clickOnText("My Experiments");
+        View allButton = solo.getView(R.id.navigation_my_experiments);
+        solo.clickOnView(allButton);
     }
 
     public static void goToAllExperiments(Solo solo) {
-        solo.clickOnText("All Experiments");
+        View allButton = solo.getView(R.id.navigation_all_experiments);
+        solo.clickOnView(allButton);
     }
 
     public static void toggleSubExperiment(Solo solo, String expname) {
