@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 public class ExperimentHandler {
     ArrayList<Experiment> experiments;
 
-    private static ExperimentHandler instance;
     private ExperimentDAO experimentDAO;
     private Logger logger;
 
