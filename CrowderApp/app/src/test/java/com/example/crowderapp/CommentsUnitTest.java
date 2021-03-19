@@ -6,7 +6,6 @@ import com.example.crowderapp.models.posts.Reply;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.Answer;
 
 /**
  * Unit test for question and replies classes.
@@ -18,7 +17,7 @@ public class CommentsUnitTest {
     public Reply mockReply(String body) {
         Reply r = new Reply();
         r.setBody(body);
-        r.setUsername("TestUser1");
+        r.setUserId("TestUser1");
         return r;
     }
 
@@ -26,7 +25,7 @@ public class CommentsUnitTest {
     public void setUp() throws Exception {
         question = new Question();
         question.setBody("I am a question.");
-        question.setUsername("TestUser");
+        question.setUserId("TestUser");
     }
 
     /**

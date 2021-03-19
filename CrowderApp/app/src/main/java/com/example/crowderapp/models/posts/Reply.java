@@ -8,6 +8,18 @@ public class Reply extends Comment {
     private String qid;
 
     /**
+     * Creates a full user reply.
+     * If commentId needs to be provided, user the setter.
+     * @param body The text that the user wants to reply with.
+     * @param userId The userId of the user who made the reply.
+     * @param qid The parent question ID of the reply.
+     */
+    public Reply(String body, String userId, String qid) {
+        super(body, userId);
+        this.qid = qid;
+    }
+
+    /**
      * Default constructor.
      * For user in Firebase.
      */
