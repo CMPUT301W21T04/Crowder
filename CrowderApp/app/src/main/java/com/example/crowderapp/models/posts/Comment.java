@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public abstract class Comment implements Serializable {
     String body;
-    String username;
+    String userId;
 
     @DocumentId //
     String commentId;
@@ -20,6 +20,11 @@ public abstract class Comment implements Serializable {
      * Used by Firestore.
      */
     public Comment() {
+    }
+
+    public Comment(String body, String userId) {
+        this.body = body;
+        this.userId = userId;
     }
 
     /**
@@ -36,12 +41,12 @@ public abstract class Comment implements Serializable {
     /**
      * @return The user who created this comment.
      */
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     /**
