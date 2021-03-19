@@ -6,6 +6,11 @@ import com.google.firebase.firestore.Exclude;
 
 import java.util.Date;
 
+/**
+ * Super class for all trials
+ *
+ * Trials are added to an experiment
+ */
 public class Trial {
 
     @DocumentId // Mark this as document ID in firebase
@@ -20,6 +25,13 @@ public class Trial {
     public Trial() {
     }
 
+    /**
+     * Contstructor
+     * @param experimenter unique id of experimenter that took the trial
+     * @param date the date the trial was taken
+     * @param location the location the trial was taken
+     * @param experimentID the unique id of the experiment to add trial to
+     */
     public Trial(String experimenter, Date date, Location location, String experimentID) {
         this.experimenter = experimenter;
         this.date = date;

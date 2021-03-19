@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Holds all experiment attributes
+ */
 public class Experiment implements Serializable {
 
     @DocumentId // Designate this as document ID in Firestore.
     private String experimentID;
-
-
 
     private String name;
     private String experimentType;
@@ -24,6 +25,9 @@ public class Experiment implements Serializable {
     private String ownerID;
     protected List<Trial> trials = new ArrayList<Trial>();
 
+    /**
+     * Empty constructor to generate an empty experiment
+     */
     public Experiment() {
         this.experimentID = null;
         this.minTrials = 0;
@@ -34,10 +38,24 @@ public class Experiment implements Serializable {
         this.experimentType = "";
     }
 
+    /**
+     * Constructor
+     * @param name name of experiment
+     */
     public Experiment(String name) {
         this.name = name;
     }
 
+    /**
+     * Constructor
+     * @param experimentID Unique identifier for an experiment
+     * @param name the name of the experiment
+     * @param minTrials the minimum number of trial per publish
+     * @param isEnded boolean whether the experiment is ended or not
+     * @param isUnpublished boolean whether the experiment is unpublished
+     * @param isLocationRequired boolean whether the location is required for teh experiment
+     * @param ownerID unique identifier for the owner of an experiment
+     */
     public Experiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
         this.experimentID = experimentID;
         this.name = name;

@@ -2,6 +2,9 @@ package com.example.crowderapp.models;
 
 import java.util.Date;
 
+/**
+ * Class to contain experiment of type Non-negative Integer Trial
+ */
 public class TallyExperiment extends Experiment {
 
     private double avgTally;
@@ -15,6 +18,12 @@ public class TallyExperiment extends Experiment {
         super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
+    /**
+     * Adds a trial to the experiment
+     * @param count the observed count to add
+     * @param experimenter unique identifier of the experimenter adding the count
+     * @param location the location where the trial was taken
+     */
     public void addNonNegativeCount(int count, String experimenter, Location location) {
         avgTally = (avgTally*tallyCount+count)/(1+tallyCount);
         tallyCount += 1;
