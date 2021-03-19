@@ -103,18 +103,18 @@ public class UserHandler {
      */
     public void observeCurrentUser(Activity activity, UserDAO.UserObserver obs) {
         currentUserTask.addOnSuccessListener(user -> {
-            observerUser(user, activity, obs);
+            observerUser(user.getUid(), activity, obs);
         });
     }
 
     /**
-     * Observe a user. Synchronous, no tasks.
-     * @param user
+     * Observe a user.
+     * @param userId The Id of user
      * @param activity Activity reference to prevent activity leak.
      * @param obs The observer
      */
-    public void observerUser(User user, Activity activity, UserDAO.UserObserver obs) {
-        userDAO.observeUser(user.getUid(), activity, obs);
+    public void observerUser(String userId, Activity activity, UserDAO.UserObserver obs) {
+        userDAO.observeUser(userId, activity, obs);
     }
 
     /**

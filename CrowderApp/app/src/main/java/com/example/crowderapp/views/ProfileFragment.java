@@ -1,5 +1,6 @@
 package com.example.crowderapp.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,21 +22,27 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.models.User;
 
+/**
+ * Fragment to show the current user info.
+ * Should never be used with non local user as this allows information
+ * to be edited.
+ */
 public class ProfileFragment extends Fragment {
 
-    UserHandler userHandler;
+    protected UserHandler userHandler;
+    protected User user;
 
-    EditText phoneBox;
-    EditText emailBox;
-    EditText usernameBox;
-    ImageButton editBtn;
+    protected EditText phoneBox;
+    protected EditText emailBox;
+    protected EditText usernameBox;
+    protected ImageButton editBtn;
 
-    Drawable editImage;
-    Drawable checkImage;
+    protected Drawable editImage;
+    protected Drawable checkImage;
 
-    boolean editMode = false;
+    protected boolean editMode = false;
 
-    User user;
+    protected Activity parentActivity;
 
     public ProfileFragment() {
     }
@@ -58,13 +65,26 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.profile_fragment, container, false);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
+    /**
+     * Create references to all the views in a parent view/fragment.
+     * @param view The view representing the fragment.
+     */
+    protected void attachViews(View view) {
         emailBox = view.findViewById(R.id.profile_email);
         phoneBox = view.findViewById(R.id.profile_phone);
         usernameBox = view.findViewById(R.id.profile_username);
         editBtn = view.findViewById(R.id.profile_edit);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.profile_fragment, container, false);
+        attachViews(view);
 
         // Set icon to pencil first
         editBtn.setImageDrawable(editImage);
