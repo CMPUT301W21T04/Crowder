@@ -1,11 +1,14 @@
 package com.example.crowderapp;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robotium.solo.Solo;
@@ -31,7 +34,7 @@ public class UiTestHelperFunctions {
         solo.enterText(expNameText, expName);
         solo.clickOnView(dropDown);
 
-        solo.sleep(1000);
+        solo.sleep(2000);
 
         switch (type) {
             case COUNT:
@@ -71,7 +74,13 @@ public class UiTestHelperFunctions {
         solo.clickOnText("All Experiments");
     }
 
-    public static void toggleSubExperiment(Solo solo, int buttonPos) { solo.clickOnCheckBox(buttonPos); }
+    public static void toggleSubExperiment(Solo solo, String expname) {
+        //https://stackoverflow.com/questions/22299328/how-to-click-button-adjacent-to-a-specific-text-in-robotium
+        TextView expText = solo.getText(expname);
+        ViewGroup expPair = (ViewGroup) expText.getParent();
+        Button subButton = (Button) expPair.getChildAt(1);
+        solo.clickOnView(subButton);
+    }
 
     public static void initExp(Solo solo, String expname, UiTestHelperFunctions.expTypes type) {
         solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
@@ -80,14 +89,8 @@ public class UiTestHelperFunctions {
 
         solo.sleep(2000);
 
-        ListView experimentsList = (ListView) solo.getView(R.id.all_experiment_list);
-        ArrayAdapter adapter = (ArrayAdapter) experimentsList.getAdapter();
+        toggleSubExperiment(solo, expname);
 
-        int count = adapter.getCount();
-
-        solo.sleep(2000);
-
-        toggleSubExperiment(solo, count-1);
         goToMyExperiments(solo);
         solo.clickOnText(expname);
     }
