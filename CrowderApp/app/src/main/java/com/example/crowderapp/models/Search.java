@@ -15,7 +15,9 @@ public class Search {
 
         for (Experiment exp : experimentList) {
             for (String search : filterStrings) {
-                if (exp.getName().toLowerCase().contains(search.toLowerCase())){
+                // TODO: Need username searchable
+                String searchString = (exp.getName() + exp.getExperimentType()).toLowerCase();
+                if (searchString.contains(search.toLowerCase())){
                     filteredExperiments.add(exp);
                     break;
                 }
