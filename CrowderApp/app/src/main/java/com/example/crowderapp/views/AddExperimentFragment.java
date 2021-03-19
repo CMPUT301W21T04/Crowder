@@ -27,8 +27,11 @@ import androidx.annotation.Nullable;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.User;
 
 public class AddExperimentFragment extends DialogFragment {
 
@@ -39,7 +42,9 @@ public class AddExperimentFragment extends DialogFragment {
     private EditText minTrialsEditText;
     private EditText experimentNameEditText;
     private CheckBox locationRequiredCheckBox;
+    private User thisUser;
 
+    private UserHandler userHandler;
     private ExperimentHandler handler = new ExperimentHandler();
     private OnFragmentInteractionListener listener;
 
@@ -62,6 +67,9 @@ public class AddExperimentFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_experiment_fragment_layout, null);
+
+        userHandler = new UserHandler(getActivity().getSharedPreferences(
+                UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
         minTrialsEditText = view.findViewById(R.id.min_trials_EditText);
         experimentNameEditText = view.findViewById(R.id.experiment_name_EditText);
@@ -138,13 +146,19 @@ public class AddExperimentFragment extends DialogFragment {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
-                    handler.createExperiment(experimentName, isLocationRequired,
-                            Integer.valueOf(minTrials), experimentType,
-                            new createExperimentCallBack() {
+                    userHandler.getCurrentUser(new getUserByIDCallBack() {
                         @Override
-                        public void callBackResult(Experiment experiment) {
-                            listener.onOkPressed();
-                            ad.dismiss();
+                        public void callBackResult(User user) {
+                            thisUser = user;
+                            handler.createExperiment(experimentName, isLocationRequired,
+                                    Integer.valueOf(minTrials), experimentType, thisUser.getName(),
+                                    new createExperimentCallBack() {
+                                        @Override
+                                        public void callBackResult(Experiment experiment) {
+                                            listener.onOkPressed();
+                                            ad.dismiss();
+                                        }
+                                    });
                         }
                     });
                 }

@@ -94,9 +94,16 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
                 if (tallyExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
-                    numCountTextView.setText(String.valueOf(numCounts));
                     integerValueString = integerValueEditText.getText().toString();
+                    if(integerValueString.matches("")) {
+                        Toast.makeText(view.getContext(), "Invalid Input", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     currentCount = Integer.valueOf(integerValueString);
+
+
+                    numCountTextView.setText(String.valueOf(numCounts));
                     calculateAverage();
                     numCounts++;
                     tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), new Location());

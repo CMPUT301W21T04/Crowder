@@ -98,6 +98,10 @@ public class MeasurementTrialFragment extends TrialFragment {
                 if(measurementExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
+                    if(measurementInput.getText().toString().matches("")) {
+                        Toast.makeText(view.getContext(), "Invalid Input", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     numMeasurements++;
                     currentMeasurement = Double.parseDouble(measurementInput.getText().toString());
                     totalMeasurement += currentMeasurement;

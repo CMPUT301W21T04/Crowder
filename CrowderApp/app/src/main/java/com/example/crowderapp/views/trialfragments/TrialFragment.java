@@ -22,6 +22,7 @@ import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.MyExperimentsFragment;
+import com.example.crowderapp.views.QuestionsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,7 @@ public class TrialFragment extends Fragment {
                 break;
             case R.id.comment_item:
                 // TODO go to comments
+                openFragmentWithExperimentID(QuestionsFragment.newInstance());
                 break;
             case R.id.plot_item:
                 // TODO show plots
@@ -100,6 +102,16 @@ public class TrialFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openFragmentWithExperimentID(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("ExperimentID", experiment.getExperimentID());
+        fragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 
