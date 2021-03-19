@@ -74,15 +74,14 @@ public class MainActivity extends AppCompatActivity
 //        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
-        if((fragment instanceof MyExperimentsFragment) || (fragment instanceof ProfileFragment))
-            if(fm.getBackStackEntryCount() != 0) {
-                transaction.addToBackStack(null);
-            }
+        if(fm.getBackStackEntryCount() != 0) {
+            transaction.addToBackStack(null);
+        }
         transaction.commit();
 
     }
 
-
+    // https://androidwave.com/bottom-navigation-bar-android-example/
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
