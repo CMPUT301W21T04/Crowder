@@ -35,66 +35,33 @@ public class ExperimentSubscriptionTest {
     }
 
     @Test
-    public void testSubscriptionAfterCreation() {
+    public void testSubscription() {
         solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
 
         UiTestHelperFunctions.createExperiment(solo, expname, 1);
 
         solo.sleep(2000);
 
-        ListView experimentsList = (ListView) solo.getView(R.id.all_experiment_list);
-        ArrayAdapter adapter = (ArrayAdapter) experimentsList.getAdapter();
-
-        int count = adapter.getCount();
-
-        solo.sleep(2000);
-
-        UiTestHelperFunctions.toggleSubExperiment(solo, count-1);
+        UiTestHelperFunctions.toggleSubExperiment(solo, expname);
 
         UiTestHelperFunctions.goToMyExperiments(solo);
         Assert.assertTrue(solo.searchText(expname));
 
+        UiTestHelperFunctions.goToAllExperiments(solo);
+        UiTestHelperFunctions.toggleSubExperiment(solo, expname);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+
+        Assert.assertFalse(solo.searchText(expname));
+
+        //cleanup
+        UiTestHelperFunctions.goToAllExperiments(solo);
+        UiTestHelperFunctions.toggleSubExperiment(solo, expname);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+
         solo.clickOnText(expname);
-        View dropdown = solo.getView(R.id.more_item);
-        solo.clickOnView(dropdown);
-        solo.sleep(500);
-        solo.clickOnText("Unpublish Experiment");
-        UiTestHelperFunctions.goToAllExperiments(solo);
-    }
 
-    @Test
-    public void testSubscriptionOnExisting() {
-        solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
+        UiTestHelperFunctions.unpublishExp(solo);
 
-        solo.sleep(3000);
-
-        ListView experimentsList = (ListView) solo.getView(R.id.all_experiment_list);
-        ArrayAdapter adapter = (ArrayAdapter) experimentsList.getAdapter();
-
-        int count = adapter.getCount();
-
-        if (count == 0) {
-            UiTestHelperFunctions.createExperiment(solo, expname, 1);
-            UiTestHelperFunctions.goToMyExperiments(solo);
-            UiTestHelperFunctions.goToAllExperiments(solo);
-            solo.sleep(2000);
-        }
-
-        AllExperimentListItem expItem = (AllExperimentListItem) adapter.getItem(0);
-        Experiment exp = expItem.getExperiment();
-        String currentName = exp.getName();
-
-        UiTestHelperFunctions.toggleSubExperiment(solo, 0);
-
-        UiTestHelperFunctions.goToMyExperiments(solo);
-
-        Assert.assertTrue(solo.searchText(currentName));
-
-        UiTestHelperFunctions.goToAllExperiments(solo);
-        UiTestHelperFunctions.toggleSubExperiment(solo, 0);
-
-        UiTestHelperFunctions.goToMyExperiments(solo);
-        Assert.assertFalse(solo.searchText(currentName));
         UiTestHelperFunctions.goToAllExperiments(solo);
     }
 }
