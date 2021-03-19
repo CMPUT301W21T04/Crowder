@@ -12,32 +12,34 @@ import androidx.annotation.Nullable;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.models.posts.Question;
+import com.example.crowderapp.models.posts.Reply;
 
 import java.util.List;
 
-public class CustomListQuestions extends ArrayAdapter<Question> {
-    private List<Question> questions;
+public class CustomListReply extends ArrayAdapter<Reply> {
+    private List<Reply> replies;
     private Context context;
 
-    public CustomListQuestions(Context context, List<Question> questions) {
-        super(context, 0, questions);
+    public CustomListReply(Context context, List<Reply> replies) {
+        super(context, 0, replies);
         this.context = context;
-        this.questions = questions;
+        this.replies = replies;
     }
 
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.questions_list, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.reply_list, parent, false);
         }
 
-        Question question = questions.get(position);
-        TextView questionText = view.findViewById(R.id.question_TextView);
-        questionText.setText(question.getBody());
+        Reply reply = replies.get(position);
+        TextView replyText = view.findViewById(R.id.reply_TextView);
+        TextView userText = view.findViewById(R.id.username_TextView);
+        replyText.setText(reply.getBody());
+        userText.setText(reply.getUsername());
 
 
         return view;
     }
 }
-

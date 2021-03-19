@@ -64,6 +64,8 @@ public class QuestionsFragment extends Fragment {
                 });
             }
         });
+
+
     }
 
     private void openFragment(Fragment fragment, Question question) {
