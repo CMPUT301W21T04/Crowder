@@ -18,6 +18,7 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.BinomialExperiment;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CustomListAllExperiments;
@@ -38,7 +39,7 @@ import java.util.List;
 public class MyExperimentsFragment extends Fragment {
 
     UserHandler userHandler;
-    User user;
+    User thisUser;
     private ListView myExpView;
     private ArrayAdapter<Experiment> myExpAdapter;
     private List<Experiment> allExpDataList = new ArrayList<Experiment>();
@@ -47,7 +48,6 @@ public class MyExperimentsFragment extends Fragment {
     private List<String> subscribed = new ArrayList<String>();
     private List<Experiment> subExperiments = new ArrayList<Experiment>();
     Experiment currentExperiment;
-    Task userTask;
 
     public MyExperimentsFragment() {
 
@@ -67,56 +67,49 @@ public class MyExperimentsFragment extends Fragment {
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
-        userTask = userHandler.getCurrentUser();
-        userTask.addOnCompleteListener(new OnCompleteListener() {
+        userHandler.getCurrentUser(new getUserByIDCallBack() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if (userTask.isSuccessful()) {
-                    user = (User) task.getResult();
-                    subscribed = user.getSubscribedExperiments();
+            public void callBackResult(User user) {
+                thisUser = user;
+                subscribed = user.getSubscribedExperiments();
 
-                    handler.getAllExperiments(new allExperimentsCallBack() {
-                        @Override
-                        public void callBackResult(List<Experiment> experimentList) {
-                            allExpDataList = experimentList;
-                            createSubList();
-                            myExpAdapter = new CustomListMyExperiments(thisContext, subExperiments);
-                            myExpView = getView().findViewById(R.id.my_experiment_list);
-                            myExpView.setAdapter(myExpAdapter);
+                handler.getAllExperiments(new allExperimentsCallBack() {
+                    @Override
+                    public void callBackResult(List<Experiment> experimentList) {
+                        allExpDataList = experimentList;
+                        createSubList();
+                        myExpAdapter = new CustomListMyExperiments(thisContext, subExperiments);
+                        myExpView = getView().findViewById(R.id.my_experiment_list);
+                        myExpView.setAdapter(myExpAdapter);
 
-                            myExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view,
-                                                        int position, long id) {
+                        myExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view,
+                                                    int position, long id) {
 //                                    Log.e("Click", "yo");
-                                    currentExperiment = subExperiments.get(position);
-                                    String experimentType = currentExperiment.getExperimentType();
-                                    switch (experimentType) {
-                                        case "Count":
-                                            openFragment(CountTrialFragment.newInstance());
-                                            break;
-                                        case "Binomial":
-                                            openFragment(BinomialTrialFragment.newInstance());
-                                            break;
-                                        case "Non-Negative Integer":
-                                            openFragment(NonNegativeCountTrialFragment.newInstance());
-                                            break;
-                                        case "Measurement":
-                                            openFragment(MeasurementTrialFragment.newInstance());
-                                            break;
-                                        default:
-                                            break;
+                                currentExperiment = subExperiments.get(position);
+                                String experimentType = currentExperiment.getExperimentType();
+                                switch (experimentType) {
+                                    case "Count":
+                                        openFragment(CountTrialFragment.newInstance());
+                                        break;
+                                    case "Binomial":
+                                        openFragment(BinomialTrialFragment.newInstance());
+                                        break;
+                                    case "Non-Negative Integer":
+                                        openFragment(NonNegativeCountTrialFragment.newInstance());
+                                        break;
+                                    case "Measurement":
+                                        openFragment(MeasurementTrialFragment.newInstance());
+                                        break;
+                                    default:
+                                        break;
 
-                                    }
                                 }
-                            });
-                        }
-                    });
-                }
-                else {
-                    Exception exception = task.getException();
-                }
-
+                            }
+                        });
+                    }
+                });
             }
         });
     }
@@ -127,6 +120,8 @@ public class MyExperimentsFragment extends Fragment {
         View view = inflater.inflate(R.layout.my_experiments_fragment, container, false);
         return view;
     }
+
+
 
     private void createSubList() {
         for(Experiment exp : allExpDataList) {
@@ -140,7 +135,7 @@ public class MyExperimentsFragment extends Fragment {
     public void openFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Experiment", currentExperiment);
-        bundle.putSerializable("User", user);
+        bundle.putSerializable("User", thisUser);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);

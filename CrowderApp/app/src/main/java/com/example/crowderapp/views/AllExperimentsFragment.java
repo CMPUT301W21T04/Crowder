@@ -115,15 +115,6 @@ public class AllExperimentsFragment extends Fragment {
         }
     };
 
-
-    public void getNewSubs() {
-        if(thisUser != null) {
-            subscribed = thisUser.getSubscribedExperiments();
-            updateSubs();
-            //allExpAdapter.notifyDataSetChanged();
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,6 +212,7 @@ public class AllExperimentsFragment extends Fragment {
         }
     }
 
+
     public void update() {
 
         userHandler.getCurrentUser(new getUserByIDCallBack() {
@@ -237,10 +229,28 @@ public class AllExperimentsFragment extends Fragment {
                         updateSubs();
                         allExpAdapter = new CustomListAllExperiments(thisContext, allExperimentListItems, listener);
                         allExpView = getView().findViewById(R.id.all_experiment_list);
+                        allExpView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
                         allExpView.setAdapter(allExpAdapter);
+                        allExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                String expID = allExperimentListItems.get(position).getExperiment().getExperimentID();
+                                openFragmentWithExperimentID(QuestionsFragment.newInstance(), expID);
+                            }
+                        });
                     }
                 });
             }
         });
+    }
+
+    private void openFragmentWithExperimentID(Fragment fragment, String experimentID) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("ExperimentID", experimentID);
+        fragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
