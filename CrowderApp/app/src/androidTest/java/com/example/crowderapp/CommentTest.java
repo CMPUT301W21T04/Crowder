@@ -20,6 +20,7 @@ public class CommentTest {
     private Solo solo;
     String expname = "Comment Test";
     String question = "test question";
+    String reply = "reply";
 
     @Rule
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class, true, true);
@@ -42,16 +43,19 @@ public class CommentTest {
 
         EditText questText = (EditText) solo.getView(R.id.question_EditText);
 
+        // test empty question
         solo.enterText(questText, "");
         solo.clickOnView(solo.getView(android.R.id.button1));
 
         Assert.assertTrue(solo.searchText("Add Question"));
 
+        // test creating question
         solo.enterText(questText, question);
         solo.clickOnView(solo.getView(android.R.id.button1));
 
         Assert.assertTrue(solo.searchText(question));
 
+        // test question persists
         solo.sleep(500);
 
         UiTestHelperFunctions.goToAllExperiments(solo);
@@ -59,6 +63,35 @@ public class CommentTest {
         solo.clickOnText(expname);
 
         Assert.assertTrue(solo.searchText(question));
+
+        // test reply
+        solo.clickOnText(question);
+
+        FloatingActionButton addAnsButton = (FloatingActionButton) solo.getView(R.id.add_reply_button);
+        solo.clickOnView(addAnsButton);
+
+        solo.sleep(1000);
+
+        EditText ansText = (EditText) solo.getView(R.id.reply_EditText);
+
+        // test empty reply
+        solo.enterText(ansText, "");
+        solo.clickOnView(solo.getView(android.R.id.button1));
+
+        Assert.assertTrue(solo.searchText("Add Reply"));
+
+        // Test reply
+        solo.enterText(ansText, reply);
+        solo.clickOnView(solo.getView(android.R.id.button1));
+
+        Assert.assertTrue(solo.searchText(reply));
+
+        // test reply persistence
+        UiTestHelperFunctions.goToAllExperiments(solo);
+        solo.clickOnText(expname);
+        solo.clickOnText(question);
+
+        Assert.assertTrue(solo.searchText(reply));
 
         solo.sleep(500);
 
