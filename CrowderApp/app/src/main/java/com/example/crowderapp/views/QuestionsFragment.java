@@ -2,6 +2,7 @@ package com.example.crowderapp.views;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsFragment extends Fragment implements AddQuestionFragment.OnFragmentInteractionListener {
+public class QuestionsFragment extends Fragment {
 
     private List<Question> questionsList = new ArrayList<Question>();
     private ListView questionsView;
@@ -34,6 +35,7 @@ public class QuestionsFragment extends Fragment implements AddQuestionFragment.O
     private FloatingActionButton fab;
     private String userId;
 
+    private OnFragmentInteractionListener listener;
     public QuestionsFragment() {}
 
     public static QuestionsFragment newInstance() {
@@ -43,8 +45,13 @@ public class QuestionsFragment extends Fragment implements AddQuestionFragment.O
         return fragment;
     }
 
-    @Override
-    public void onOkPressed() {
+
+    public interface OnFragmentInteractionListener {
+        void onOkPressed();
+    }
+
+
+    public void update() {
         commentHandler.getExperimentQuestions(experimentId, new getExperimentQuestionsCallBack() {
             @Override
             public void callBackResult(List<Question> questionList) {
