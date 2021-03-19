@@ -45,6 +45,7 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
         Button subscribed = view.findViewById(R.id.search_subscribed);
         TextView status = view.findViewById(R.id.search_status);
         TextView username = view.findViewById(R.id.search_user);
+        TextView type = view.findViewById(R.id.search_type);
 
         // Init subscribe box
         subscribed.setTag(position);
@@ -52,11 +53,19 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
 
         expName.setText(experiment.getName());
         status.setText(experiment.isEnded() ? "Ended" : "Active");
+        type.setText(experiment.getExperimentType());
 
         // Fetch username
         if (experiment.getOwnerID() != null && !experiment.getOwnerID().isEmpty()) {
             handler.getUserByID(experiment.getOwnerID(), user -> {
-                username.setText(user.getName());
+
+                if (user == null) {
+                    // SOMEONE MESSED UP THE DB!
+                    username.setText("null");
+                }
+                else {
+                    username.setText(user.getName());
+                }
             });
         }
         else {
