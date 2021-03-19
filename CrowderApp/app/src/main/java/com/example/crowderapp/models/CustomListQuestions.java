@@ -29,7 +29,7 @@ public class CustomListQuestions extends ArrayAdapter<Question> {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.my_experiments_custom_list, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.questions_list, parent, false);
         }
 
         Question question = questions.get(position);

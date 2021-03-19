@@ -20,11 +20,22 @@ public class Question extends Comment {
     }
 
     /**
+     * Construct a full question.
+     * If commentId needs to be provided, user the setter.
+     * @param body The question text that the user is asking.
+     * @param userId The userID of the user who asked the question.
+     */
+    public Question(String body, String userId) {
+        super(body, userId);
+        replyList = new ArrayList<>();
+    }
+
+    /**
      * Adds a new reply answering this question to the list.
      * @param r Reply to add.
      */
     public void addReply(Reply r) {
-        r.setQid(commendId); // Set ID if not already
+        r.setQid(commentId); // Set ID if not already
         replyList.add(r);
     }
 

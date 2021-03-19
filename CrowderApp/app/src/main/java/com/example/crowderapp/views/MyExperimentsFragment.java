@@ -67,6 +67,13 @@ public class MyExperimentsFragment extends Fragment {
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        thisContext = container.getContext();
+        View view = inflater.inflate(R.layout.my_experiments_fragment, container, false);
+
         userHandler.getCurrentUser(new getUserByIDCallBack() {
             @Override
             public void callBackResult(User user) {
@@ -112,12 +119,6 @@ public class MyExperimentsFragment extends Fragment {
                 });
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        thisContext = container.getContext();
-        View view = inflater.inflate(R.layout.my_experiments_fragment, container, false);
         return view;
     }
 

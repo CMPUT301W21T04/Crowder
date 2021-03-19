@@ -45,6 +45,7 @@ import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -68,6 +69,8 @@ public class AllExperimentsFragment extends Fragment {
     // Search box
     private EditText searchEditText;
     private Button searchBtn;
+
+    private FloatingActionButton fab;
 
     MenuItem menuItem;
 
@@ -122,7 +125,6 @@ public class AllExperimentsFragment extends Fragment {
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
-        update();
 
     }
 
@@ -130,16 +132,36 @@ public class AllExperimentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
-
+        userHandler = new UserHandler(getActivity().getSharedPreferences(
+                UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
+        update();
+        fab = view.findViewById(R.id.add_experiment_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddExperimentFragment().show(getFragmentManager(), "ADD_EXPR");
+            }
+        });
         // Search Setup
         searchEditText = view.findViewById(R.id.search_EditText);
         searchBtn = view.findViewById(R.id.search_btn);
         // Init search adapter
-        searchListAdapter = new SearchListAdapter(thisContext, allExperimentListItems, listener);
+        searchListAdapter = new SearchListAdapter(thisContext, allExperimentListItems, listener, userId -> openUserFragment(userId));
 
         searchBtn.setOnClickListener(v -> handleSearch());
 
         return view;
+    }
+
+    /**
+     * Opens an immutable user fragment.
+     * @param userId The ID of user whose profile to open
+     */
+    public void openUserFragment(String userId) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, ImmutableProfileFragment.newInstance(userId));
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     /**
@@ -238,7 +260,7 @@ public class AllExperimentsFragment extends Fragment {
         bundle.putSerializable("ExperimentID", experimentID);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
+        transaction.replace(R.id.container, fragment, "Questions");
         transaction.addToBackStack(null);
         transaction.commit();
     }

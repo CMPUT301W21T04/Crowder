@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,15 +21,19 @@ import android.widget.Toast;
 import com.example.crowderapp.models.AllExperimentListItem;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.views.AddExperimentFragment;
+import com.example.crowderapp.views.AddQuestionFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.ProfileFragment;
+import com.example.crowderapp.views.QuestionsFragment;
+import com.example.crowderapp.views.ReplyFragment;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity
-        implements AddExperimentFragment.OnFragmentInteractionListener{
+        implements AddExperimentFragment.OnFragmentInteractionListener,
+        AddQuestionFragment.OnFragmentInteractionListener{
 
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
@@ -46,13 +51,7 @@ public class MainActivity extends AppCompatActivity
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
-        fab = findViewById(R.id.add_experiment_button);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPR");
-            }
-        });
+
 
         allExpFrag = AllExperimentsFragment.newInstance();
         openFragment(allExpFrag);
@@ -65,21 +64,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.location_item:
-//                Toast.makeText(this, "yo", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     public void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
+//        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -89,16 +78,16 @@ public class MainActivity extends AppCompatActivity
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.navigation_all_experiments:
-                            fab.show();
+//                            fab.show();
                             allExpFrag = AllExperimentsFragment.newInstance();
                             openFragment(allExpFrag);
                             return true;
                         case R.id.navigation_my_experiments:
-                            fab.hide();
+//                            fab.hide();
                             openFragment(MyExperimentsFragment.newInstance());
                             return true;
                         case R.id.navigation_profile:
-                            fab.hide();
+//                            fab.hide();
                             openFragment(ProfileFragment.newInstance());
                             return true;
                     }

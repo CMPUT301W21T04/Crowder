@@ -15,21 +15,38 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.models.AllExperimentListItem;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.User;
 
 import java.util.List;
 
 public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
     private List<AllExperimentListItem> experiments;
     private Context context;
-    private final View.OnClickListener listener;
+    private final View.OnClickListener subListener;
+    private final UsernameClickCallback userListener;
     private UserHandler handler;
 
+    /**
+     * Callback for clicking a user.
+     */
+    public interface UsernameClickCallback {
+        void userClicked(String userId);
+    }
 
-    public SearchListAdapter(Context context, List<AllExperimentListItem> experiments, View.OnClickListener listener) {
+
+    /**
+     * Constructor.
+     * @param context Android Context.
+     * @param experiments List of Experiment List Items.
+     * @param subListener The listener for when subscribe is clicked.
+     * @param userListener The callback for when username is clicked.
+     */
+    public SearchListAdapter(Context context, List<AllExperimentListItem> experiments, View.OnClickListener subListener, UsernameClickCallback userListener) {
         super(context,0,experiments);
         this.experiments = experiments;
         this.context = context;
-        this.listener = listener;
+        this.subListener = subListener;
+        this.userListener = userListener;
         handler = new UserHandler(getContext().getSharedPreferences(UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
     }
 
@@ -45,18 +62,30 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
         Button subscribed = view.findViewById(R.id.search_subscribed);
         TextView status = view.findViewById(R.id.search_status);
         TextView username = view.findViewById(R.id.search_user);
+        TextView type = view.findViewById(R.id.search_type);
 
         // Init subscribe box
         subscribed.setTag(position);
-        subscribed.setOnClickListener(listener);
+        subscribed.setOnClickListener(subListener);
 
         expName.setText(experiment.getName());
         status.setText(experiment.isEnded() ? "Ended" : "Active");
+        type.setText(experiment.getExperimentType());
 
         // Fetch username
         if (experiment.getOwnerID() != null && !experiment.getOwnerID().isEmpty()) {
             handler.getUserByID(experiment.getOwnerID(), user -> {
-                username.setText(user.getName());
+
+                if (user == null) {
+                    // SOMEONE MESSED UP THE DB!
+                    username.setText("null");
+                }
+                else {
+                    username.setText(user.getName());
+                    username.setOnClickListener((v) -> {
+                        userListener.userClicked(user.getUid());
+                    });
+                }
             });
         }
         else {
