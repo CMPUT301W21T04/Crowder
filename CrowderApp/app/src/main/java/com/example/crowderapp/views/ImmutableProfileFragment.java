@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.crowderapp.R;
+import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.UserDAO;
 
@@ -59,9 +60,9 @@ public class ImmutableProfileFragment extends ProfileFragment {
         String userId = bundle.getString(USER_ID);
 
         // Observer to update the fields
-        UserDAO.UserObserver obs = new UserDAO.UserObserver() {
+        getUserByIDCallBack obs = new getUserByIDCallBack() {
             @Override
-            public void update(UserDAO dao, User receive_user) {
+            public void callBackResult(User receive_user) {
                 emailBox.setText(receive_user.getEmail());
                 phoneBox.setText(receive_user.getPhone());
                 usernameBox.setText(receive_user.getName());
@@ -71,11 +72,11 @@ public class ImmutableProfileFragment extends ProfileFragment {
 
         if (userId == null) {
             // Show current user.
-            userHandler.observeCurrentUser(getActivity(), obs);
+            userHandler.getCurrentUser(obs);
         }
         else {
             // Show the chosen user
-            userHandler.observerUser(userId, getActivity(), obs);
+            userHandler.getUserByID(userId, obs);
         }
 
         return view;
