@@ -28,8 +28,6 @@ public class ReplyFragment extends Fragment {
     private ListView repliesView;
     private ArrayAdapter<Reply> replyAdapter;
     private Question question;
-    private CommentHandler commentHandler = new CommentHandler();
-    private Context thisContext;
 
     public ReplyFragment() {
 
@@ -60,14 +58,11 @@ public class ReplyFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        thisContext = container.getContext();
         View view = inflater.inflate(R.layout.reply_fragment, container, false);
 
         replyList = question.getReplyList();
-        Reply reply = new Reply();
-//        reply.setBody("Yes it does");
-//        reply.setUsername("Ray");
-//        replyList.add(reply);
+        Reply reply = new Reply("Yes it does", "76S5iUPzQ1Lhlmh819nv", question.getCommentId());
+        replyList.add(reply);
         replyAdapter = new CustomListReply(getContext(), replyList);
         repliesView = view.findViewById(R.id.reply_list);
         repliesView.setAdapter(replyAdapter);

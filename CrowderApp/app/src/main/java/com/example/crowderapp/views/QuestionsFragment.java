@@ -18,6 +18,7 @@ import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentQuestionsCallBack;
 import com.example.crowderapp.models.CustomListQuestions;
 import com.example.crowderapp.models.posts.Question;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,10 @@ public class QuestionsFragment extends Fragment {
     private List<Question> questionsList = new ArrayList<Question>();
     private ListView questionsView;
     private ArrayAdapter<Question> questionAdapter;
-    private ExperimentHandler expHandler = new ExperimentHandler();
     private CommentHandler commentHandler = new CommentHandler();
     private String experimentId;
     private Context thisContext;
+    private FloatingActionButton fab;
 
     public QuestionsFragment() {}
 
@@ -48,8 +49,6 @@ public class QuestionsFragment extends Fragment {
         Bundle bundle = getArguments();
         experimentId = (String) bundle.getSerializable("ExperimentID");
 
-
-
     }
 
 
@@ -58,7 +57,7 @@ public class QuestionsFragment extends Fragment {
         bundle.putSerializable("Question", question);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
+        transaction.replace(R.id.container, fragment, "Replies");
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -67,15 +66,22 @@ public class QuestionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.questions_fragment, container, false);
-        Question question = new Question();
-//        question.setBody("Does This work?");
-//        question.setUsername("YOOOOOO");
+        Question question = new Question("Does This work?", "Ray");
+
+        fab = view.findViewById(R.id.add_experiment_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString("ExperimentID", experimentId);
+            }
+        });
 
         commentHandler.getExperimentQuestions(experimentId, new getExperimentQuestionsCallBack() {
             @Override
             public void callBackResult(List<Question> questionList) {
                 questionsList = questionList;
-//                questionsList.add(question);
+                questionsList.add(question);
                 questionAdapter = new CustomListQuestions(thisContext, questionsList);
                 questionsView = getView().findViewById(R.id.question_list);
                 questionsView.setAdapter(questionAdapter);
