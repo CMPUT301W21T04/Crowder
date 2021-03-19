@@ -21,6 +21,7 @@
         </EditText>
 
         <Button
+
             android:id="@+id/search_btn"
             android:layout_width="102dp"
             android:layout_height="wrap_content"
