@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.CommentHandler;
@@ -54,8 +56,24 @@ public class QuestionsFragment extends Fragment {
                 questionAdapter = new CustomListQuestions(thisContext, questionsList);
                 questionsView = getView().findViewById(R.id.question_list);
                 questionsView.setAdapter(questionAdapter);
+                questionsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        openFragment(ReplyFragment.newInstance(), questionAdapter.getItem(position));
+                    }
+                });
             }
         });
+    }
+
+    private void openFragment(Fragment fragment, Question question) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Question", question);
+        fragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
