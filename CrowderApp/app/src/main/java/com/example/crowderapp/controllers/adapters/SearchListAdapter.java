@@ -34,6 +34,13 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
     }
 
 
+    /**
+     * Constructor.
+     * @param context Android Context.
+     * @param experiments List of Experiment List Items.
+     * @param subListener The listener for when subscribe is clicked.
+     * @param userListener The callback for when username is clicked.
+     */
     public SearchListAdapter(Context context, List<AllExperimentListItem> experiments, View.OnClickListener subListener, UsernameClickCallback userListener) {
         super(context,0,experiments);
         this.experiments = experiments;
