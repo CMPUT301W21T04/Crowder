@@ -2,16 +2,18 @@ package com.example.crowderapp.models.posts;
 
 import com.google.firebase.firestore.DocumentId;
 
+import java.io.Serializable;
+
 /**
  * Comment class that represents the user posts in the
  * question-answer posts.
  */
-public abstract class Comment {
+public abstract class Comment implements Serializable {
     String body;
     String username;
 
     @DocumentId //
-    String commendId;
+    String commentId;
 
     /**
      * Default constructor.
@@ -45,11 +47,11 @@ public abstract class Comment {
     /**
      * @return Database ID for this comment.
      */
-    public String getCommendId() {
-        return commendId;
+    public String getCommentId() {
+        return commentId;
     }
 
-    public void setCommendId(String commendId) {
-        this.commendId = commendId;
+    public void setCommentId(String commendId) {
+        this.commentId = commendId;
     }
 }

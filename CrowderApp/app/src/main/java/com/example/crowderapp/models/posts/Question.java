@@ -24,7 +24,7 @@ public class Question extends Comment {
      * @param r Reply to add.
      */
     public void addReply(Reply r) {
-        r.setQid(commendId); // Set ID if not already
+        r.setQid(commentId); // Set ID if not already
         replyList.add(r);
     }
 
