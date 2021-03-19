@@ -69,14 +69,15 @@ public class MainActivity extends AppCompatActivity
     public void openFragment(Fragment fragment) {
         // https://stackoverflow.com/questions/6186433/clear-back-stack-using-fragments
         FragmentManager fm = getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount() - 1; ++i) {
-            fm.popBackStack();
-        }
+//        for(int i = 0; i < fm.getBackStackEntryCount() - 1; ++i) {
+//            fm.popBackStack();
+//        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
-        if(fm.getBackStackEntryCount() != 0 ) {
-            transaction.addToBackStack(null);
-        }
+        if(!(fragment instanceof MyExperimentsFragment) || !(fragment instanceof ProfileFragment))
+            if(fm.getBackStackEntryCount() != 0) {
+                transaction.addToBackStack(null);
+            }
         transaction.commit();
     }
 
