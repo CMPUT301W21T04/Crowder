@@ -25,6 +25,9 @@ public class User implements Serializable {
     // Experiment Information
     private List<String> subscribedExperiments;
 
+    /**
+     * Empty Constructor to initialize a User
+     */
     public User() {
         subscribedExperiments = new LinkedList<>();
 

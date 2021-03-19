@@ -15,6 +15,12 @@ public class MeasurementExperiment extends Experiment {
         super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
+    /**
+     * Adds a measurement to the trials and computes new average
+     * @param meas measurement to be added
+     * @param experimenter unique id of experimenter adding the trial
+     * @param location location where the trial was taken
+     */
     public void addMeasurement(double meas, String experimenter, Location location) {
         averageMeasurement = (averageMeasurement*measurementCount+meas)/(1+measurementCount);
         measurementCount += 1;
