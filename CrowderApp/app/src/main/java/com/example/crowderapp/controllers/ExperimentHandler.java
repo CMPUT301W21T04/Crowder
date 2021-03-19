@@ -73,12 +73,8 @@ public class ExperimentHandler {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (task.isSuccessful()) {
-                    if (task.getResult() != null){
-                        newExperiment.setExperimentID(task.getResult());
-                        callBack.callBackResult(newExperiment);
-                    } else {
-                        logger.log(Level.SEVERE, "Null result in create Experiment");
-                    }
+                    newExperiment.setExperimentID(task.getResult());
+                    callBack.callBackResult(newExperiment);
                 }
             }
         });
@@ -97,13 +93,9 @@ public class ExperimentHandler {
             @Override
             public void onComplete(@NonNull Task<Experiment> task) {
                 if (task.isSuccessful()) {
-                    if (task.getResult() != null) {
-                        Experiment experimentToDelete = task.getResult();
-                        experimentDAO.deleteExperiment(experimentToDelete);
-                        callback.callBackResult();
-                    } else {
-                        logger.log(Level.SEVERE, "Null result in unpublish Experiment");
-                    }
+                    Experiment experimentToDelete = task.getResult();
+                    experimentDAO.deleteExperiment(experimentToDelete);
+                    callback.callBackResult();
                 } else {
                     Exception e = task.getException();
                     logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
@@ -125,11 +117,7 @@ public class ExperimentHandler {
             @Override
             public void onComplete(@NonNull Task<List<Experiment>> task) {
                 if (task.isSuccessful()){
-                    if (task.getResult() != null) {
-                        callback.callBackResult(task.getResult());
-                    } else {
-                        logger.log(Level.SEVERE, "Null result in get all subscribed Experiment");
-                    }
+                    callback.callBackResult(task.getResult());
                 } else {
                     logger.log(Level.SEVERE, "Error in get all subscribed experiments in handler");
                 }
@@ -162,12 +150,7 @@ public class ExperimentHandler {
             @Override
             public void onComplete(@NonNull Task<Experiment> task) {
                 if (task.isSuccessful()) {
-                    if (task.getResult() != null) {
-                        callback.callBackResult(task.getResult());
-                    } else {
-                        logger.log(Level.SEVERE, "Error in get all getExperiment returned a null in handler");
-                    }
-
+                    callback.callBackResult(task.getResult());
                 } else {
                     logger.log(Level.SEVERE, "Error in get experiment in handler");
                 }
@@ -196,11 +179,7 @@ public class ExperimentHandler {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                callBack.callBackResult(task.getResult());
-                            } else {
-                                logger.log(Level.SEVERE, "Error in get add trial returned a null in handler");
-                            }
+                            callBack.callBackResult(task.getResult());
                         } else {
                             logger.log(Level.SEVERE, "Error in add trial in handler");
                         }
@@ -249,11 +228,7 @@ public class ExperimentHandler {
             @Override
             public void onComplete(@NonNull Task<List<Experiment>> task) {
                 if (task.isSuccessful()) {
-                    if (task.getResult() != null) {
-                        callback.callBackResult(task.getResult());
-                    } else {
-                        logger.log(Level.SEVERE, "Error in getAllExperiments returned a null in handler");
-                    }
+                    callback.callBackResult(task.getResult());
                 } else {
                     logger.log(Level.SEVERE, "Error in get all experiments in handler");
                 }
