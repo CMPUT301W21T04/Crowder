@@ -69,7 +69,6 @@ public class AllExperimentsFragment extends Fragment {
     private EditText searchEditText;
     private Button searchBtn;
 
-    Task<User> userTask;
     MenuItem menuItem;
 
     public AllExperimentsFragment() {
@@ -145,7 +144,7 @@ public class AllExperimentsFragment extends Fragment {
         searchEditText = view.findViewById(R.id.search_EditText);
         searchBtn = view.findViewById(R.id.search_btn);
         // Init search adapter
-        searchListAdapter = new SearchListAdapter(thisContext, allExperimentListItems, checkListener);
+        searchListAdapter = new SearchListAdapter(thisContext, allExperimentListItems, listener);
 
         searchBtn.setOnClickListener(v -> handleSearch());
 
@@ -157,8 +156,7 @@ public class AllExperimentsFragment extends Fragment {
      * Retrieves all experiments again and filters by search string.
      */
     private void handleSearch() {
-        User theUser = userTask.getResult();
-        if (theUser == null) {
+        if (thisUser == null) {
             // Current user hasn't bee retrieved so ignore search command for now.
             return;
         }

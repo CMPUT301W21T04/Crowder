@@ -1,13 +1,11 @@
 package com.example.crowderapp.controllers.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,11 +21,11 @@ import java.util.List;
 public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
     private List<AllExperimentListItem> experiments;
     private Context context;
-    private final CompoundButton.OnCheckedChangeListener listener;
+    private final View.OnClickListener listener;
     private UserHandler handler;
 
 
-    public SearchListAdapter(Context context, List<AllExperimentListItem> experiments, CompoundButton.OnCheckedChangeListener listener) {
+    public SearchListAdapter(Context context, List<AllExperimentListItem> experiments, View.OnClickListener listener) {
         super(context,0,experiments);
         this.experiments = experiments;
         this.context = context;
@@ -44,13 +42,13 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
         Experiment experiment = experimentItem.getExperiment();
 
         TextView expName = view.findViewById(R.id.search_experiment_name);
-        CheckBox subscribed = view.findViewById(R.id.search_subscribed);
+        Button subscribed = view.findViewById(R.id.search_subscribed);
         TextView status = view.findViewById(R.id.search_status);
         TextView username = view.findViewById(R.id.search_user);
 
         // Init subscribe box
         subscribed.setTag(position);
-        subscribed.setOnCheckedChangeListener(listener);
+        subscribed.setOnClickListener(listener);
 
         expName.setText(experiment.getName());
         status.setText(experiment.isEnded() ? "Ended" : "Active");
@@ -66,9 +64,10 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
         }
 
         if (experimentItem.getIsSubscribed()) {
-            subscribed.setChecked(true);
-        } else {
-            subscribed.setChecked(false);
+            subscribed.setBackgroundColor(context.getResources().getColor(R.color.black));
+        }
+        else {
+            subscribed.setBackgroundColor(context.getResources().getColor(R.color.teal_200));
         }
 
         return view;
