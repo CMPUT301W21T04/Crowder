@@ -62,18 +62,19 @@ public class UiTestHelperFunctions {
         createExperiment(solo, expName, minTrialAmt, expTypes.COUNT);
     }
 
-    public static void goToProfile(Solo solo) {
-        solo.clickOnText("Profile");
-    }
-
     public static void goToMyExperiments(Solo solo) {
-        View allButton = solo.getView(R.id.navigation_my_experiments);
-        solo.clickOnView(allButton);
+        View myButton = solo.getView(R.id.navigation_my_experiments);
+        solo.clickOnView(myButton);
     }
 
     public static void goToAllExperiments(Solo solo) {
         View allButton = solo.getView(R.id.navigation_all_experiments);
         solo.clickOnView(allButton);
+    }
+
+    public static void goToProfile(Solo solo) {
+        View profButton = solo.getView(R.id.navigation_profile);
+        solo.clickOnView(profButton);
     }
 
     public static void toggleSubExperiment(Solo solo, String expname) {
