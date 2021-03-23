@@ -31,6 +31,7 @@ import com.example.crowderapp.views.AllExperimentsFragment;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class NonNegativeCountTrialFragment extends TrialFragment {
@@ -105,6 +106,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
 
                     numCountTextView.setText(String.valueOf(numCounts));
                     calculateAverage();
+                    trials.add(new TallyTrial(user.getUid(), new Date(), currentCount, new Location(), tallyExperiment.getExperimentID()));
                     numCounts++;
                     tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), new Location());
                     aveCountTextView.setText(averageString);
