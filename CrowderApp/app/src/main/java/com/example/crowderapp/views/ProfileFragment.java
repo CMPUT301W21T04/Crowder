@@ -103,6 +103,19 @@ public class ProfileFragment extends Fragment {
                 usernameBox.setEnabled(true);
 
             } else  {
+                // User entered new info
+                String phone = phoneBox.getText().toString();
+                String email = emailBox.getText().toString();
+                
+                if (!User.validPhoneNumber(phone)) {
+                    Toast.makeText(getActivity(), "Phone must be in 111-222-3333 format", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!User.validEmail(email)) {
+                    Toast.makeText(getActivity(), "Email is not valid.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                
                 // Turn off edit mode.
                 editBtn.setImageDrawable(editImage);
                 emailBox.setEnabled(false);
@@ -110,8 +123,8 @@ public class ProfileFragment extends Fragment {
                 usernameBox.setEnabled(false);
 
                 user.setName(usernameBox.getText().toString());
-                user.setPhone(phoneBox.getText().toString());
-                user.setEmail(emailBox.getText().toString());
+                user.setPhone(phone);
+                user.setEmail(email);
 
                 userHandler.updateCurrentUser(user);
             }

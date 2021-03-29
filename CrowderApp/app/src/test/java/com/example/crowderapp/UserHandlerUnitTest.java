@@ -27,7 +27,7 @@ import org.robolectric.shadows.ShadowLooper;
 
 @Config(sdk = 27)
 @RunWith(RobolectricTestRunner.class)
-public class UserUnitTest {
+public class UserHandlerUnitTest {
 
     UserHandler handler;
     SharedPreferences mockedPref;
