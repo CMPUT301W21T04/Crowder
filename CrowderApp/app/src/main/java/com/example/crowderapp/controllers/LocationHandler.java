@@ -37,7 +37,7 @@ public class LocationHandler {
 
     /**
      * Check if this app has necessary GPS permissions.
-     * @return
+     * @return True if GPS permission was granted.
      */
     public boolean hasGPSPermissions() {
         return this.context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
