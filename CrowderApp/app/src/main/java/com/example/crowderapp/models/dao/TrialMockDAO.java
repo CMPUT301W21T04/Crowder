@@ -34,6 +34,18 @@ public class TrialMockDAO extends TrialDAO {
     }
 
     /**
+     * Get all the trials for a given experiment but have certain users'
+     * trials be omitted from the returned trials.
+     *
+     * @param excludedUsers List of User IDs to exclude.
+     * @return The list of trials.
+     */
+    @Override
+    public Task<List<Trial>> getExperimentTrialsUserFiltered(List<String> excludedUsers) {
+        return null;
+    }
+
+    /**
      * Adds a trial for the experiment
      *
      * @param trial

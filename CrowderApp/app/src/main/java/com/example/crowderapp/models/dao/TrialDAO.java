@@ -32,6 +32,14 @@ public abstract class TrialDAO {
     public abstract Task<List<Trial>> getExperimentTrials();
 
     /**
+     * Get all the trials for a given experiment but have certain users'
+     * trials be omitted from the returned trials.
+     * @param excludedUsers List of User IDs to exclude.
+     * @return The list of trials.
+     */
+    public abstract Task<List<Trial>> getExperimentTrialsUserFiltered(List<String> excludedUsers);
+
+    /**
      * Adds a trial for the experiment
      * @param trial
      * @return The task that resolves into the trial ID.
