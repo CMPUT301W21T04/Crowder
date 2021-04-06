@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
@@ -23,6 +22,14 @@ public class CustomListReply extends ArrayAdapter<Reply> {
     private Context context;
     public UserHandler userHandler;
     private User user;
+    private OnUsernameClickListener userNameClickCb;
+
+    /**
+     * Callback interface when the username is clicked.
+     */
+    public interface OnUsernameClickListener {
+        void onClick(String userId);
+    }
 
     /**
      * Constructor
@@ -33,6 +40,15 @@ public class CustomListReply extends ArrayAdapter<Reply> {
         super(context, 0, replies);
         this.context = context;
         this.replies = replies;
+        userNameClickCb = null;
+    }
+
+    /**
+     * Set the listener for when username is clicked.
+     * @param cb
+     */
+    public void setOnUsernameClickListener(OnUsernameClickListener cb) {
+        userNameClickCb = cb;
     }
 
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -51,6 +67,12 @@ public class CustomListReply extends ArrayAdapter<Reply> {
             @Override
             public void callBackResult(User user) {
                 userText.setText(user.getName());
+
+                userText.setOnClickListener(v -> {
+                    if (userNameClickCb != null) {
+                        userNameClickCb.onClick(reply.getUserId());
+                    }
+                });
             }
         });
 

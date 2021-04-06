@@ -28,7 +28,7 @@ public class ReplyFragment extends Fragment {
 
     private List<Reply> replyList = new ArrayList<>();
     private ListView repliesView;
-    private ArrayAdapter<Reply> replyAdapter;
+    private CustomListReply replyAdapter;
     private Question question;
     private String userID;
     private String experimentID;
@@ -64,11 +64,20 @@ public class ReplyFragment extends Fragment {
 
     }
 
-
-
     private void openFragment(Fragment fragment, Question question) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    /**
+     * Opens an immutable user fragment.
+     * @param userId The ID of user whose profile to open
+     */
+    public void openUserFragment(String userId) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, ImmutableProfileFragment.newInstance(userId));
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -86,7 +95,10 @@ public class ReplyFragment extends Fragment {
         });
 
         replyList = question.getReplyList();
+
         replyAdapter = new CustomListReply(getContext(), replyList);
+        replyAdapter.setOnUsernameClickListener(userId -> openUserFragment(userId));
+
         repliesView = view.findViewById(R.id.reply_list);
         repliesView.setAdapter(replyAdapter);
 
