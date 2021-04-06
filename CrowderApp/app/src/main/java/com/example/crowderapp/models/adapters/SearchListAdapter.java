@@ -1,4 +1,4 @@
-package com.example.crowderapp.controllers.adapters;
+package com.example.crowderapp.models.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.models.AllExperimentListItem;
 import com.example.crowderapp.models.Experiment;
-import com.example.crowderapp.models.User;
 
 import java.util.List;
 

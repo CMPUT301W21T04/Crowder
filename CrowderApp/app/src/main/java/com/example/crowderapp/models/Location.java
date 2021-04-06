@@ -4,8 +4,8 @@ package com.example.crowderapp.models;
  * Represents a location for a trial.
  */
 public class Location {
-    public double longitude;
-    public double latitude;
+    private double longitude;
+    private double latitude;
 
     public Location() {
     }

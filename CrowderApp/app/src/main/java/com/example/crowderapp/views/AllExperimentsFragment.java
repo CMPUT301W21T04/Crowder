@@ -1,53 +1,36 @@
 package com.example.crowderapp.views;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
-import com.example.crowderapp.controllers.adapters.SearchListAdapter;
+import com.example.crowderapp.models.adapters.SearchListAdapter;
 import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
-import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
 import com.example.crowderapp.models.AllExperimentListItem;
-import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CustomListAllExperiments;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Search;
 import com.example.crowderapp.models.User;
-import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
