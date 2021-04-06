@@ -30,10 +30,12 @@ import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.views.AddExperimentFragment;
 import com.example.crowderapp.views.AddQuestionFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
+import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.ProfileFragment;
 import com.example.crowderapp.views.QuestionsFragment;
 import com.example.crowderapp.views.ReplyFragment;
+import com.example.crowderapp.views.trialfragments.TrialFragment;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,7 +46,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity
         implements AddExperimentFragment.OnFragmentInteractionListener,
-        AddQuestionFragment.OnFragmentInteractionListener{
+        AddQuestionFragment.OnFragmentInteractionListener,
+        LocationPopupFragment.OnFragmentInteractionListener{
 
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
@@ -139,6 +142,14 @@ public class MainActivity extends AppCompatActivity
             };
 
     @Override
+    public void onOkPressed(boolean allow) {
+        if(!allow) {
+            openFragment(MyExperimentsFragment.newInstance());
+            return;
+        }
+    }
+
+    @Override
     public void onOkPressed(Question question) {
         ReplyFragment replyFragment = (ReplyFragment) getSupportFragmentManager().findFragmentByTag("Replies");
         replyFragment.update(question);
@@ -146,7 +157,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onOkPressed() {
-//        allExpFrag.update();
         QuestionsFragment questionFrag = (QuestionsFragment) getSupportFragmentManager().findFragmentByTag("Questions");
         if(questionFrag != null && questionFrag.isVisible()) {
             questionFrag.update();

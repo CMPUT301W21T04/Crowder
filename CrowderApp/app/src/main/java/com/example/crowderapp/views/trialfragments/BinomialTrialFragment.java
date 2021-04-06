@@ -26,6 +26,7 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.LocationPopupFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -79,6 +80,10 @@ public class BinomialTrialFragment extends TrialFragment {
 
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+        if(experiment.isLocationRequired()) {
+            new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+        }
+
         binomialExperiment = (BinomialExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 

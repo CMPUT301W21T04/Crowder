@@ -28,6 +28,7 @@ import com.example.crowderapp.models.TallyTrial;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.AllExperimentsFragment;
+import com.example.crowderapp.views.LocationPopupFragment;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -75,6 +76,11 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+        if(experiment.isLocationRequired()) {
+            new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+        }
+
+
         tallyExperiment = (TallyExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 
