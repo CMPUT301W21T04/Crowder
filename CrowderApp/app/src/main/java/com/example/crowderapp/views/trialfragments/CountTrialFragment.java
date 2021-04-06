@@ -27,6 +27,7 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.LocationPopupFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +62,10 @@ public class CountTrialFragment extends TrialFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+        if(experiment.isLocationRequired()) {
+            new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+        }
+
         countExperiment = (CounterExperiment) experiment;
         user = (User) bundle.getSerializable("User");
         totalCountTextView = view.findViewById(R.id.count_total_TextView);

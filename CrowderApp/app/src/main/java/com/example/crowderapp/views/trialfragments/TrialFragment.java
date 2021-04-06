@@ -22,6 +22,7 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.QuestionsFragment;
 
@@ -43,7 +44,6 @@ public class TrialFragment extends Fragment {
 
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
-
     }
 
     @Override
