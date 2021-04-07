@@ -48,21 +48,21 @@ public class TrialFSDAO extends TrialDAO {
      * Construct the proper trial based on the document type.
      */
     public Trial getProperTrial(DocumentSnapshot doc) {
-        if(experimentType == "Count") {
+        if(experimentType.equals("Non-Negative Integer")) {
             return doc.toObject(TallyTrial.class);
         }
-        else if (experimentType == "Measurement") {
+        else if (experimentType.equals("Measurement")) {
             return doc.toObject(MeasurementTrial.class);
         }
-        else if (experimentType == "Binomial") {
+        else if (experimentType.equals("Binomial")) {
             return doc.toObject(BinomialTrial.class);
         }
-        else if (experimentType == "Count") {
+        else if (experimentType.equals("Count")) {
             //Must be counter trial
             return doc.toObject(CounterTrial.class);
         }
         else {
-            throw new IllegalArgumentException("Unknown Experiment type");
+            throw new IllegalArgumentException("Unknown Experiment type: " + experimentType);
         }
     }
 
@@ -100,6 +100,27 @@ public class TrialFSDAO extends TrialDAO {
             return trialList;
         }).addOnFailureListener(e -> {
             Log.e(TAG, "getExperimentTrials: Failed to get all trials for experiment " + experimentID, e);
+        });
+    }
+
+    /**
+     * Get all the trials for a given experiment but have certain users'
+     * trials be omitted from the returned trials.
+     *
+     * @param excludedUsers List of User IDs to exclude.
+     * @return The list of trials.
+     */
+    @Override
+    public Task<List<Trial>> getExperimentTrialsUserFiltered(List<String> excludedUsers) {
+        return trialCollection.whereNotIn("experimenter", excludedUsers).get().continueWith(task -> {
+            List<Trial> trialList = new LinkedList<>();
+            for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                Trial trial = getProperTrial(doc);
+                trialList.add(trial);
+            }
+            return trialList;
+        }).addOnFailureListener(e -> {
+            Log.e(TAG, "getExperimentTrials: Failed to get all user filtered trials for experiment " + experimentID, e);
         });
     }
 
