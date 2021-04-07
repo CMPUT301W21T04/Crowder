@@ -1,10 +1,10 @@
 package com.example.crowderapp.models;
 
-import android.graphics.Point;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Map;
 
 public abstract class ExperimentStats <T extends Trial> {
     protected double mean;
@@ -12,14 +12,43 @@ public abstract class ExperimentStats <T extends Trial> {
     protected double stdev;
     protected double[] values;
     protected List<Double> quartiles;
-    protected List<Point> plotPoints;
-    protected List<Point> histPoints;
+    protected List<Graph> plotPoints;
+    protected List<Bar> histPoints;
+
+    public class Graph {
+        private String name;
+        private List<Point> points;
+
+        public Graph(String name, List<Point> points) {
+            this.name = name;
+            this.points = points;
+        }
+
+        public String getName() { return name; }
+        public List<Point> getPoints() { return points; }
+    }
 
     public class Point {
+        private Date x;
+        private double y;
+
+        public Point(Date x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        private void setX(Date x) { this.x = x; }
+        private void setY(double y) { this.y = y; }
+
+        public Date getX() { return x; }
+        public double getY() { return y; }
+    }
+
+    public class Bar {
         private String x;
         private double y;
 
-        public Point(String x, double y) {
+        public Bar(String x, double y) {
             this.x = x;
             this.y = y;
         }
@@ -44,9 +73,9 @@ public abstract class ExperimentStats <T extends Trial> {
 
     protected abstract double[] setValues(List<T> trials);
 
-    protected abstract List<Point> createPlot();
+    protected abstract List<Graph> createPlot();
 
-    protected abstract List<Point> createHistogram();
+    protected abstract List<Bar> createHistogram();
 
     public double getMean() {
         return mean;
@@ -64,9 +93,9 @@ public abstract class ExperimentStats <T extends Trial> {
         return quartiles;
     }
 
-    public List<Point> getPlotPoints() { return plotPoints; }
+    public List<Graph> getPlotPoints() { return plotPoints; }
 
-    public List<Point> getHistPoints() { return histPoints; }
+    public List<Bar> getHistPoints() { return histPoints; }
 
     // for mean+med: https://stackoverflow.com/questions/4191687/how-to-calculate-mean-median-mode-and-range-from-a-set-of-numbers
     protected double calcMean(double[] values) {

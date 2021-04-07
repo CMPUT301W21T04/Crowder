@@ -14,7 +14,7 @@ public class MockExpStats extends ExperimentStats<Trial> {
     }
 
     @Override
-    protected List<Point> createPlot() {
+    protected List<Graph> createPlot() {
         return null;
     }
 

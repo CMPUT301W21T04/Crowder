@@ -1,7 +1,7 @@
 package com.example.crowderapp.models;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
@@ -10,6 +10,7 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
 
     public MeasurementStats(List<MeasurementTrial> trials) {
         super(trials);
+        this.trials = trials;
     }
 
     @Override
@@ -24,12 +25,18 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
     }
 
     @Override
-    protected List<Point> createPlot() {
-        return null;
+    protected List<Graph> createPlot() {
+        List<Point> points = new ArrayList<>();
+        for (MeasurementTrial trial : trials) {
+            points.add(new Point(trial.getDate(), trial.getMeasurement()));
+        }
+        List<Graph> graphs = new ArrayList<>();
+        graphs.add(new Graph("Measurements", points));
+        return graphs;
     }
 
     @Override
-    protected List<Point> createHistogram() {
+    protected List<Bar> createHistogram() {
         return null;
     }
 }
