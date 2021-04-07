@@ -25,6 +25,7 @@ import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.QuestionsFragment;
+import com.example.crowderapp.views.UserFilterFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +114,7 @@ public class TrialFragment extends Fragment {
                 break;
 
             case R.id.filter_item:
+                new UserFilterFragment().newInstance(experiment).show(getFragmentManager(), "UserFilter");
                 break;
 
         }
