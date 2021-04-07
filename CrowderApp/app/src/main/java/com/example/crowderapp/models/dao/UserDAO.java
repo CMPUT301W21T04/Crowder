@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.example.crowderapp.models.User;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
 import java.util.Observer;
 
 public abstract class UserDAO {
@@ -22,6 +23,13 @@ public abstract class UserDAO {
      * @return The user
      */
     public abstract Task<User> getUserByID(String userId);
+
+    /**
+     * Retrieves multiple users by their ids.
+     * @param userIds The ids
+     * @return Task for the list
+     */
+    public abstract Task<List<User>> getUserListById(List<String> userIds);
 
     /**
      * Observes a user in storage.

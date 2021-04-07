@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.crowderapp.models.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -43,6 +44,19 @@ public class UserFSDAO extends UserDAO {
     public Task<User> getUserByID(String userId) {
         return userCollections.document(userId).get().continueWith(task -> {
             return task.getResult().toObject(User.class);
+        });
+    }
+
+    /**
+     * Retrieves multiple users by their ids.
+     *
+     * @param userIds The ids
+     * @return Task for the list
+     */
+    @Override
+    public Task<List<User>> getUserListById(List<String> userIds) {
+        return userCollections.whereIn(FieldPath.documentId(), userIds).get().continueWith(task -> {
+            return task.getResult().toObjects(User.class);
         });
     }
 
