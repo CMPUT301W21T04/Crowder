@@ -2,7 +2,26 @@ package com.example.crowderapp.models;
 
 import java.util.List;
 
-public class MockExpStats extends ExperimentStats {
+public class MockExpStats extends ExperimentStats<Trial> {
+
+    public MockExpStats(List<Trial> trials) {
+        super(trials);
+    }
+
+    @Override
+    protected double[] setValues(List trials) {
+        return new double[0];
+    }
+
+    @Override
+    protected List<Point> createPlot() {
+        return null;
+    }
+
+    @Override
+    protected List<Point> createHistogram() {
+        return null;
+    }
 
     public double calcMean(double[] values) {
         return super.calcMean(values);

@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
-public abstract class ExperimentStats {
+public abstract class ExperimentStats <T extends Trial> {
     protected double mean;
     protected double median;
     protected double stdev;
+    protected double[] values;
     protected List<Double> quartiles;
     protected List<Point> plotPoints;
     protected List<Point> histPoints;
@@ -29,6 +30,23 @@ public abstract class ExperimentStats {
         public String getX() { return x; }
         public double getY() { return y; }
     }
+
+    // Template pattern
+    ExperimentStats(List<T> trials) {
+        values = setValues(trials);
+        mean = calcMean(values);
+        median = calcMedian(values);
+        stdev = calcStdev(values, mean);
+        quartiles = calcQuart(values);
+        plotPoints = createPlot();
+        histPoints = createHistogram();
+    }
+
+    protected abstract double[] setValues(List<T> trials);
+
+    protected abstract List<Point> createPlot();
+
+    protected abstract List<Point> createHistogram();
 
     public double getMean() {
         return mean;
@@ -76,7 +94,6 @@ public abstract class ExperimentStats {
     }
 
     // https://stackoverflow.com/questions/18390548/how-to-calculate-standard-deviation-using-java
-    // unit test this. Needs verification.
     protected double calcStdev(double[] values, double mean) {
         if (values.length == 0) {
             return 0;
@@ -93,7 +110,6 @@ public abstract class ExperimentStats {
     }
 
     // https://stackoverflow.com/questions/42381759/finding-first-quartile-and-third-quartile-in-integer-array-using-java
-    // unit test this. Needs verification.
     protected List<Double> calcQuart(double[] val) {
         if (val.length == 0) {
             List<Double> output = new ArrayList<Double>();

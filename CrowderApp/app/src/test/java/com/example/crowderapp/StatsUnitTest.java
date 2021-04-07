@@ -2,6 +2,7 @@ package com.example.crowderapp;
 
 import com.example.crowderapp.models.ExperimentStats;
 import com.example.crowderapp.models.MockExpStats;
+import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.posts.Question;
 
 import org.junit.Assert;
@@ -17,7 +18,7 @@ public class StatsUnitTest {
 
     @Before
     public void setUp() throws Exception {
-        stats = new MockExpStats();
+        stats = new MockExpStats(new ArrayList<Trial>());
     }
 
     @Test

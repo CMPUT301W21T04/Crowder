@@ -4,26 +4,32 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MeasurementStats extends ExperimentStats {
+public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
+
+    List<MeasurementTrial> trials;
+
     public MeasurementStats(List<MeasurementTrial> trials) {
-        double[] values = new double[trials.size()];
+        super(trials);
+    }
+
+    @Override
+    protected double[] setValues(List<MeasurementTrial> trials) {
+        double[] val = new double[trials.size()];
         int index = 0;
         for (MeasurementTrial trial : trials) {
-            values[index] = trial.getMeasurement();
+            val[index] = trial.getMeasurement();
             index++;
         }
-        mean = calcMean(values);
-        median = calcMedian(values);
-        stdev = calcStdev(values, mean);
-        quartiles = calcQuart(values);
-        createPlot(trials);
-        createHistogram(trials);
+        return val;
     }
 
-    protected void createPlot(List<MeasurementTrial> trials) {
+    @Override
+    protected List<Point> createPlot() {
+        return null;
     }
 
-    protected void createHistogram(List<MeasurementTrial> trials) {
-
+    @Override
+    protected List<Point> createHistogram() {
+        return null;
     }
 }
