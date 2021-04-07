@@ -40,6 +40,7 @@ public class LocationHandler {
     public void injectBarcodeHandler() {
         BarcodeHandler barcodeHandler = new BarcodeHandler();
         barcodeHandler.scanBarcode(this.context);
+        barcodeHandler.scanQR(this.context);
     }
 
     /**

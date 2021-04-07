@@ -42,7 +42,6 @@ public class BarcodeHandler {
                 }
             });
         }
-
     }
 
     public void scanQR(Context context) {
@@ -54,7 +53,7 @@ public class BarcodeHandler {
                     Barcode.FORMAT_QR_CODE
             ).build();
             BarcodeScanner barcodeScanner = BarcodeScanning.getClient(options);
-            Bitmap bitmapResult = BitmapFactory.decodeResource(context.getResources(), R.raw.qr;
+            Bitmap bitmapResult = BitmapFactory.decodeResource(context.getResources(), R.raw.qr);
             InputImage inputImage = InputImage.fromBitmap(bitmapResult, 0);
             Task<List<Barcode>> task = barcodeScanner.process(inputImage);
 
