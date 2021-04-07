@@ -61,4 +61,8 @@ dependencies {
 
     // Location services
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    // Utilities for Maps SDK for Android (requires Google Play Services)
+    implementation 'com.google.maps.android:android-maps-utils:2.2.2'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 }

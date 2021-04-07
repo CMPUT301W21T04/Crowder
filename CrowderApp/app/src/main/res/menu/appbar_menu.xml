@@ -31,7 +31,7 @@
                 android:title="User Filter" />
             <item android:id="@+id/stats_item"
                 android:icon="@drawable/ic_baseline_trending_up_24"
-                android:title="Location Heatmap" />
+                android:title="Statistics" />
             <item android:id="@+id/unpublish_item"
                 android:icon="@drawable/ic_baseline_delete_24"
                 android:title="Unpublish Experiment" />
