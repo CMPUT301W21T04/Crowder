@@ -125,26 +125,32 @@ public class MeasurementTrialFragment extends TrialFragment {
                 if(measurementExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
-                    handler.updateExperiment(measurementExperiment);
-                    for (Trial trial : trials) {
-                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                        handler.addTrial(trial, new addTrialCallBack() {
-                            @Override
-                            public void callBackResult(String trialID) {
-                                Log.v(trialID, "Trial ID returned");
-                            }
-                        });
+                    if(trials.size() >= measurementExperiment.getMinTrials()) {
+                        handler.updateExperiment(measurementExperiment);
+                        for (Trial trial : trials) {
+                            Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                            handler.addTrial(trial, new addTrialCallBack() {
+                                @Override
+                                public void callBackResult(String trialID) {
+                                    Log.v(trialID, "Trial ID returned");
+                                }
+                            });
+                        }
+                        Toast.makeText(view.getContext(), "Trials added.", Toast.LENGTH_SHORT).show();
+
+                        trials = new ArrayList<>();
+                        numMeasurements = 0;
+                        aveMeasurement = 0;
+                        aveMeasurementString = "";
+                        currentMeasurement = 0;
+                        totalMeasurement = 0;
+
+                        aveMeasureTextView.setText("0");
+                        measurementsTextView.setText("0");
                     }
-
-                    trials = new ArrayList<>();
-                    numMeasurements = 0;
-                    aveMeasurement = 0;
-                    aveMeasurementString = "";
-                    currentMeasurement = 0;
-                    totalMeasurement = 0;
-
-                    aveMeasureTextView.setText("0");
-                    measurementsTextView.setText("0");
+                    else {
+                        Toast.makeText(view.getContext(), "Have not met the minimum number of trials!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

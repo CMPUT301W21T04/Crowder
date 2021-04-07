@@ -95,23 +95,29 @@ public class CountTrialFragment extends TrialFragment {
                 if(countExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
-                    handler.updateExperiment(countExperiment);
-                    for (Trial trial : trials) {
-                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                        handler.addTrial(trial, new addTrialCallBack() {
-                            @Override
-                            public void callBackResult(String trialID) {
-                                Log.v(trialID, "Trial ID returned");
-                            }
-                        });
+                    if(trials.size() >= countExperiment.getMinTrials()) {
+                        handler.updateExperiment(countExperiment);
+                        for (Trial trial : trials) {
+                            Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                            handler.addTrial(trial, new addTrialCallBack() {
+                                @Override
+                                public void callBackResult(String trialID) {
+                                    Log.v(trialID, "Trial ID returned");
+                                }
+                            });
+                        }
+
+                        Toast.makeText(view.getContext(), "Trials added.", Toast.LENGTH_SHORT).show();
+
+                        trials = new ArrayList<>();
+                        totalCount = 0;
+
+                        totalCountTextView.setText(String.valueOf(totalCount));
                     }
-
-                    trials = new ArrayList<>();
-                    totalCount = 0;
-
-                    totalCountTextView.setText(String.valueOf(totalCount));
+                    else {
+                        Toast.makeText(view.getContext(), "Have not met the minimum number of trials!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
             }
         });
     }

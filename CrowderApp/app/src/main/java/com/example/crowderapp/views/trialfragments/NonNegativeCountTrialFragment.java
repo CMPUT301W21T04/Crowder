@@ -127,25 +127,34 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
                 if(tallyExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
-                    handler.updateExperiment(tallyExperiment);
-                    for (Trial trial : trials) {
-                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                        handler.addTrial(trial, new addTrialCallBack() {
-                            @Override
-                            public void callBackResult(String trialID) {
-                                Log.v(trialID, "Trial ID returned");
-                            }
-                        });
-                    }
-                    trials = new ArrayList<>();
-                    integerValueString = "";
-                    numCounts = 0;
-                    currentCount = 0;
-                    average = 0;
-                    averageString = "";
+                    if(trials.size() >= tallyExperiment.getMinTrials()) {
+                        handler.updateExperiment(tallyExperiment);
+                        for (Trial trial : trials) {
+                            Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                            handler.addTrial(trial, new addTrialCallBack() {
+                                @Override
+                                public void callBackResult(String trialID) {
+                                    Log.v(trialID, "Trial ID returned");
+                                }
+                            });
+                        }
 
-                    numCountTextView.setText("0");
-                    aveCountTextView.setText("0");
+                        Toast.makeText(view.getContext(), "Trials added.", Toast.LENGTH_SHORT).show();
+
+                        trials = new ArrayList<>();
+                        integerValueString = "";
+                        numCounts = 0;
+                        currentCount = 0;
+                        average = 0;
+                        averageString = "";
+
+                        numCountTextView.setText("0");
+                        aveCountTextView.setText("0");
+                    }
+                    else {
+                        Toast.makeText(view.getContext(), "Have not met the minimum number of trials!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });

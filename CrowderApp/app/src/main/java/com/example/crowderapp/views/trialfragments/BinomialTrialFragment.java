@@ -111,30 +111,38 @@ public class BinomialTrialFragment extends TrialFragment {
                 if (binomialExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
-                    handler.updateExperiment(binomialExperiment);
-                    for (Trial trial : trials) {
-                        Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
-                        handler.addTrial(trial, new addTrialCallBack() {
-                            @Override
-                            public void callBackResult(String trialID) {
-                                Log.v(trialID, "Trial ID returned");
-                            }
-                        });
-                    }
-                    // Reset values
-                    trials = new ArrayList<>();
-                    succView = 0;
-                    failView = 0;
-                    succRateView = 0;
-                    updateSuccessRate();
+                    if(trials.size() >= binomialExperiment.getMinTrials()) {
+                        handler.updateExperiment(binomialExperiment);
+                        for (Trial trial : trials) {
+                            Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
+                            handler.addTrial(trial, new addTrialCallBack() {
+                                @Override
+                                public void callBackResult(String trialID) {
+                                    Log.v(trialID, "Trial ID returned");
+                                }
+                            });
+                        }
 
-                    // Refresh UI elements to 0
-                    passes.setText("Successes: " + String.valueOf(succView));
-                    fails.setText("Fails : " + String.valueOf(failView));
-                    successRate.setText("Success Rate: " + String.valueOf(succRateView));
-                    passes.invalidate();
-                    fails.invalidate();
-                    successRate.invalidate();
+                        Toast.makeText(view.getContext(), "Trials added.", Toast.LENGTH_SHORT).show();
+
+                        // Reset values
+                        trials = new ArrayList<>();
+                        succView = 0;
+                        failView = 0;
+                        succRateView = 0;
+                        updateSuccessRate();
+
+                        // Refresh UI elements to 0
+                        passes.setText("Successes: " + String.valueOf(succView));
+                        fails.setText("Fails : " + String.valueOf(failView));
+                        successRate.setText("Success Rate: " + String.valueOf(succRateView));
+                        passes.invalidate();
+                        fails.invalidate();
+                        successRate.invalidate();
+                    }
+                    else {
+                        Toast.makeText(view.getContext(), "Have not met the minimum number of trials!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
