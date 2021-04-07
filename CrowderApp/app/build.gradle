@@ -61,4 +61,8 @@ dependencies {
 
     // Location services
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    // mlkit barcode scanning
+    implementation 'com.google.mlkit:barcode-scanning:16.1.1'
+
 }
