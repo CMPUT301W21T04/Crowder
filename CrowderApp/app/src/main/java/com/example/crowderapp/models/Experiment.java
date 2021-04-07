@@ -23,6 +23,8 @@ public class Experiment implements Serializable {
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private String ownerID;
+
+    @Exclude // Trials have their own DAO
     protected List<Trial> trials = new ArrayList<Trial>();
 
     /**
@@ -121,6 +123,14 @@ public class Experiment implements Serializable {
     public String getExperimentType() { return experimentType; }
 
     public void setExperimentType(String experimentType) { this.experimentType = experimentType; }
+
+    public List<Trial> getTrials() {
+        return trials;
+    }
+
+    public void setTrials(List<Trial> trials) {
+        this.trials = trials;
+    }
 
     // this requires attention will need
     // to use some api to generate QR codes
