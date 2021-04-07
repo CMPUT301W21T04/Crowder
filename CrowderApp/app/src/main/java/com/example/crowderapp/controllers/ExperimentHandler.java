@@ -147,13 +147,27 @@ public class ExperimentHandler {
             @Override
             public void onComplete(@NonNull Task<Experiment> task) {
                 if (task.isSuccessful()) {
-                    callback.callBackResult(task.getResult());
+                    // Fill experiment with the trials.
+                    refreshExperimentTrials(task.getResult(), completeExperiment -> callback.callBackResult(completeExperiment));
                 } else {
-                    logger.log(Level.SEVERE, "Error in get experiment in handler");
+                    logger.log(Level.SEVERE, String.format("Failed to get experiment %s in experiment handler.", experimentID));
                 }
             }
         });
 
+    }
+
+    /**
+     * Populates an experiment with updated trials.
+     * @param exp The experiment
+     */
+    public void refreshExperimentTrials(Experiment exp, getExperimentCallBack cb) {
+         new TrialFSDAO(exp).getExperimentTrials().addOnSuccessListener(trials -> {
+            exp.setTrials(trials);
+            cb.callBackResult(exp);
+        }).addOnFailureListener(command -> {
+            logger.log(Level.SEVERE, String.format("Failed to get experiment trials in experiments handler."));
+        });
     }
 
     /**
@@ -195,19 +209,6 @@ public class ExperimentHandler {
 
         experimentDAO.updateExperiment(experiment);
 
-    }
-
-    public void getTrials(String experimentID, getTrialsCallBack callback) {
-        // TODO: get trials from the experiment
-    }
-
-    public void getTrials(String experimentID, List<Integer> exclude, getTrialsCallBack callback) {
-        // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
-
-    }
-
-    public void getAllExperimenters(String experimentID, getAllExperimentersCallBack callback) {
-        // TODO: get all participating experimenters of the given experiment
     }
 
 //    public ExperimentStats getStatistics(String experimentID) {
