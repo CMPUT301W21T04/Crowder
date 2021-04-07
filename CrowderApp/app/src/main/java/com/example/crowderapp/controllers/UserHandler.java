@@ -140,23 +140,10 @@ public class UserHandler {
      * @param cb The callback when the User objects are retrieved.
      */
     public void getUserListById(List<String> userIdList, GetUserListCallback cb) {
-        List<Task<User>> userTaskList = new ArrayList<>();
-        List<User> users = new ArrayList<>();
-
-        // Create all tasks
-        for (String userId : userIdList) {
-            userTaskList.add(userDAO.getUserByID(userId));
-        }
-
-        // Wait for all users to be retrieved
-        Task<List<Task<User>>> allUserTask = Tasks.whenAllSuccess(userTaskList);
-        allUserTask.addOnSuccessListener(tasks -> {
-            for (Task<User> task : tasks) {
-                users.add(task.getResult());
-            }
+        userDAO.getUserListById(userIdList).addOnSuccessListener(users -> {
             cb.callBackResult(users);
         }).addOnFailureListener(e -> {
-            Log.e(TAG, "getUserListById: Failed to get list of users.", e);
+            Log.e(TAG, "getUserListById: Failed to get user list.", e);
         });
     }
 
