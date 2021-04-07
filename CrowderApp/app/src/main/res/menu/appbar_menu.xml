@@ -26,6 +26,9 @@
             <item android:id="@+id/histogram_item"
                 android:icon="@drawable/ic_baseline_bar_chart_24"
                 android:title="See Histogram" />
+            <item android:id="@+id/filter_item"
+                android:icon="@drawable/ic_baseline_filter_alt_24"
+                android:title="User Filter" />
             <item android:id="@+id/stats_item"
                 android:icon="@drawable/ic_baseline_trending_up_24"
                 android:title="Location Heatmap" />

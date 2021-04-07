@@ -112,6 +112,8 @@ public class TrialFragment extends Fragment {
                 item.setVisible(false);
                 break;
 
+            case R.id.filter_item:
+                break;
 
         }
         return super.onOptionsItemSelected(item);
