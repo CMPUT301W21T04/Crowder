@@ -23,6 +23,7 @@ public class Experiment implements Serializable {
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private String ownerID;
+    protected List<Trial> trials = new ArrayList<Trial>();
 
     /**
      * Empty constructor to generate an empty experiment
@@ -64,8 +65,6 @@ public class Experiment implements Serializable {
         this.isLocationRequired = isLocationRequired;
         this.ownerID = ownerID;
     }
-
-    //public abstract List<? extends Trial> getTrials();
 
     public String getName() { return name; }
 
@@ -118,8 +117,6 @@ public class Experiment implements Serializable {
     public void setLocationRequired(boolean locationRequired) {
         isLocationRequired = locationRequired;
     }
-
-    public ExperimentStats getStats() { return null; };
 
     public String getExperimentType() { return experimentType; }
 

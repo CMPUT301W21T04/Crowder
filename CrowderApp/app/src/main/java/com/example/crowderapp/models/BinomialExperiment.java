@@ -1,15 +1,12 @@
 package com.example.crowderapp.models;
 
-import java.util.ArrayList;
 
 import java.util.Date;
-import java.util.List;
 
 public class BinomialExperiment extends Experiment {
 
     private int totalPass = 0;
     private int totalFail = 0;
-    protected List<BinomialTrial> trials = new ArrayList<BinomialTrial>();
     private double successRate = 0;
 
     /**
@@ -36,15 +33,6 @@ public class BinomialExperiment extends Experiment {
         this.successRate = 0;
     }
 
-    /*@Override
-    public List<? extends Trial> getTrials() {
-        return trials;
-    }*/
-
-    @Override
-    public ExperimentStats getStats() {
-        return new BinomialStats(trials);
-    }
     /**
      * Adds a pass trial to the experiment
      * @param experimenter ID of experimenter

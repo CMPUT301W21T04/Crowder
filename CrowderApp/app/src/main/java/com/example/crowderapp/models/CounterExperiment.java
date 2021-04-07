@@ -1,13 +1,10 @@
 package com.example.crowderapp.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class CounterExperiment extends Experiment {
 
     private int totalCount;
-    protected List<CounterTrial> trials = new ArrayList<CounterTrial>();
 
     /**
      * Constructor
@@ -28,16 +25,6 @@ public class CounterExperiment extends Experiment {
      */
     public CounterExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
         super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
-    }
-
-    /*@Override
-    public List<? extends Trial> getTrials() {
-        return trials;
-    }*/
-
-    @Override
-    public ExperimentStats getStats() {
-        return new CounterStats(trials);
     }
 
     /**

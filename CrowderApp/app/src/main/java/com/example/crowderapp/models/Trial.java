@@ -92,4 +92,5 @@ public class Trial implements Comparable<Trial> {
     public void setTrialId(String trialId) {
         this.trialId = trialId;
     }
+
 }

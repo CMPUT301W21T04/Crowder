@@ -1,8 +1,6 @@
 package com.example.crowderapp.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Class to contain experiment of type Non-negative Integer Trial
@@ -11,7 +9,6 @@ public class TallyExperiment extends Experiment {
 
     private double avgTally;
     private int tallyCount;
-    protected List<TallyTrial> trials = new ArrayList<TallyTrial>();
 
     public TallyExperiment() {
         super();
@@ -19,16 +16,6 @@ public class TallyExperiment extends Experiment {
 
     public TallyExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
         super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
-    }
-
-    /*@Override
-    public List<? extends Trial> getTrials() {
-        return trials;
-    }*/
-
-    @Override
-    public ExperimentStats getStats() {
-        return new TallyStats(trials);
     }
 
     /**
