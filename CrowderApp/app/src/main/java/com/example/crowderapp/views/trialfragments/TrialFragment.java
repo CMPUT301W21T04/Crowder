@@ -65,6 +65,7 @@ public class TrialFragment extends Fragment {
                 }
                 if(!isOwner) {
                     menu.findItem(R.id.unpublish_item).setVisible(false);
+                    menu.findItem(R.id.filter_item).setVisible(false);
                 }
             }
         });
