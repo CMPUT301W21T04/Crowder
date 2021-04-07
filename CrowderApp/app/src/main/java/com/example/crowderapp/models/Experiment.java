@@ -151,14 +151,6 @@ public class Experiment implements Serializable {
 
     public void setExperimentType(String experimentType) { this.experimentType = experimentType; }
 
-    public List<Trial> getTrials() {
-        return trials;
-    }
-
-    public void setTrials(List<Trial> trials) {
-        this.trials = trials;
-    }
-
     // this requires attention will need
     // to use some api to generate QR codes
     public void generateQR() {

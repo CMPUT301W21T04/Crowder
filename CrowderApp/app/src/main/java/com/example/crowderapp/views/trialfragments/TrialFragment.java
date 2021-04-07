@@ -14,6 +14,7 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
@@ -114,7 +115,13 @@ public class TrialFragment extends Fragment {
                 break;
 
             case R.id.filter_item:
-                new UserFilterFragment().newInstance(experiment).show(getFragmentManager(), "UserFilter");
+                handler.refreshExperimentTrials(experiment, new getExperimentCallBack() {
+                    @Override
+                    public void callBackResult(Experiment exp) {
+                        experiment = exp;
+                        new UserFilterFragment().newInstance(experiment).show(getFragmentManager(), "UserFilter");
+                    }
+                });
                 break;
 
         }

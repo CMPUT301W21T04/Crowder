@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.models.CustomListFilterUsers;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
@@ -46,9 +47,9 @@ public class UserFilterFragment extends DialogFragment {
         return fragment;
     }
 
-    private void populateList(Experiment exp) {
-        List<String> experimentUsers = exp.getExperimentUsers();
-        List<String> excludedUsers = exp.getExcludedUsers();
+    private void populateList() {
+        List<String> experimentUsers = currentExp.getExperimentUsers();
+        List<String> excludedUsers = currentExp.getExcludedUsers();
         for(String u : experimentUsers) {
             Log.v("Adding: ", u);
             if(!excludedUsers.contains(u)) {
@@ -91,7 +92,8 @@ public class UserFilterFragment extends DialogFragment {
         currentExp = (Experiment) args.getSerializable("Experiment");
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.user_filter_fragment, null);
-        populateList(currentExp);
+        populateList();
+
         userAdapter = new CustomListFilterUsers(getContext(), userDataList, listener);
         userListView = view.findViewById(R.id.filter_user_list);
         userListView.setAdapter(userAdapter);
