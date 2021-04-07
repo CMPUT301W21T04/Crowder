@@ -10,6 +10,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,10 +43,16 @@ public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        List<LatLng> latLngs = new ArrayList<>();
+        latLngs.add(new LatLng(-34, 151));
 
+        HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
+                .data(latLngs)
+                .build();
+        TileOverlay overlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        LatLng sydney = new LatLng(-34, 151);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
