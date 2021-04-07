@@ -15,7 +15,7 @@ public class MeasurementStats extends ExperimentStats {
         mean = calcMean(values);
         median = calcMedian(values);
         stdev = calcStdev(values, mean);
-        quartiles = calcQuart(values, median);
+        quartiles = calcQuart(values);
         createPlot(trials);
         createHistogram(trials);
     }
