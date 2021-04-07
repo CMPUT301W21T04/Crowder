@@ -7,6 +7,10 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 
 import com.example.crowderapp.R;
+import com.example.crowderapp.controllers.callbackInterfaces.addQRCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getBarcodeCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getQRCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.barcode.Barcode;
@@ -23,7 +27,7 @@ public class BarcodeHandler {
     public void BarcodeHandler() {
     }
 
-    public void scanBarcode(Context context) {
+    public void scanBarcode(Context context, registerBarcodeCallBack callback) {
 
         InputStream imgFile = context.getResources().openRawResource(R.raw.barcode);
 
@@ -44,7 +48,7 @@ public class BarcodeHandler {
         }
     }
 
-    public void scanQR(Context context) {
+    public void scanQR(Context context, addQRCallBack callback) {
 
         InputStream imgFile = context.getResources().openRawResource(R.raw.qr);
 
@@ -66,7 +70,14 @@ public class BarcodeHandler {
                 }
             });
         }
-
     }
+
+    public void fetchBarcode(getBarcodeCallBack callback) {}
+
+    public void fetchQR(getQRCallBack callback) {}
+
+    public void deleteBarcode() {}
+
+    public void deleteQR(){}
 
 }
