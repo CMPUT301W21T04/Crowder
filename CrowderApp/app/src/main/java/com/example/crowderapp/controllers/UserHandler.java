@@ -2,7 +2,9 @@ package com.example.crowderapp.controllers;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
@@ -10,6 +12,10 @@ import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.UserDAO;
 import com.example.crowderapp.models.dao.UserFSDAO;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -125,6 +131,32 @@ public class UserHandler {
     public void getUserByID(String userId, getUserByIDCallBack cb) {
         userDAO.getUserByID(userId).addOnCompleteListener(task -> {
             cb.callBackResult(task.getResult());
+        });
+    }
+
+    /**
+     * Get a list of users by their Ids.
+     * @param userIdList A list containing user Ids.
+     * @param cb The callback when the User objects are retrieved.
+     */
+    public void getUserListById(List<String> userIdList, GetUserListCallback cb) {
+        List<Task<User>> userTaskList = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+
+        // Create all tasks
+        for (String userId : userIdList) {
+            userTaskList.add(userDAO.getUserByID(userId));
+        }
+
+        // Wait for all users to be retrieved
+        Task<List<Task<User>>> allUserTask = Tasks.whenAllSuccess(userTaskList);
+        allUserTask.addOnSuccessListener(tasks -> {
+            for (Task<User> task : tasks) {
+                users.add(task.getResult());
+            }
+            cb.callBackResult(users);
+        }).addOnFailureListener(e -> {
+            Log.e(TAG, "getUserListById: Failed to get list of users.", e);
         });
     }
 
