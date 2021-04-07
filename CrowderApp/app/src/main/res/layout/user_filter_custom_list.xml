@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal">
+
+
+
+    <TextView
+        android:id="@+id/filterUserNameTextView"
+        android:layout_width="189dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:text=""
+        android:textSize="15sp"></TextView>
+
+
+    <CheckBox
+        android:id="@+id/includedCheckbox"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Included" />
+
+</LinearLayout>
