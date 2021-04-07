@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
@@ -22,6 +23,7 @@ import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
+import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
@@ -38,6 +40,7 @@ public class TrialFragment extends Fragment {
     Menu menu;
     ExperimentHandler handler = new ExperimentHandler();
     UserHandler userHandler;
+    int curIndex=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,17 +119,39 @@ public class TrialFragment extends Fragment {
                 break;
 
             case R.id.filter_item:
-                handler.refreshExperimentTrials(experiment, new getExperimentCallBack() {
-                    @Override
-                    public void callBackResult(Experiment exp) {
-                        experiment = exp;
-                        new UserFilterFragment().newInstance(experiment).show(getFragmentManager(), "UserFilter");
-                    }
-                });
+                createFilterFragment();
                 break;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createFilterFragment() {
+
+        handler.refreshExperimentTrials(experiment, new getExperimentCallBack() {
+            @Override
+            public void callBackResult(Experiment exp) {
+                experiment = exp;
+                String userKey;
+                List<Trial> trials = experiment.getTrials();
+                List<String> usersIDs = new ArrayList<String>();
+                for(int i = 0; i < trials.size(); i++) {
+                    curIndex = i;
+                    userKey = trials.get(i).getExperimenter();
+                    if (!usersIDs.contains(userKey)) { // If the user does not already exist in the list, add it
+                        usersIDs.add(userKey);
+                    }
+                }
+
+                userHandler.getUserListById(usersIDs, new GetUserListCallback() {
+                    @Override
+                    public void callBackResult(List<User> userList) {
+                        new UserFilterFragment().newInstance(experiment, userList).show(getFragmentManager(), "UserFilter");
+
+                    }
+                });
+            }
+        });
     }
 
     private void openFragmentWithExperimentID(Fragment fragment) {

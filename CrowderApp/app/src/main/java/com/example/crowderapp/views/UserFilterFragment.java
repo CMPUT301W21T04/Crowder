@@ -23,8 +23,10 @@ import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBa
 import com.example.crowderapp.models.CustomListFilterUsers;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Trial;
+import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.UserFilterListItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,25 +36,37 @@ public class UserFilterFragment extends DialogFragment {
     private List<UserFilterListItem> userDataList = new ArrayList<UserFilterListItem>();
     private ExperimentHandler handler = new ExperimentHandler();
     private Experiment currentExp;
+    private List<User> experimentUsers;
 
     public UserFilterFragment() {
 
     }
 
-    public static UserFilterFragment newInstance(Experiment exp) {
+    public static UserFilterFragment newInstance(Experiment exp, List<User> users) {
         Bundle args = new Bundle();
         args.putSerializable("Experiment", exp);
+        args.putSerializable("Users", (Serializable) users);
         UserFilterFragment fragment = new UserFilterFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
+    public boolean exists(User user, List<String> users) {
+        for(String u : users) {
+            if(u.equals(user.getUid())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void populateList() {
-        List<String> experimentUsers = currentExp.getExperimentUsers();
+//        List<String> experimentUsers = currentExp.getExperimentUsers();
         List<String> excludedUsers = currentExp.getExcludedUsers();
-        for(String u : experimentUsers) {
-            Log.v("Adding: ", u);
-            if(!excludedUsers.contains(u)) {
+        for(User u : experimentUsers) {
+//            Log.v("Adding: ", u);
+//            if(!excludedUsers.contains(u)) {
+            if(!exists(u, excludedUsers)) {
                 userDataList.add(new UserFilterListItem(u, true));
             }
             else {
@@ -66,7 +80,7 @@ public class UserFilterFragment extends DialogFragment {
         for(int i=0; i < userAdapter.getCount(); i++) {
             UserFilterListItem item = userAdapter.getItem(i);
             if(!item.getIsChecked()) { // Not selected to be included
-                excludes.add(item.getUser());
+                excludes.add(item.getUser().getUid());
             }
         }
         return excludes;
@@ -90,6 +104,7 @@ public class UserFilterFragment extends DialogFragment {
 
         Bundle args = getArguments();
         currentExp = (Experiment) args.getSerializable("Experiment");
+        experimentUsers = (List<User>) args.getSerializable("Users");
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.user_filter_fragment, null);
         populateList();

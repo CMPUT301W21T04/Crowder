@@ -1,15 +1,15 @@
 package com.example.crowderapp.models;
 
 public class UserFilterListItem {
-    private String user;
+    private User user;
     private boolean isChecked;
 
-    public UserFilterListItem(String user, boolean isChecked) {
+    public UserFilterListItem(User user, boolean isChecked) {
         this.user = user;
         this.isChecked = isChecked;
     }
 
-    public String getUser() { return this.user; }
+    public User getUser() { return this.user; }
 
     public boolean getIsChecked() { return this.isChecked; }
 

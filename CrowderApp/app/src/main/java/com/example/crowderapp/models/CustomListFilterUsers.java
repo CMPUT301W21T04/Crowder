@@ -42,7 +42,7 @@ public class CustomListFilterUsers extends ArrayAdapter<UserFilterListItem> {
         }
 
         UserFilterListItem userItem = userItems.get(position);
-        String user = userItem.getUser();
+        String user = userItem.getUser().getName();
 
         TextView userName = view.findViewById(R.id.filterUserNameTextView);
         CheckBox included = view.findViewById(R.id.includedCheckbox);
