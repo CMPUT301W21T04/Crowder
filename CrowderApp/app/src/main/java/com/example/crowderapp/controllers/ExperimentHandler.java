@@ -1,90 +1,98 @@
 package com.example.crowderapp.controllers;
 
-import android.location.Location;
-import android.media.MediaPlayer;
-
 import androidx.annotation.NonNull;
 
+import com.example.crowderapp.controllers.callbackInterfaces.addQRCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.allExperimentsCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getAllExperimentersCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getQRCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getTrialsCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.Location;
+import com.example.crowderapp.models.Search;
 import com.example.crowderapp.models.Trial;
-import com.example.crowderapp.models.User;
+import com.example.crowderapp.models.dao.ExperimentDAO;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ExperimentHandler {
-    ArrayList<Experiment> experiments;
-
-    private static ExperimentHandler instance;
-    private ExperimentFSDAO experimentFSDAO;
+    private ExperimentDAO experimentDAO;
     private Logger logger;
 
-    private ExperimentHandler() {
+    public ExperimentHandler() {
+        experimentDAO = new ExperimentFSDAO();
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
-    public static ExperimentHandler getInstance() {
-        if (instance == null)
-            instance = new ExperimentHandler();
-
-        return instance;
+    public ExperimentHandler(ExperimentDAO dao) {
+        experimentDAO = dao;
+        logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
     /**
      * creates an experiment
+     * @param experimentName experiment name
+     * @param isLocationRequired is the location required flag
+     * @param minTrials minimum trials count
+     * @param experimentType the type of experiment
+     * @param ownerID the ownerID string
+     * @param callBack the callback interface for the async call
      */
-    public Experiment createExperiment() {
+    public void createExperiment(String experimentName, boolean isLocationRequired,
+                                 int minTrials, String experimentType, String ownerID,
+                                 createExperimentCallBack callBack) {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
-        Task<String> task = experimentFSDAO.createExperiment(newExperiment);
+        newExperiment.setName(experimentName);
+        newExperiment.setLocationRequired(isLocationRequired);
+        newExperiment.setMinTrials(minTrials);
+        newExperiment.setExperimentType(experimentType);
+        newExperiment.setOwnerID(ownerID);
+        Task<String> task = experimentDAO.createExperiment(newExperiment);
 
         task.addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
-
-               if (task.isSuccessful()) {
-                   String experimentID = task.getResult();
-                   newExperiment.setExperimentID(experimentID);
-               } else {
-                   Exception e = task.getException();
-                   logger.throwing("Experiment Handler", "error in createExperiment unable to create experiment", e);
-               }
+                if (task.isSuccessful()) {
+                    newExperiment.setExperimentID(task.getResult());
+                    callBack.callBackResult(newExperiment);
+                }
             }
         });
-
-        if (newExperiment.getExperimentID() == "") {
-            //logger.throwing("Experiment Handler", "error in createExperiment no ID found");
-            logger.log(Level.SEVERE, "Experiment Handler error in createExperiment no ID found");
-        }
-
-        return newExperiment;
-
     }
 
     /**
      * Unpublishes or deletes the experiment in the db
      * @param experimentID contains the experiment ID
+     * @param callback
      */
-    public void unPublishExperiment(String experimentID) {
+    public void unPublishExperiment(String experimentID, unPublishExperimentCallBack callback) {
         // TODO: remove experiment from fire store
-        Task<Experiment> task = experimentFSDAO.getExperiment(experimentID);
+        Task<Experiment> task = experimentDAO.getExperiment(experimentID);
 
         task.addOnCompleteListener(new OnCompleteListener<Experiment>() {
             @Override
             public void onComplete(@NonNull Task<Experiment> task) {
                 if (task.isSuccessful()) {
                     Experiment experimentToDelete = task.getResult();
-                    experimentFSDAO.deleteExperiment(experimentToDelete);
+                    experimentDAO.deleteExperiment(experimentToDelete);
+                    callback.callBackResult();
                 } else {
                     Exception e = task.getException();
                     logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
@@ -92,95 +100,172 @@ public class ExperimentHandler {
             }
         });
     }
+
     /**
      * creates and returns the task for all experiments the user is subscribed to.
      * @param userID contains the userID
+     * @param callback the callback function that is called when the async call finish
      */
-    public Task<List<Experiment>> getAllSubscribedExperiments(String userID) {
+    public void getAllSubscribedExperiments(String userID, getAllSubscribedExperimentsCallBack callback) {
 
-        Task<List<Experiment>> task = experimentFSDAO.getUserExperiments(userID);
-        return task;
+        Task<List<Experiment>> task = experimentDAO.getUserExperiments(userID);
+
+        task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Experiment>> task) {
+                if (task.isSuccessful()){
+                    callback.callBackResult(task.getResult());
+                } else {
+                    logger.log(Level.SEVERE, "Error in get all subscribed experiments in handler");
+                }
+            }
+        });
 
     }
 
-    public void endExperiment(String experimentID) {
+    /**
+     * ends experiment then passes the updated experiment to be updated in the db
+     * @param experiment the experiment to be ended
+     */
+    public void endExperiment(Experiment experiment) {
         // TODO: prevent owner and subscriber from adding a trial
 
+        experiment.setEnded(true);
+        experimentDAO.updateExperiment(experiment);
+
     }
 
+    /**
+     * This grabs the experiment in the database given the experiment ID
+     * @param experimentID the experiment ID that is to be grabbed
+     * @param callback the callback function when the async call is done
+     */
+    public void getExperiment(String experimentID, getExperimentCallBack callback){
+        Task<Experiment> task = experimentDAO.getExperiment(experimentID);
 
-//    public String addTrial(String experimenterID, String experimentID, Date date, Location location) {
-//        // TODO: check if Location needs to be a user-defined class
-//        TrialFSDAO trialFSDAO;
-//        Trial newTrial = new Trial(experimenterID, date, location, experimentID);
-//        Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(newTrial);
-//        Task<Experiment> taskgetExperiment = experimentFSDAO.getExperiment(experimentID);
-//
-//        taskgetExperiment.addOnSuccessListener(new OnSuccessListener<Experiment>() {
-//            @Override
-//            public void onSuccess(Experiment experiment) {
-//                trialFSDDAO
-//            }
-//        })
-//
-//        taskAddTrial.addOnSuccessListener(new OnSuccessListener<String>() {
-//            @Override
-//            public void onSuccess(String s) {
-//                newTrial.setTrialId(taskAddTrial.getResult());
-//            }
-//        });
-//
-//        return newTrial.getTrialId();
-//
-//    }
+        task.addOnCompleteListener(new OnCompleteListener<Experiment>() {
+            @Override
+            public void onComplete(@NonNull Task<Experiment> task) {
+                if (task.isSuccessful()) {
+                    callback.callBackResult(task.getResult());
+                } else {
+                    logger.log(Level.SEVERE, "Error in get experiment in handler");
+                }
+            }
+        });
 
-    public List<Trial> getData(String experimentID) {
+    }
+
+    /**
+     * This adds a trial to an experiment
+     * @param trial the trial to be added
+     * @param callBack the callback function when the async call is finished
+     */
+    public void addTrial(Trial trial, addTrialCallBack callBack) {
+        // TODO: check if Location needs to be a user-defined class
+
+        getExperiment(trial.getExperimentID(), new getExperimentCallBack() {
+            @Override
+            public void callBackResult(Experiment experiment) {
+
+                TrialFSDAO trialFSDAO;
+                trialFSDAO = new TrialFSDAO(experiment);
+                Task<String> taskAddTrial = trialFSDAO.addExperimentTrial(trial);
+
+                taskAddTrial.addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            callBack.callBackResult(task.getResult());
+                        } else {
+                            logger.log(Level.SEVERE, "Error in add trial in handler");
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+    /**
+     * updates the experiments
+     * @param experiment the experiment to be updated
+     */
+    public void updateExperiment(Experiment experiment) {
+
+        experimentDAO.updateExperiment(experiment);
+
+    }
+
+    public void getTrials(String experimentID, getTrialsCallBack callback) {
         // TODO: get trials from the experiment
-        return null;
     }
 
-    public List<Trial> getData(String experimentID, List<Integer> exclude) {
+    public void getTrials(String experimentID, List<Integer> exclude, getTrialsCallBack callback) {
         // TODO: get trials from the experiment, excluding trials IDs listed in List<Integer> exclude
-        return null;
+
     }
 
-    public List<User> getAllExperimenters(String experimentID) {
+    public void getAllExperimenters(String experimentID, getAllExperimentersCallBack callback) {
         // TODO: get all participating experimenters of the given experiment
-        return null;
     }
 
 //    public ExperimentStats getStatistics(String experimentID) {
 //        // TODO: get the corresponding ExperimentStats class for this experiment
 //    }
 
-    public Task<List<Experiment>>  getAllExperiments() {
-        Task<List<Experiment>> task = experimentFSDAO.getAllExperiments();
+    /**
+     * grabs all the experiments
+     * @param callback the callback function when all experiments are grabbed
+     */
+    public void getAllExperiments(allExperimentsCallBack callback) {
+        Task<List<Experiment>> task = experimentDAO.getAllExperiments();
 
-        return task;
-
+        task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Experiment>> task) {
+                if (task.isSuccessful()) {
+                    callback.callBackResult(task.getResult());
+                } else {
+                    logger.log(Level.SEVERE, "Error in get all experiments in handler");
+                }
+            }
+        });
     }
 
-    public void addQR(String experimentID) {
+    public void addQR(String experimentID, addQRCallBack callback) {
         // TODO: get the experiment object and call generateQR()
     }
 
-    public List<Integer> getQR(String experimentID) {
+    public void getQR(String experimentID, getQRCallBack callback) {
         // Assuming QR code is of Integer type
         // TODO: get all QR codes associated with experiment
-
-        return null;
     }
 
     // similar to the generateQR we will
     // need some api to read barcodes in
-    public void registerBarcode() {
+    public void registerBarcode(registerBarcodeCallBack callback) {
         // TODO: register a pre-existing barcode.
 
     }
 
-    public List<Experiment> searchExperiment(List<String> filterStrings) {
+    /**
+     * Searches all experiments for a particular string in any field in the experiment object
+     * @param filterStrings the strings to be searched
+     * @param callback the callback function when the async call finishes
+     */
+    public void searchExperiment(List<String> filterStrings, searchExperimentCallBack callback) {
         // TODO: get a list of experiments based on provided filter
 
-        return null;
+        Search search = new Search();
+
+        getAllExperiments(new allExperimentsCallBack() {
+            @Override
+            public void callBackResult(List<Experiment> experimentList) {
+                List<Experiment> filteredExperiments = search.searchExperiments((ArrayList<String>) filterStrings, experimentList);
+                callback.callBackResult(filteredExperiments);
+            }
+        });
+
     }
 }

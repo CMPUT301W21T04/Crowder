@@ -1,12 +1,17 @@
 package com.example.crowderapp.models;
 
-import android.location.Location;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Super class for all trials
+ *
+ * Trials are added to an experiment
+ */
 public class Trial implements Comparable<Trial> {
 
     @DocumentId // Mark this as document ID in firebase
@@ -15,8 +20,19 @@ public class Trial implements Comparable<Trial> {
     private String experimenter;
     private Date date;
     private String experimentID;
+
     private Location location;
 
+    public Trial() {
+    }
+
+    /**
+     * Contstructor
+     * @param experimenter unique id of experimenter that took the trial
+     * @param date the date the trial was taken
+     * @param location the location the trial was taken
+     * @param experimentID the unique id of the experiment to add trial to
+     */
     public Trial(String experimenter, Date date, Location location, String experimentID) {
         this.experimenter = experimenter;
         this.date = date;

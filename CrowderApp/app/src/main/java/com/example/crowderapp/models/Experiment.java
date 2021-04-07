@@ -3,24 +3,30 @@ package com.example.crowderapp.models;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class Experiment {
+/**
+ * Holds all experiment attributes
+ */
+public class Experiment implements Serializable {
 
     @DocumentId // Designate this as document ID in Firestore.
     private String experimentID;
 
-
-
     private String name;
+    private String experimentType;
     private int minTrials;
     private boolean isEnded;
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private String ownerID;
 
+    /**
+     * Empty constructor to generate an empty experiment
+     */
     public Experiment() {
         this.experimentID = null;
         this.minTrials = 0;
@@ -28,8 +34,27 @@ public abstract class Experiment {
         this.isUnpublished = false;
         this.isLocationRequired = false;
         this.ownerID = "";
+        this.experimentType = "";
     }
 
+    /**
+     * Constructor
+     * @param name name of experiment
+     */
+    public Experiment(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor
+     * @param experimentID Unique identifier for an experiment
+     * @param name the name of the experiment
+     * @param minTrials the minimum number of trial per publish
+     * @param isEnded boolean whether the experiment is ended or not
+     * @param isUnpublished boolean whether the experiment is unpublished
+     * @param isLocationRequired boolean whether the location is required for teh experiment
+     * @param ownerID unique identifier for the owner of an experiment
+     */
     public Experiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
         this.experimentID = experimentID;
         this.name = name;
@@ -40,9 +65,11 @@ public abstract class Experiment {
         this.ownerID = ownerID;
     }
 
-    public abstract List<? extends Trial> getTrials();
+    //public abstract List<? extends Trial> getTrials();
 
     public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public int getMinTrials() {
         return minTrials;
@@ -92,7 +119,11 @@ public abstract class Experiment {
         isLocationRequired = locationRequired;
     }
 
-    public abstract ExperimentStats getStats();
+    public ExperimentStats getStats() { return null; };
+
+    public String getExperimentType() { return experimentType; }
+
+    public void setExperimentType(String experimentType) { this.experimentType = experimentType; }
 
     // this requires attention will need
     // to use some api to generate QR codes

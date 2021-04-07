@@ -2,7 +2,7 @@
 https://xd.adobe.com/view/98b16644-8a0a-4277-aa37-29b7d7842cc5-cde2/  
 # Storyboard Comments
 ## US 01.01.01
-* By pressing the "+" button at top right, the "Add Question" fragment will appear with the fields to create an experiment.  
+* By pressing the "+" button at bottom right, the "Add Question" fragment will appear with the fields to create an experiment.  
 ![](Add%20Experiment.png)
 ## US 01.02.01
 * Owners are about to select "Delete Experiment" from the menu to unpublish the experiment.  
@@ -39,7 +39,7 @@ https://xd.adobe.com/view/98b16644-8a0a-4277-aa37-29b7d7842cc5-cde2/
 * By selecting "See Statistics" a page with stats will appear.  
 ![](Statistics.png)
 ## US 02.01.01
-* Users can select an experiment from the "All Experiments" tab and the comment section will appear (this is also accessible with the comment button in the experiment view itself.) Once there, users can view comments and replys. Questions can be added by pressing the "+" button at the top right  
+* Users can select an experiment from the "All Experiments" tab and the comment section will appear (this is also accessible with the comment button in the experiment view itself.) Once there, users can view comments and replys. Questions can be added by pressing the "+" button at the bottom right  
 ![](Comments.png)
 ![](Comments%20-%20%20Add%20Question.png)
 ## US 02.02.01

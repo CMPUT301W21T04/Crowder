@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/experiment_name_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:text="@string/experiment_name"
+        android:paddingStart="30dp" />
+
+    <EditText
+        android:id="@+id/experiment_name_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="30dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/trial_type_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:text="@string/trial_type"
+        android:paddingStart="30dp" />
+    <Spinner
+        android:id="@+id/dropdown"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp" />
+
+    <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/location_required_CheckBox"
+        android:text="Location Required?"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_height="match_parent"
+        />
+
+    <TextView
+        android:id="@+id/min_trials_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:paddingStart="30dp"
+        android:text="Minimum Number of Trials" />
+    <EditText
+        android:id="@+id/min_trials_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="30dp"
+        android:autofillHints="Number of Trials"
+        android:ems="10"
+        android:textIsSelectable="true"
+        android:inputType="number" />
+</LinearLayout>

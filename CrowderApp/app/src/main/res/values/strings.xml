@@ -9,4 +9,11 @@
     <string name="all_experiments">All Experiments</string>
     <string name="my_experiments">My Experiments</string>
     <string name="profile">Profile</string>
+    <string name="add_experiment">Add Experiment</string>
+    <string name="trial_type">Trial Type</string>
+    <string name="experiment_name">Name of Experiment</string>
+    <string name="experiment_name2">Experiment Name</string>
+    <string name="search_username">Username:</string>
+    <string name="search_status">Status:</string>
+    <string name="search_type">"Type: "</string>
 </resources>

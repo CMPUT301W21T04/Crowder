@@ -12,12 +12,17 @@ import java.util.List;
 public abstract class TrialDAO {
 
     protected String experimentID;
+    protected String experimentType;
 
     /**
      * @param experiment The experiment whose trials to manipulate/view.
      */
     public TrialDAO(Experiment experiment) {
         experimentID = experiment.getExperimentID();
+        experimentType = experiment.getExperimentType();
+        if (experimentType == null) {
+            throw new IllegalArgumentException("Invalid experiment type: " + experimentType);
+        }
     }
 
     /**
@@ -25,6 +30,14 @@ public abstract class TrialDAO {
      * @return The task that resolves into the list of trials.
      */
     public abstract Task<List<Trial>> getExperimentTrials();
+
+    /**
+     * Get all the trials for a given experiment but have certain users'
+     * trials be omitted from the returned trials.
+     * @param excludedUsers List of User IDs to exclude.
+     * @return The list of trials.
+     */
+    public abstract Task<List<Trial>> getExperimentTrialsUserFiltered(List<String> excludedUsers);
 
     /**
      * Adds a trial for the experiment

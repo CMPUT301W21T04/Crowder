@@ -3,6 +3,9 @@ package com.example.crowderapp.controllers;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
+import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.UserDAO;
 import com.example.crowderapp.models.dao.UserFSDAO;
@@ -64,7 +67,7 @@ public class UserHandler {
 
         } else {
             // Returning user
-            currentUserTask = getUserByID(userId);
+            currentUserTask = userDAO.getUserByID(userId);
         }
     }
 
@@ -78,7 +81,18 @@ public class UserHandler {
      * Gets the user tied to the phone.
      * @return The user
      */
-    public  Task<User> getCurrentUser() {
+    public void getCurrentUser(getUserByIDCallBack cb) {
+        currentUserTask.addOnSuccessListener(user -> {
+            cb.callBackResult(user);
+        });
+    }
+
+    /**
+     * Gets the user tied to the phone.
+     * @deprecated
+     * @return The task to the user.
+     */
+    public Task<User> getCurrentUser() {
         return currentUserTask;
     }
 
@@ -89,18 +103,18 @@ public class UserHandler {
      */
     public void observeCurrentUser(Activity activity, UserDAO.UserObserver obs) {
         currentUserTask.addOnSuccessListener(user -> {
-            syncObserverCurrentUser(user, activity, obs);
+            observerUser(user.getUid(), activity, obs);
         });
     }
 
     /**
-     * Observe a user. Synchronous, no tasks.
-     * @param user
+     * Observe a user.
+     * @param userId The Id of user
      * @param activity Activity reference to prevent activity leak.
      * @param obs The observer
      */
-    public void syncObserverCurrentUser(User user, Activity activity, UserDAO.UserObserver obs) {
-        userDAO.observeUser(user.getUid(), activity, obs);
+    public void observerUser(String userId, Activity activity, UserDAO.UserObserver obs) {
+        userDAO.observeUser(userId, activity, obs);
     }
 
     /**
@@ -108,9 +122,9 @@ public class UserHandler {
      * @param userId
      * @return
      */
-    public Task<User> getUserByID(String userId) {
-        return userDAO.getUserByID(userId).continueWith(task -> {
-            return task.getResult();
+    public void getUserByID(String userId, getUserByIDCallBack cb) {
+        userDAO.getUserByID(userId).addOnCompleteListener(task -> {
+            cb.callBackResult(task.getResult());
         });
     }
 
@@ -134,10 +148,13 @@ public class UserHandler {
      * Adds an experiment (by ID) to the user's subscription.
      * @param experimentID
      */
-    public void subscribeExperiment(String experimentID) {
+    public void subscribeExperiment(String experimentID, subscribeExperimentCallBack callback) {
         currentUserTask.addOnSuccessListener(user -> {
-            user.getSubscribedExperiments().add(experimentID);
-            updateCurrentUser(user);
+            if(!user.getSubscribedExperiments().contains(experimentID)) {
+                user.getSubscribedExperiments().add(experimentID);
+                updateCurrentUser(user);
+                callback.callBackResult();
+            }
         });
     }
 
@@ -145,10 +162,11 @@ public class UserHandler {
      * Removes an experiment (by ID) from a user's subscription.
      * @param experimentID
      */
-    public void unsubscribeExperiment(String experimentID) {
+    public void unsubscribeExperiment(String experimentID, unsubscribedExperimentCallBack callback) {
         currentUserTask.addOnSuccessListener(user -> {
             user.getSubscribedExperiments().remove(experimentID);
             updateCurrentUser(user);
+            callback.callBackResult();
         });
     }
 

@@ -3,24 +3,27 @@
 <LinearLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_height="40dp"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal">
 
 
-        <TextView
-            android:id="@+id/allExpNameText"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="Experiment Name"
-            android:textSize="15sp">
-        </TextView>
 
-    <CheckBox
-        android:id="@+id/subscribedButton"
-        android:layout_width="216dp"
+    <TextView
+        android:id="@+id/allExpNameText"
+        android:layout_width="189dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:text="Experiment Name"
+        android:textSize="15sp"></TextView>
+
+    <Button
+        android:id="@+id/subscribeButton"
+        android:layout_width="221dp"
         android:layout_height="wrap_content"
-        android:text="Subscribed" />
+        android:layout_weight="1"
+        android:text="Subscribe" />
 
 </LinearLayout>
