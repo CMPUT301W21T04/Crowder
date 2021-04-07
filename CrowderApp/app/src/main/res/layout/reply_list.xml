@@ -10,17 +10,20 @@
 
         <TextView
             android:id="@+id/reply_TextView"
-            android:layout_width="265dp"
-            android:layout_height="43dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
             android:text="Reply"
-            android:textSize="30dp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/username_TextView"
-            android:layout_width="145dp"
-            android:layout_height="43dp"
-            android:text="Username"
-            android:textSize="30dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Loading..."
+            android:textColor="#2196F3"
+            android:textSize="24sp" />
     </LinearLayout>
 
 </LinearLayout>
