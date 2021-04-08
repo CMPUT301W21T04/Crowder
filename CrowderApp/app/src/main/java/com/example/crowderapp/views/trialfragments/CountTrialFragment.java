@@ -80,6 +80,7 @@ public class CountTrialFragment extends TrialFragment {
             }
         }
 
+        experimentType = "Count";
         countExperiment = (CounterExperiment) experiment;
         user = (User) bundle.getSerializable("User");
         totalCountTextView = view.findViewById(R.id.count_total_TextView);

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.crowderapp.HeatmapActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
+import com.example.crowderapp.StatsActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
@@ -28,8 +29,11 @@ import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.BinomialBarcodeFragment;
 import com.example.crowderapp.views.LocationPopupFragment;
+import com.example.crowderapp.views.MeasurementBarcodeFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
+import com.example.crowderapp.views.NonNegBarcodeFragment;
 import com.example.crowderapp.views.QuestionsFragment;
 import com.example.crowderapp.views.UserFilterFragment;
 
@@ -38,12 +42,15 @@ import java.util.List;
 
 public class TrialFragment extends Fragment {
 
+
     User user;
     Experiment experiment;
+    String experimentType;
     Menu menu;
     ExperimentHandler handler = new ExperimentHandler();
     UserHandler userHandler;
     int curIndex=0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,12 +110,19 @@ public class TrialFragment extends Fragment {
                     }
                 });
                 break;
-//            case R.id.barcode_scan_item:
+            case R.id.assign_barcode_item:
+                if(experimentType.equals("Binomial"))
+                    new BinomialBarcodeFragment().show(getFragmentManager(), "BinomialBarcode");
+                else if(experimentType.equals("NonNeg"))
+                    new NonNegBarcodeFragment().show(getFragmentManager(), "NonNegBarcode");
+                else if(experimentType.equals("Count"))
+                    launchScanner();
+                else if(experimentType.equals("Measurement"))
+                    new MeasurementBarcodeFragment().show(getFragmentManager(), "NonNegBarcode");
                 // TODO barcode
-//                break;
+                break;
             case R.id.scan_item:
-                Intent intentQRScan = new Intent(getActivity(), ScanActivity.class);
-                startActivity(intentQRScan);
+                launchScanner();
                 break;
             case R.id.comment_item:
                 // TODO go to comments
@@ -122,6 +136,9 @@ public class TrialFragment extends Fragment {
                 break;
             case R.id.stats_item:
                 // TODO show stats
+                Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
+                startActivity(statsIntent);
+                break;
             case R.id.end_item:
                 handler.endExperiment(experiment);
                 item.setVisible(false);
@@ -163,6 +180,11 @@ public class TrialFragment extends Fragment {
         });
     }
 
+    private void launchScanner() {
+        Intent intent = new Intent(getActivity(), ScanActivity.class);
+        startActivity(intent);
+    }
+
     private void openFragmentWithExperimentID(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ExperimentID", experiment.getExperimentID());
@@ -181,4 +203,5 @@ public class TrialFragment extends Fragment {
         transaction.commit();
         getFragmentManager().popBackStack();
     }
+
 }
