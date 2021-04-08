@@ -124,28 +124,19 @@ public class Experiment implements Serializable {
     public List<String> getExcludedUsers() {
         return excludedUsers;
     }
+    
+    public void setExcludedUsers(List<String> excludedUsers) {
+        this.excludedUsers = excludedUsers;
+    }
 
     @Exclude
     public List<Trial> getTrials() {
         return trials;
     }
+    
+    @Exclude
     public void setTrials(List<Trial> trials) {
         this.trials = trials;
-    }
-
-    @Exclude
-    public List<String> getExperimentUsers() {
-        List<String> users = new ArrayList<String>();
-        for(Trial t : trials) {
-            if(!users.contains(t.getExperimenter())) {
-                users.add(t.getExperimenter());
-            }
-        }
-        return users;
-    }
-
-    public void setExcludedUsers(List<String> excludedUsers) {
-        this.excludedUsers = excludedUsers;
     }
 
     public String getExperimentType() { return experimentType; }
