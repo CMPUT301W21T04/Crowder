@@ -98,6 +98,9 @@ public class LocationPopupFragment extends DialogFragment {
         if (ad == null) {
             return;
         }
+
+        ad.setCanceledOnTouchOutside(false);
+
         Button posButton = ad.getButton(Dialog.BUTTON_POSITIVE);
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override
