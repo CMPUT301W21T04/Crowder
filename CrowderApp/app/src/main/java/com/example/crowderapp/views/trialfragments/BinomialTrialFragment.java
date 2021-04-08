@@ -80,21 +80,20 @@ public class BinomialTrialFragment extends TrialFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        locationHandler = new LocationHandler(getActivity().getApplicationContext());
-        if(locationHandler.hasGPSPermissions()) {
-            locationHandler.getCurrentLocation(new LocationCallback() {
-                @Override
-                public void callbackResult(Location loc) {
-                    location = loc;
-                }
-            });
-        }
-
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+            locationHandler = new LocationHandler(getActivity().getApplicationContext());
+            if(locationHandler.hasGPSPermissions()) {
+                locationHandler.getCurrentLocation(new LocationCallback() {
+                    @Override
+                    public void callbackResult(Location loc) {
+                        location = loc;
+                    }
+                });
+            }
         }
 
         binomialExperiment = (BinomialExperiment) experiment;
