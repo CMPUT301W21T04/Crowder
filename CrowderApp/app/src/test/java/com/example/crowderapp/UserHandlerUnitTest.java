@@ -24,6 +24,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
 
+import java.util.ArrayList;
+
 
 @Config(sdk = 27)
 @RunWith(RobolectricTestRunner.class)
@@ -126,5 +128,17 @@ public class UserHandlerUnitTest {
 
         // Verify the request has proper user
         Assert.assertEquals("TEST", captor.getValue());
+    }
+
+    @Test
+    public void emptyListGetUserListTest() {
+        handler = new UserHandler(mockedPref, mockedDao);
+
+        handler.getUserListById(new ArrayList<String>(), userList -> {
+            // Empty list
+            Assert.assertEquals(0, userList.size());
+        });
+
+        finishAllTasks();
     }
 }
