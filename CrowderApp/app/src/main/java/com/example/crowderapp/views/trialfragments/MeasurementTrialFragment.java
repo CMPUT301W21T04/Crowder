@@ -97,7 +97,6 @@ public class MeasurementTrialFragment extends TrialFragment {
             }
         }
 
-        experimentType = "Measurement";
         measurementExperiment = (MeasurementExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 

@@ -96,7 +96,7 @@ public class BinomialTrialFragment extends TrialFragment {
                 });
             }
         }
-        experimentType = "Binomial";
+
         binomialExperiment = (BinomialExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 

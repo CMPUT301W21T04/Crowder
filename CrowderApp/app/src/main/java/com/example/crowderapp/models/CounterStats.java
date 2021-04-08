@@ -39,7 +39,7 @@ public class CounterStats extends ExperimentStats<CounterTrial> {
     }
 
     @Override
-    protected List<Graph> createPlot() {
+    protected List<Graph> createPlot(List<CounterTrial> trials) {
         SortedMap<Date, Integer> counts = new TreeMap<>();
 
         CounterTrial lastTrial = null;
@@ -65,7 +65,7 @@ public class CounterStats extends ExperimentStats<CounterTrial> {
     }
 
     @Override
-    protected List<Bar> createHistogram() {
+    protected List<Bar> createHistogram(List<CounterTrial> trials) {
         List<Bar> bars = new ArrayList<>();
         bars.add(new Bar("Total Count", trials.size()));
         return bars;

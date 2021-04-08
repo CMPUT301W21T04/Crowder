@@ -67,15 +67,15 @@ public abstract class ExperimentStats <T extends Trial> {
         median = calcMedian(values);
         stdev = calcStdev(values, mean);
         quartiles = calcQuart(values);
-        plotPoints = createPlot();
-        histPoints = createHistogram();
+        plotPoints = createPlot(trials);
+        histPoints = createHistogram(trials);
     }
 
     protected abstract double[] setValues(List<T> trials);
 
-    protected abstract List<Graph> createPlot();
+    protected abstract List<Graph> createPlot(List<T> trials);
 
-    protected abstract List<Bar> createHistogram();
+    protected abstract List<Bar> createHistogram(List<T> trials);
 
     public double getMean() {
         return mean;
