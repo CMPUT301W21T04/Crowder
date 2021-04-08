@@ -140,6 +140,12 @@ public class UserHandler {
      * @param cb The callback when the User objects are retrieved.
      */
     public void getUserListById(List<String> userIdList, GetUserListCallback cb) {
+
+        if (userIdList.isEmpty()) {
+            // return empty list
+            cb.callBackResult(new ArrayList<>());
+        }
+
         userDAO.getUserListById(userIdList).addOnSuccessListener(users -> {
             cb.callBackResult(users);
         }).addOnFailureListener(e -> {
