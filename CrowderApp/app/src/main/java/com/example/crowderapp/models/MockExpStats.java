@@ -19,7 +19,7 @@ public class MockExpStats extends ExperimentStats<Trial> {
     }
 
     @Override
-    protected List<Point> createHistogram() {
+    protected List<Bar> createHistogram() {
         return null;
     }
 
