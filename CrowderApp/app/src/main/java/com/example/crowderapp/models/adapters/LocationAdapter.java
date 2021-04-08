@@ -16,6 +16,7 @@ public class LocationAdapter extends Location {
 
     @Override
     public double getLongitude() {
+        if (wrapped == null) return 0;
         return wrapped.getLongitude();
     }
 
@@ -26,6 +27,7 @@ public class LocationAdapter extends Location {
 
     @Override
     public double getLatitude() {
+        if (wrapped == null) return 0;
         return wrapped.getLatitude();
     }
 
