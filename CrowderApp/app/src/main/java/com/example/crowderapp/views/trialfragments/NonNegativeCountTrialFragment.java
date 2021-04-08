@@ -127,9 +127,9 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
 
                     numCountTextView.setText(String.valueOf(numCounts));
                     calculateAverage();
-                    trials.add(new TallyTrial(user.getUid(), new Date(), currentCount, new Location(), tallyExperiment.getExperimentID()));
+                    trials.add(new TallyTrial(user.getUid(), new Date(), currentCount, location, tallyExperiment.getExperimentID()));
                     numCounts++;
-                    tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), new Location());
+                    tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), location);
                     aveCountTextView.setText(averageString);
                     integerValueEditText.setText("");
                 }
