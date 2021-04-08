@@ -28,6 +28,7 @@ import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.BinomialBarcodeFragment;
 import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.QuestionsFragment;
@@ -103,9 +104,10 @@ public class TrialFragment extends Fragment {
                     }
                 });
                 break;
-//            case R.id.barcode_scan_item:
+            case R.id.assign_barcode_item:
+                new BinomialBarcodeFragment().show(getFragmentManager(), "BinomialBarcode");
                 // TODO barcode
-//                break;
+                break;
             case R.id.scan_item:
                 Intent intentQRScan = new Intent(getActivity(), ScanActivity.class);
                 startActivity(intentQRScan);
@@ -181,4 +183,6 @@ public class TrialFragment extends Fragment {
         transaction.commit();
         getFragmentManager().popBackStack();
     }
+
+
 }

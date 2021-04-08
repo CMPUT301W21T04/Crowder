@@ -30,6 +30,7 @@ import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.views.AddExperimentFragment;
 import com.example.crowderapp.views.AddQuestionFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
+import com.example.crowderapp.views.BinomialBarcodeFragment;
 import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.ProfileFragment;
@@ -47,7 +48,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainActivity extends AppCompatActivity
         implements AddExperimentFragment.OnFragmentInteractionListener,
         AddQuestionFragment.OnFragmentInteractionListener,
-        LocationPopupFragment.OnFragmentInteractionListener{
+        LocationPopupFragment.OnFragmentInteractionListener,
+        BinomialBarcodeFragment.OnFragmentInteractionListener{
 
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
