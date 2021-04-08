@@ -26,6 +26,7 @@ public class Experiment implements Serializable {
 
     @Exclude // Trials have their own DAO
     protected List<Trial> trials = new ArrayList<Trial>();
+    private List<String> excludedUsers = new ArrayList<>();
 
     /**
      * Empty constructor to generate an empty experiment
@@ -120,17 +121,27 @@ public class Experiment implements Serializable {
         isLocationRequired = locationRequired;
     }
 
-    public String getExperimentType() { return experimentType; }
+    public List<String> getExcludedUsers() {
+        return excludedUsers;
+    }
+    
+    public void setExcludedUsers(List<String> excludedUsers) {
+        this.excludedUsers = excludedUsers;
+    }
 
-    public void setExperimentType(String experimentType) { this.experimentType = experimentType; }
-
+    @Exclude
     public List<Trial> getTrials() {
         return trials;
     }
-
+    
+    @Exclude
     public void setTrials(List<Trial> trials) {
         this.trials = trials;
     }
+
+    public String getExperimentType() { return experimentType; }
+
+    public void setExperimentType(String experimentType) { this.experimentType = experimentType; }
 
     // this requires attention will need
     // to use some api to generate QR codes
