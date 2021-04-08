@@ -5,18 +5,21 @@ import com.google.firebase.firestore.DocumentId;
 public class ScanObj {
 
     @DocumentId
-    private int key;
+    private String key;
 
     private String expID;
     private String value;
 
-    public ScanObj(int key, String expID, String value) {
+    public ScanObj() {
+    }
+
+    public ScanObj(String key, String expID, String value) {
         this.key = key;
         this.expID = expID;
         this.value = value;
     }
 
-    public int getKey() {
+    public String getKey() {
         return key;
     }
 
@@ -28,7 +31,7 @@ public class ScanObj {
         return value;
     }
 
-    public void setKey(int key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
