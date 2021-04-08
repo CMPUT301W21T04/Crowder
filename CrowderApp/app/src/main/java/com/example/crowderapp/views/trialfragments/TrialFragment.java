@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.HeatmapActivity;
+import com.example.crowderapp.QRCodeActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.StatsActivity;
@@ -128,13 +129,17 @@ public class TrialFragment extends Fragment {
                 break;
             case R.id.qr_code_gen_item:
                 if(experiment.getExperimentType().equals("Binomial"))
-                    new BinomialQRFragment().show(getFragmentManager(), "BinomialQR");
+                    new BinomialQRFragment().newInstance(experiment).show(getFragmentManager(), "BinomialQR");
                 else if(experiment.getExperimentType().equals("Non-Negative Integer"))
-                    new NonNegQRFragment().show(getFragmentManager(), "NonNegQR");
-                else if(experiment.getExperimentType().equals("Count"))
-                    launchScanner();
+                    new NonNegQRFragment().newInstance(experiment).show(getFragmentManager(), "NonNegQR");
+                else if(experiment.getExperimentType().equals("Count")) {
+                    Intent intent = new Intent(getActivity(), QRCodeActivity.class);
+                    intent.putExtra("Experiment", experiment);
+                    intent.putExtra("Value", "1");
+                    startActivity(intent);
+                }
                 else if(experiment.getExperimentType().equals("Measurement"))
-                    new MeasurementQRFragment().show(getFragmentManager(), "MeasureQR");
+                    new MeasurementQRFragment().newInstance(experiment).show(getFragmentManager(), "MeasureQR");
                 break;
             case R.id.comment_item:
                 // TODO go to comments

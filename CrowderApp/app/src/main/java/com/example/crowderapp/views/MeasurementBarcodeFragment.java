@@ -39,7 +39,7 @@ import com.example.crowderapp.views.trialfragments.TrialFragment;
 
 public class MeasurementBarcodeFragment extends DialogFragment {
 
-    EditText integerEditText;
+    EditText decEditText;
 
     private OnFragmentInteractionListener listener;
 
@@ -62,9 +62,9 @@ public class MeasurementBarcodeFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.non_neg_barcode_fragment, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.measurement_barcode_fragment, null);
 
-        integerEditText = view.findViewById(R.id.non_neg_EditText);
+        decEditText = view.findViewById(R.id.measure_EditText);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
@@ -97,7 +97,7 @@ public class MeasurementBarcodeFragment extends DialogFragment {
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newIntegerVal = integerEditText.getText().toString();
+                String newIntegerVal = decEditText.getText().toString();
 
 
                 if(newIntegerVal.equals("")) {

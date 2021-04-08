@@ -40,14 +40,20 @@ import com.example.crowderapp.views.trialfragments.TrialFragment;
 
 public class MeasurementQRFragment extends DialogFragment {
 
-    EditText integerEditText;
-
+    EditText decEditText;
+    private Experiment experiment;
     private OnFragmentInteractionListener listener;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
     }
-
+    public static MeasurementQRFragment newInstance(Experiment experiment) {
+        MeasurementQRFragment frag = new MeasurementQRFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Experiment", experiment);
+        frag.setArguments(bundle);
+        return frag;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -60,12 +66,20 @@ public class MeasurementQRFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+
+        super.onCreate(saveInstanceState);
+
+        experiment = (Experiment) getArguments().get("Experiment");
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.non_neg_barcode_fragment, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.measurement_barcode_fragment, null);
 
-        integerEditText = view.findViewById(R.id.non_neg_EditText);
+        decEditText = view.findViewById(R.id.measure_EditText);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
@@ -98,7 +112,7 @@ public class MeasurementQRFragment extends DialogFragment {
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newIntegerVal = integerEditText.getText().toString();
+                String newIntegerVal = decEditText.getText().toString();
 
 
                 if(newIntegerVal.equals("")) {
@@ -109,6 +123,8 @@ public class MeasurementQRFragment extends DialogFragment {
                     toast.show();
                 } else {
                     Intent intent = new Intent(getActivity(), QRCodeActivity.class);
+                    intent.putExtra("Experiment", experiment);
+                    intent.putExtra("Value", newIntegerVal);
                     startActivity(intent);
                     ad.dismiss();
                 }
