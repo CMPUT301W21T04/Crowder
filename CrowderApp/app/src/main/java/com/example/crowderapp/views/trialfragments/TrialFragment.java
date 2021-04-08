@@ -83,6 +83,7 @@ public class TrialFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.location_item:
                 Intent intent = new Intent(getActivity(), HeatmapActivity.class);
+                intent.putExtra("experiment", experiment);
                 startActivity(intent);
                 break;
             case R.id.unpublish_item:

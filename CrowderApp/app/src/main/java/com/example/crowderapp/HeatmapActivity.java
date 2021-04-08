@@ -2,8 +2,11 @@ package com.example.crowderapp;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.models.Experiment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,6 +23,8 @@ import java.util.List;
 public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Experiment mExperiment;
+    private ExperimentHandler handler = new ExperimentHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,9 @@ public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Intent intent = this.getIntent();
+        mExperiment = (Experiment) intent.getSerializableExtra("experiment");
     }
 
     /**
@@ -44,7 +52,12 @@ public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         List<LatLng> latLngs = new ArrayList<>();
-        latLngs.add(new LatLng(-34, 151));
+
+        latLngs = handler.getLatLongExperiment(mExperiment);
+
+        if(latLngs.size() == 0) {
+            return;
+        }
 
         HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
                 .data(latLngs)
