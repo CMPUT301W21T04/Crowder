@@ -93,7 +93,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
                 });
             }
         }
-        experimentType = "NonNeg";
+
         tallyExperiment = (TallyExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 

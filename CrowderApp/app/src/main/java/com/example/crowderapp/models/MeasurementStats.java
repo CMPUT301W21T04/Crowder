@@ -25,7 +25,7 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
     }
 
     @Override
-    protected List<Graph> createPlot() {
+    protected List<Graph> createPlot(List<MeasurementTrial> trials) {
         List<Point> points = new ArrayList<>();
         for (MeasurementTrial trial : trials) {
             points.add(new Point(trial.getDate(), trial.getMeasurement()));
@@ -36,7 +36,7 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
     }
 
     @Override
-    protected List<Bar> createHistogram() {
+    protected List<Bar> createHistogram(List<MeasurementTrial> trials) {
         List<Bar> bars = new ArrayList<>();
         int[] quarters = {0,0,0,0};
         for (MeasurementTrial trial : trials) {
