@@ -102,10 +102,10 @@ public class TrialFragment extends Fragment {
                     }
                 });
                 break;
-            case R.id.barcode_item:
+            case R.id.barcode_scan_item:
                 // TODO barcode
                 break;
-            case R.id.qr_code_item:
+            case R.id.qr_code_scan_item:
                 //TODO qr code
                 break;
             case R.id.comment_item:
