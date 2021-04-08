@@ -30,6 +30,7 @@ import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
 
@@ -156,8 +157,13 @@ public class AddExperimentFragment extends DialogFragment {
                                     new createExperimentCallBack() {
                                         @Override
                                         public void callBackResult(Experiment experiment) {
-                                            listener.onOkPressed();
-                                            ad.dismiss();
+                                            userHandler.subscribeExperiment(experiment.getExperimentID(), new subscribeExperimentCallBack() {
+                                                @Override
+                                                public void callBackResult() {
+                                                    listener.onOkPressed();
+                                                    ad.dismiss();
+                                                }
+                                            });
                                         }
                                     });
                         }
