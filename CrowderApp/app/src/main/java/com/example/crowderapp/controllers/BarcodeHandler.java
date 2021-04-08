@@ -78,6 +78,23 @@ public class BarcodeHandler {
         }
     }
 
+    public void scanBarcode(Bitmap barcode) {
+
+        BarcodeScanner barcodeScanner = BarcodeScanning.getClient();
+        InputImage inputImage = InputImage.fromBitmap(barcode, 0);
+        Task<List<Barcode>> task = barcodeScanner.process(inputImage);
+
+        task.addOnCompleteListener(new OnCompleteListener<List<Barcode>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Barcode>> task) {
+                List<Barcode> barcodeList = task.getResult();
+                Barcode barcode = barcodeList.get(0);
+                String result = barcode.getRawValue();
+            }
+        });
+
+    }
+
     public void scanQR(Bitmap qr) {
 
         BarcodeScannerOptions options = new BarcodeScannerOptions.Builder().setBarcodeFormats(
