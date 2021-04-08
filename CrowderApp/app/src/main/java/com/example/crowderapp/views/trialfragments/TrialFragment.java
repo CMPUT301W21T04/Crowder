@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.HeatmapActivity;
 import com.example.crowderapp.R;
+import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
@@ -27,6 +28,7 @@ import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.BinomialBarcodeFragment;
 import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.QuestionsFragment;
@@ -85,9 +87,9 @@ public class TrialFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.location_item:
-                Intent intent = new Intent(getActivity(), HeatmapActivity.class);
-                intent.putExtra("experiment", experiment);
-                startActivity(intent);
+                Intent intentLocation = new Intent(getActivity(), HeatmapActivity.class);
+                intentLocation.putExtra("experiment", experiment);
+                startActivity(intentLocation);
                 break;
             case R.id.unpublish_item:
                 handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
@@ -102,11 +104,13 @@ public class TrialFragment extends Fragment {
                     }
                 });
                 break;
-            case R.id.barcode_item:
+            case R.id.assign_barcode_item:
+                new BinomialBarcodeFragment().show(getFragmentManager(), "BinomialBarcode");
                 // TODO barcode
                 break;
-            case R.id.qr_code_item:
-                //TODO qr code
+            case R.id.scan_item:
+                Intent intentQRScan = new Intent(getActivity(), ScanActivity.class);
+                startActivity(intentQRScan);
                 break;
             case R.id.comment_item:
                 // TODO go to comments
@@ -179,4 +183,6 @@ public class TrialFragment extends Fragment {
         transaction.commit();
         getFragmentManager().popBackStack();
     }
+
+
 }
