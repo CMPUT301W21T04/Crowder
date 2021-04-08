@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.HeatmapActivity;
 import com.example.crowderapp.R;
+import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
@@ -72,6 +73,9 @@ public class TrialFragment extends Fragment {
                     menu.findItem(R.id.unpublish_item).setVisible(false);
                     menu.findItem(R.id.filter_item).setVisible(false);
                 }
+                if(!experiment.isLocationRequired()) {
+                    menu.findItem(R.id.location_item).setVisible(false);
+                }
             }
         });
 
@@ -82,8 +86,9 @@ public class TrialFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.location_item:
-                Intent intent = new Intent(getActivity(), HeatmapActivity.class);
-                startActivity(intent);
+                Intent intentLocation = new Intent(getActivity(), HeatmapActivity.class);
+                intentLocation.putExtra("experiment", experiment);
+                startActivity(intentLocation);
                 break;
             case R.id.unpublish_item:
                 handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
@@ -98,11 +103,12 @@ public class TrialFragment extends Fragment {
                     }
                 });
                 break;
-            case R.id.barcode_item:
+//            case R.id.barcode_scan_item:
                 // TODO barcode
-                break;
-            case R.id.qr_code_item:
-                //TODO qr code
+//                break;
+            case R.id.scan_item:
+                Intent intentQRScan = new Intent(getActivity(), ScanActivity.class);
+                startActivity(intentQRScan);
                 break;
             case R.id.comment_item:
                 // TODO go to comments

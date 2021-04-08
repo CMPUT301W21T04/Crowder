@@ -24,6 +24,7 @@ import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -232,6 +233,17 @@ public class ExperimentHandler {
                 }
             }
         });
+    }
+
+    public ArrayList<LatLng> getLatLongExperiment(Experiment experiment) {
+        List<Trial> trialList = experiment.getTrials();
+        ArrayList<LatLng> latLngs = new ArrayList<LatLng>();
+
+        for (Trial trial : trialList) {
+            latLngs.add(new LatLng(trial.getLocation().getLatitude(), trial.getLocation().getLongitude()));
+        }
+
+        return latLngs;
     }
 
     public void addQR(String experimentID, addQRCallBack callback) {

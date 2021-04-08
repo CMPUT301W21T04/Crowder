@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.LocationHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.LocationCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.BinomialExperiment;
@@ -38,7 +40,8 @@ public class BinomialTrialFragment extends TrialFragment {
     private BinomialExperiment binomialExperiment;
     private ExperimentHandler handler = new ExperimentHandler();
     private List<BinomialTrial> trials = new ArrayList<BinomialTrial>();
-    private Location location = new Location();
+    private Location location;
+    private LocationHandler locationHandler;
     private int succView;
     private int failView;
     private double succRateView;
@@ -77,11 +80,20 @@ public class BinomialTrialFragment extends TrialFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+            locationHandler = new LocationHandler(getActivity().getApplicationContext());
+            if(locationHandler.hasGPSPermissions()) {
+                locationHandler.getCurrentLocation(new LocationCallback() {
+                    @Override
+                    public void callbackResult(Location loc) {
+                        location = loc;
+                    }
+                });
+            }
         }
 
         binomialExperiment = (BinomialExperiment) experiment;
@@ -149,7 +161,7 @@ public class BinomialTrialFragment extends TrialFragment {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
                     binomialExperiment.addPass(user.getUid(), location);
-                    trials.add(new BinomialTrial(user.getUid(), new Date(), true, new Location(), binomialExperiment.getExperimentID()));
+                    trials.add(new BinomialTrial(user.getUid(), new Date(), true, location, binomialExperiment.getExperimentID()));
                     succView += 1;
                     updateSuccessRate();
                     passes.setText("Successes: " + String.valueOf(succView));
@@ -169,7 +181,7 @@ public class BinomialTrialFragment extends TrialFragment {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
                     binomialExperiment.addFail(user.getUid(), location);
-                    trials.add(new BinomialTrial(user.getUid(), new Date(), false, new Location(), binomialExperiment.getExperimentID()));
+                    trials.add(new BinomialTrial(user.getUid(), new Date(), false, location, binomialExperiment.getExperimentID()));
                     failView += 1;
                     updateSuccessRate();
                     fails.setText("Fails : " + String.valueOf(failView));
