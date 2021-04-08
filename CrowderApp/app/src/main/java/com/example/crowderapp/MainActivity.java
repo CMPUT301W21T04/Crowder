@@ -32,10 +32,13 @@ import com.example.crowderapp.views.AddExperimentFragment;
 import com.example.crowderapp.views.AddQuestionFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
 import com.example.crowderapp.views.BinomialBarcodeFragment;
+import com.example.crowderapp.views.BinomialQRFragment;
 import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MeasurementBarcodeFragment;
+import com.example.crowderapp.views.MeasurementQRFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.NonNegBarcodeFragment;
+import com.example.crowderapp.views.NonNegQRFragment;
 import com.example.crowderapp.views.ProfileFragment;
 import com.example.crowderapp.views.QuestionsFragment;
 import com.example.crowderapp.views.ReplyFragment;
@@ -54,7 +57,10 @@ public class MainActivity extends AppCompatActivity
         LocationPopupFragment.OnFragmentInteractionListener,
         BinomialBarcodeFragment.OnFragmentInteractionListener,
         NonNegBarcodeFragment.OnFragmentInteractionListener,
-        MeasurementBarcodeFragment.OnFragmentInteractionListener {
+        MeasurementBarcodeFragment.OnFragmentInteractionListener,
+        BinomialQRFragment.OnFragmentInteractionListener,
+        NonNegQRFragment.OnFragmentInteractionListener,
+        MeasurementQRFragment.OnFragmentInteractionListener{
 
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
