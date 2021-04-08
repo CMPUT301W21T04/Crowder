@@ -29,13 +29,13 @@ public class LocationHandler {
     public LocationHandler(Context context) {
         this.context = context;
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        injectBarcodeHandler();
+//        injectBarcodeHandler();
     }
 
     public LocationHandler(Context context, FusedLocationProviderClient provider) {
         this.context = context;
         this.fusedLocationClient = provider;
-        injectBarcodeHandler();
+//        injectBarcodeHandler();
     }
 
     public void injectBarcodeHandler() {
