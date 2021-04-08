@@ -125,14 +125,15 @@ public class Experiment implements Serializable {
         return excludedUsers;
     }
 
+    @Exclude
     public List<Trial> getTrials() {
         return trials;
     }
-
     public void setTrials(List<Trial> trials) {
         this.trials = trials;
     }
 
+    @Exclude
     public List<String> getExperimentUsers() {
         List<String> users = new ArrayList<String>();
         for(Trial t : trials) {
