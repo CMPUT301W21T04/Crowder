@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.LocationHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.LocationCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.CounterTrial;
@@ -44,6 +46,8 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
     String integerValueString;
     Button enterButton;
     Button saveButton;
+    private Location location;
+    private LocationHandler locationHandler;
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
@@ -74,6 +78,17 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        locationHandler = new LocationHandler(getActivity().getApplicationContext());
+        if(locationHandler.hasGPSPermissions()) {
+            locationHandler.getCurrentLocation(new LocationCallback() {
+                @Override
+                public void callbackResult(Location loc) {
+                    location = loc;
+                }
+            });
+        }
+
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
         if(experiment.isLocationRequired()) {
@@ -112,9 +127,9 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
 
                     numCountTextView.setText(String.valueOf(numCounts));
                     calculateAverage();
-                    trials.add(new TallyTrial(user.getUid(), new Date(), currentCount, new Location(), tallyExperiment.getExperimentID()));
+                    trials.add(new TallyTrial(user.getUid(), new Date(), currentCount, location, tallyExperiment.getExperimentID()));
                     numCounts++;
-                    tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), new Location());
+                    tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), location);
                     aveCountTextView.setText(averageString);
                     integerValueEditText.setText("");
                 }

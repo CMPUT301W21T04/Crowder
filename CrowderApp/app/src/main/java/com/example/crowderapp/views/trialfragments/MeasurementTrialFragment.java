@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.LocationHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.LocationCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.CounterTrial;
@@ -52,6 +54,8 @@ public class MeasurementTrialFragment extends TrialFragment {
     double currentMeasurement;
     double totalMeasurement;
     EditText measurementInput;
+    private Location location;
+    private LocationHandler locationHandler;
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
@@ -77,6 +81,17 @@ public class MeasurementTrialFragment extends TrialFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        locationHandler = new LocationHandler(getActivity().getApplicationContext());
+        if(locationHandler.hasGPSPermissions()) {
+            locationHandler.getCurrentLocation(new LocationCallback() {
+                @Override
+                public void callbackResult(Location loc) {
+                    location = loc;
+                }
+            });
+        }
+
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
         if(experiment.isLocationRequired()) {
@@ -111,7 +126,7 @@ public class MeasurementTrialFragment extends TrialFragment {
                     currentMeasurement = Double.parseDouble(measurementInput.getText().toString());
                     totalMeasurement += currentMeasurement;
                     calculateAverage();
-                    trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, new Location(), measurementExperiment.getExperimentID()));
+                    trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, location, measurementExperiment.getExperimentID()));
                     measurementsTextView.setText(String.valueOf(numMeasurements));
                     aveMeasureTextView.setText(aveMeasurementString);
                     measurementInput.setText("");
