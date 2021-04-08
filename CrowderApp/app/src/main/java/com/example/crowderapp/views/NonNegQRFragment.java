@@ -41,13 +41,20 @@ import com.example.crowderapp.views.trialfragments.TrialFragment;
 public class NonNegQRFragment extends DialogFragment {
 
     EditText integerEditText;
-
+    private Experiment experiment;
     private OnFragmentInteractionListener listener;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
     }
 
+    public static NonNegQRFragment newInstance(Experiment experiment) {
+        NonNegQRFragment frag = new NonNegQRFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Experiment", experiment);
+        frag.setArguments(bundle);
+        return frag;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -58,6 +65,14 @@ public class NonNegQRFragment extends DialogFragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+
+        super.onCreate(saveInstanceState);
+
+        experiment = (Experiment) getArguments().get("Experiment");
     }
 
     @NonNull
@@ -109,6 +124,8 @@ public class NonNegQRFragment extends DialogFragment {
                     toast.show();
                 } else {
                     Intent intent = new Intent(getActivity(), QRCodeActivity.class);
+                    intent.putExtra("Experiment", experiment);
+                    intent.putExtra("Value", newIntegerVal);
                     startActivity(intent);
                     ad.dismiss();
                 }

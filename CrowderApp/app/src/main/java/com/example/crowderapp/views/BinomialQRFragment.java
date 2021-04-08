@@ -5,7 +5,6 @@ import androidx.fragment.app.DialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.QRCodeActivity;
 import com.example.crowderapp.R;
@@ -45,11 +45,19 @@ public class BinomialQRFragment extends DialogFragment {
 
     private Spinner dropdown;
     private OnFragmentInteractionListener listener;
+    private Experiment experiment;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
     }
 
+    public static BinomialQRFragment newInstance(Experiment experiment) {
+        BinomialQRFragment frag = new BinomialQRFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Experiment", experiment);
+        frag.setArguments(bundle);
+        return frag;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -62,11 +70,18 @@ public class BinomialQRFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+
+        super.onCreate(saveInstanceState);
+
+        experiment = (Experiment) getArguments().get("Experiment");
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.binomial_barcode_fragment, null);
-
 
 
         dropdown = view.findViewById(R.id.dropdown_binomial);
@@ -134,6 +149,8 @@ public class BinomialQRFragment extends DialogFragment {
                     toast.show();
                 } else {
                     Intent intent = new Intent(getActivity(), QRCodeActivity.class);
+                    intent.putExtra("Experiment", experiment);
+                    intent.putExtra("Value", binomialAction);
                     startActivity(intent);
                     ad.dismiss();
                 }
@@ -142,16 +159,5 @@ public class BinomialQRFragment extends DialogFragment {
 
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-////        super.onActivityResult(requestCode, resultCode, data);
-//        if(data == null)
-//            return;
-//        String code = data.getStringExtra("CODE");
-//        Log.v("Barcode Frag", code);
-//        String binomialAction = dropdown.getSelectedItem().toString();
-//        AlertDialog ad = (AlertDialog) getDialog();
-//        ad.dismiss();
-//    }
 
 }
