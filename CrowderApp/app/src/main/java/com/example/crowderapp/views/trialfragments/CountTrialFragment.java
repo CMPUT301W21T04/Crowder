@@ -97,8 +97,8 @@ public class CountTrialFragment extends TrialFragment {
                 } else {
                     totalCount++;
                     totalCountTextView.setText(String.valueOf(totalCount));
-                    countExperiment.incrementCount(user.getUid(), new Location());
-                    trials.add(new CounterTrial(user.getUid(), new Date(), new Location(), countExperiment.getExperimentID()));
+                    countExperiment.incrementCount(user.getUid(), location);
+                    trials.add(new CounterTrial(user.getUid(), new Date(), location, countExperiment.getExperimentID()));
                 }
 
             }

@@ -126,7 +126,7 @@ public class MeasurementTrialFragment extends TrialFragment {
                     currentMeasurement = Double.parseDouble(measurementInput.getText().toString());
                     totalMeasurement += currentMeasurement;
                     calculateAverage();
-                    trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, new Location(), measurementExperiment.getExperimentID()));
+                    trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, location, measurementExperiment.getExperimentID()));
                     measurementsTextView.setText(String.valueOf(numMeasurements));
                     aveMeasureTextView.setText(aveMeasurementString);
                     measurementInput.setText("");

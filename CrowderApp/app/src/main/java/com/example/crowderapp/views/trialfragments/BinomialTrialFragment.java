@@ -162,7 +162,7 @@ public class BinomialTrialFragment extends TrialFragment {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
                     binomialExperiment.addPass(user.getUid(), location);
-                    trials.add(new BinomialTrial(user.getUid(), new Date(), true, new Location(), binomialExperiment.getExperimentID()));
+                    trials.add(new BinomialTrial(user.getUid(), new Date(), true, location, binomialExperiment.getExperimentID()));
                     succView += 1;
                     updateSuccessRate();
                     passes.setText("Successes: " + String.valueOf(succView));
@@ -182,7 +182,7 @@ public class BinomialTrialFragment extends TrialFragment {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
                     binomialExperiment.addFail(user.getUid(), location);
-                    trials.add(new BinomialTrial(user.getUid(), new Date(), false, new Location(), binomialExperiment.getExperimentID()));
+                    trials.add(new BinomialTrial(user.getUid(), new Date(), false, location, binomialExperiment.getExperimentID()));
                     failView += 1;
                     updateSuccessRate();
                     fails.setText("Fails : " + String.valueOf(failView));
