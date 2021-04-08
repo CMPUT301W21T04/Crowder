@@ -1,6 +1,7 @@
 package com.example.crowderapp.views.trialfragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.crowderapp.HeatmapActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
@@ -80,7 +82,9 @@ public class TrialFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.location_item:
-//                Log.e("yo", "yo");
+                Intent intent = new Intent(getActivity(), HeatmapActivity.class);
+                intent.putExtra("experiment", experiment);
+                startActivity(intent);
                 break;
             case R.id.unpublish_item:
                 handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {

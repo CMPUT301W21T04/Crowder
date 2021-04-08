@@ -40,7 +40,7 @@ public class CountTrialFragment extends TrialFragment {
     int totalCount;
     Button countButton;
     Button saveButton;
-    CounterExperiment countExperiment;
+    private CounterExperiment countExperiment;
     private Location location;
     private LocationHandler locationHandler;
     private List<CounterTrial> trials = new ArrayList<>();

@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.example.crowderapp"
         multiDexEnabled true
-        minSdkVersion 27
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -62,11 +62,17 @@ dependencies {
     // Location services
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
+
+    // Utilities for Maps SDK for Android (requires Google Play Services)
+    implementation 'com.google.maps.android:android-maps-utils:2.2.2'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
     // mlkit barcode scanning
     implementation 'com.google.mlkit:barcode-scanning:16.1.1'
 
     // QR generator
     implementation 'com.google.zxing:core:3.2.1'
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+
 
 }
