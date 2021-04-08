@@ -51,7 +51,7 @@ public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        List<LatLng> latLngs = new ArrayList<>();
+        List<LatLng> latLngs;
 
         latLngs = handler.getLatLongExperiment(mExperiment);
 
@@ -63,9 +63,7 @@ public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallb
                 .data(latLngs)
                 .build();
         TileOverlay overlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngs.get(0)));
     }
 }
