@@ -72,6 +72,9 @@ public class TrialFragment extends Fragment {
                     menu.findItem(R.id.unpublish_item).setVisible(false);
                     menu.findItem(R.id.filter_item).setVisible(false);
                 }
+                if(!experiment.isLocationRequired()) {
+                    menu.findItem(R.id.location_item).setVisible(false);
+                }
             }
         });
 
