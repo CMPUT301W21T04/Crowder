@@ -1,5 +1,6 @@
 package com.example.crowderapp.views.trialfragments;
 
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -95,7 +96,7 @@ public class BinomialTrialFragment extends TrialFragment {
                 });
             }
         }
-
+        experimentType = "Binomial";
         binomialExperiment = (BinomialExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 
@@ -192,4 +193,5 @@ public class BinomialTrialFragment extends TrialFragment {
             }
         });
     }
+
 }
