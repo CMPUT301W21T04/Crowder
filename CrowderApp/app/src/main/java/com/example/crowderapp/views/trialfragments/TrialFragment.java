@@ -115,13 +115,13 @@ public class TrialFragment extends Fragment {
                 break;
             case R.id.assign_barcode_item:
                 if(experiment.getExperimentType().equals("Binomial"))
-                    new BinomialBarcodeFragment().show(getFragmentManager(), "BinomialBarcode");
+                    new BinomialBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "BinomialBarcode");
                 else if(experiment.getExperimentType().equals("Non-Negative Integer"))
-                    new NonNegBarcodeFragment().show(getFragmentManager(), "NonNegBarcode");
+                    new NonNegBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "NonNegBarcode");
                 else if(experiment.getExperimentType().equals("Count"))
                     launchScanner();
                 else if(experiment.getExperimentType().equals("Measurement"))
-                    new MeasurementBarcodeFragment().show(getFragmentManager(), "MeasureBarcode");
+                    new MeasurementBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "MeasureBarcode");
                 // TODO barcode
                 break;
             case R.id.scan_item:
