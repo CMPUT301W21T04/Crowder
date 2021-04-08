@@ -110,6 +110,9 @@ public class TrialFragment extends Fragment {
                     }
                 });
                 break;
+            case R.id.qr_code_gen_item:
+
+                break;
             case R.id.assign_barcode_item:
                 if(experimentType.equals("Binomial"))
                     new BinomialBarcodeFragment().show(getFragmentManager(), "BinomialBarcode");
