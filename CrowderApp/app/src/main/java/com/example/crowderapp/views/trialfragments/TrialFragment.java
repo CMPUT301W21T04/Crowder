@@ -45,7 +45,6 @@ public class TrialFragment extends Fragment {
 
     User user;
     Experiment experiment;
-    String experimentType;
     Menu menu;
     ExperimentHandler handler = new ExperimentHandler();
     UserHandler userHandler;
@@ -111,13 +110,13 @@ public class TrialFragment extends Fragment {
                 });
                 break;
             case R.id.assign_barcode_item:
-                if(experimentType.equals("Binomial"))
+                if(experiment.getExperimentType().equals("Binomial"))
                     new BinomialBarcodeFragment().show(getFragmentManager(), "BinomialBarcode");
-                else if(experimentType.equals("NonNeg"))
+                else if(experiment.getExperimentType().equals("Non-Negative Integer"))
                     new NonNegBarcodeFragment().show(getFragmentManager(), "NonNegBarcode");
-                else if(experimentType.equals("Count"))
+                else if(experiment.getExperimentType().equals("Count"))
                     launchScanner();
-                else if(experimentType.equals("Measurement"))
+                else if(experiment.getExperimentType().equals("Measurement"))
                     new MeasurementBarcodeFragment().show(getFragmentManager(), "NonNegBarcode");
                 // TODO barcode
                 break;
@@ -136,8 +135,7 @@ public class TrialFragment extends Fragment {
                 break;
             case R.id.stats_item:
                 // TODO show stats
-                Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
-                startActivity(statsIntent);
+                openStats();
                 break;
             case R.id.end_item:
                 handler.endExperiment(experiment);
@@ -183,6 +181,12 @@ public class TrialFragment extends Fragment {
     private void launchScanner() {
         Intent intent = new Intent(getActivity(), ScanActivity.class);
         startActivity(intent);
+    }
+
+    private void openStats() {
+        Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
+        statsIntent.putExtra("Experiment", experiment);
+        startActivity(statsIntent);
     }
 
     private void openFragmentWithExperimentID(Fragment fragment) {

@@ -238,25 +238,25 @@ public class ExperimentHandler {
                 if (task.isSuccessful()) {
                     String type = experiment.getExperimentType();
                     List<Trial> baseTrials  = trialsTask.getResult();
-                    if (type == "Count") {
+                    if (type.equals("Count")) {
                         List<CounterTrial> trials = new ArrayList<>();
                         for (Trial t : baseTrials) {
                             trials.add((CounterTrial) t);
                         }
                         callback.callBackResult(new CounterStats(trials));
-                    } else if (type == "Binomial") {
+                    } else if (type.equals("Binomial")) {
                         List<BinomialTrial> trials = new ArrayList<>();
                         for (Trial t : baseTrials) {
                             trials.add((BinomialTrial) t);
                         }
                         callback.callBackResult(new BinomialStats(trials));
-                    } else if (type == "Non-Negative Integer") {
+                    } else if (type.equals("Non-Negative Integer")) {
                         List<TallyTrial> trials = new ArrayList<>();
                         for (Trial t : baseTrials) {
                             trials.add((TallyTrial) t);
                         }
                         callback.callBackResult((new TallyStats(trials)));
-                    } else if (type == "Measurement") {
+                    } else if (type.equals("Measurement")) {
                         List<MeasurementTrial> trials = new ArrayList<>();
                         for (Trial t : baseTrials) {
                             trials.add((MeasurementTrial) t);

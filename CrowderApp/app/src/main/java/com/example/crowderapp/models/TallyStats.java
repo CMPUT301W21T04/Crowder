@@ -31,7 +31,7 @@ public class TallyStats extends ExperimentStats<TallyTrial> {
     }
 
     @Override
-    protected List<Graph> createPlot() {
+    protected List<Graph> createPlot(List<TallyTrial> trials) {
         List<Point> points = new ArrayList<>();
         for (TallyTrial trial : trials) {
             points.add(new Point(trial.getDate(), trial.getTally()));
@@ -42,7 +42,7 @@ public class TallyStats extends ExperimentStats<TallyTrial> {
     }
 
     @Override
-    protected List<Bar> createHistogram() {
+    protected List<Bar> createHistogram(List<TallyTrial> trials) {
         SortedMap<Integer, Integer> counts = new TreeMap<>();
         for (TallyTrial trial : trials) {
             if (counts.containsKey(trial.getTally())) {
