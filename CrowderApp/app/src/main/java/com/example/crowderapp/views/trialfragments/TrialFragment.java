@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.crowderapp.HeatmapActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
+import com.example.crowderapp.StatsActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
@@ -135,6 +136,9 @@ public class TrialFragment extends Fragment {
                 break;
             case R.id.stats_item:
                 // TODO show stats
+                Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
+                startActivity(statsIntent);
+                break;
             case R.id.end_item:
                 handler.endExperiment(experiment);
                 item.setVisible(false);
