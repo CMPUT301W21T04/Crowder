@@ -14,8 +14,8 @@ public class TallyExperiment extends Experiment {
         super();
     }
 
-    public TallyExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
-        super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
+    public TallyExperiment(String experimentID, String name, String region, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+        super(experimentID, name, region, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
     /**
