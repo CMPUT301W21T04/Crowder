@@ -10,17 +10,28 @@ import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBa
 import com.example.crowderapp.controllers.callbackInterfaces.getAllExperimentersCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getAllSubscribedExperimentsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.getExperimentStatsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getQRCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getTrialsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
+import com.example.crowderapp.models.BinomialStats;
+import com.example.crowderapp.models.BinomialTrial;
+import com.example.crowderapp.models.CounterStats;
+import com.example.crowderapp.models.CounterTrial;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.ExperimentStats;
 import com.example.crowderapp.models.Location;
+import com.example.crowderapp.models.MeasurementStats;
+import com.example.crowderapp.models.MeasurementTrial;
 import com.example.crowderapp.models.Search;
+import com.example.crowderapp.models.TallyStats;
+import com.example.crowderapp.models.TallyTrial;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.dao.ExperimentDAO;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
+import com.example.crowderapp.models.dao.TrialDAO;
 import com.example.crowderapp.models.dao.TrialFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -212,9 +223,54 @@ public class ExperimentHandler {
 
     }
 
-//    public ExperimentStats getStatistics(String experimentID) {
-//        // TODO: get the corresponding ExperimentStats class for this experiment
-//    }
+    /**
+     * gets the stats class for an experiment
+     * @param experiment the experiment to obtain stats for
+     * @param callback the callback function when the async call finishes
+     */
+    public void getStatistics(Experiment experiment, getExperimentStatsCallBack callback) {
+        TrialDAO trialDAO = new TrialFSDAO(experiment);
+        Task<List<Trial>> trialsTask = trialDAO.getExperimentTrialsUserFiltered(experiment.getExcludedUsers());
+
+        trialsTask.addOnCompleteListener(new OnCompleteListener<List<Trial>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Trial>> task) {
+                if (task.isSuccessful()) {
+                    String type = experiment.getExperimentType();
+                    List<Trial> baseTrials  = trialsTask.getResult();
+                    if (type == "Count") {
+                        List<CounterTrial> trials = new ArrayList<>();
+                        for (Trial t : baseTrials) {
+                            trials.add((CounterTrial) t);
+                        }
+                        callback.callBackResult(new CounterStats(trials));
+                    } else if (type == "Binomial") {
+                        List<BinomialTrial> trials = new ArrayList<>();
+                        for (Trial t : baseTrials) {
+                            trials.add((BinomialTrial) t);
+                        }
+                        callback.callBackResult(new BinomialStats(trials));
+                    } else if (type == "Non-Negative Integer") {
+                        List<TallyTrial> trials = new ArrayList<>();
+                        for (Trial t : baseTrials) {
+                            trials.add((TallyTrial) t);
+                        }
+                        callback.callBackResult((new TallyStats(trials)));
+                    } else if (type == "Measurement") {
+                        List<MeasurementTrial> trials = new ArrayList<>();
+                        for (Trial t : baseTrials) {
+                            trials.add((MeasurementTrial) t);
+                        }
+                        callback.callBackResult((new MeasurementStats(trials)));
+                    } else {
+
+                    }
+                } else {
+                    logger.log(Level.SEVERE, "Error in get all tasks for an experiment in handler");
+                }
+            }
+        });
+    }
 
     /**
      * grabs all the experiments
