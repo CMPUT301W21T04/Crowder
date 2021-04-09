@@ -74,7 +74,8 @@ public class TrialFragment extends Fragment {
         this.menu = menu;
         userHandler.getCurrentUser(new getUserByIDCallBack() {
             @Override
-            public void callBackResult(User user) {
+            public void callBackResult(User u) {
+                user = u;
                 MenuItem menuItem = menu.findItem(R.id.more_item);
                 menuItem.setVisible(true);
                 boolean isOwner = experiment.getOwnerID().matches(user.getUid());

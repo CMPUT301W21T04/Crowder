@@ -10,9 +10,12 @@ import com.example.crowderapp.controllers.callbackInterfaces.ScanObjectCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.models.BinomialTrial;
+import com.example.crowderapp.models.CounterTrial;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
+import com.example.crowderapp.models.MeasurementTrial;
 import com.example.crowderapp.models.ScanObj;
+import com.example.crowderapp.models.TallyTrial;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.LocationPopupFragment;
@@ -82,13 +85,34 @@ public class ScanHandler {
                         });
                         break;
                     case "Count":
-                        // Do something
+                        trial = new CounterTrial(user.getUid(), new Date(), location, experiment.getExperimentID());
+                        handler.addTrial(trial, new addTrialCallBack() {
+                            @Override
+                            public void callBackResult(String trialID) {
+                                Log.d(trialID, "Trial ID returned");
+                                Toast.makeText(activity.getApplicationContext(), "Count trial added!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         break;
                     case "Non-Negative Integer":
-                        // Do something
+                        trial = new TallyTrial(user.getUid(), new Date(), Integer.valueOf(scanObj.getValue()), location, experiment.getExperimentID());
+                        handler.addTrial(trial, new addTrialCallBack() {
+                            @Override
+                            public void callBackResult(String trialID) {
+                                Log.d(trialID, "Trial ID returned");
+                                Toast.makeText(activity.getApplicationContext(), "Trial value " + scanObj.getValue() + " added!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         break;
                     case "Measurement":
-                        //Do something
+                        trial = new MeasurementTrial(user.getUid(), new Date(), Double.parseDouble(scanObj.getValue()), location, experiment.getExperimentID());
+                        handler.addTrial(trial, new addTrialCallBack() {
+                            @Override
+                            public void callBackResult(String trialID) {
+                                Log.d(trialID, "Trial ID returned");
+                                Toast.makeText(activity.getApplicationContext(), "Trial value " + scanObj.getValue() + " added!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         break;
                 }
             }
