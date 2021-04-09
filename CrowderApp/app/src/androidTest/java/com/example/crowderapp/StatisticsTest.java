@@ -24,6 +24,15 @@ public class StatisticsTest {
     }
 
 
+    public void checkStatsText() {
+        Assert.assertTrue(solo.searchText("Quartile 1"));
+        Assert.assertTrue(solo.searchText("Quartile 2"));
+        Assert.assertTrue(solo.searchText("Quartile 3"));
+        Assert.assertTrue(solo.searchText("Median"));
+        Assert.assertTrue(solo.searchText("Mean"));
+        Assert.assertTrue(solo.searchText("Std. Dev."));
+    }
+
     @Test
     public void testStatsCount() {
         solo.sleep(1000);
@@ -41,12 +50,7 @@ public class StatisticsTest {
         solo.sleep(1000);
         solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
 
-        Assert.assertTrue(solo.searchText("Quartile 1"));
-        Assert.assertTrue(solo.searchText("Quartile 2"));
-        Assert.assertTrue(solo.searchText("Quartile 3"));
-        Assert.assertTrue(solo.searchText("Median"));
-        Assert.assertTrue(solo.searchText("Mean"));
-        Assert.assertTrue(solo.searchText("Std. Dev."));
+        checkStatsText();
     }
 
 
@@ -67,12 +71,8 @@ public class StatisticsTest {
         solo.sleep(1000);
         solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
 
-        Assert.assertTrue(solo.searchText("Quartile 1"));
-        Assert.assertTrue(solo.searchText("Quartile 2"));
-        Assert.assertTrue(solo.searchText("Quartile 3"));
-        Assert.assertTrue(solo.searchText("Median"));
-        Assert.assertTrue(solo.searchText("Mean"));
-        Assert.assertTrue(solo.searchText("Std. Dev."));
+        checkStatsText();
+
     }
 
 
@@ -93,12 +93,8 @@ public class StatisticsTest {
         solo.sleep(1000);
         solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
 
-        Assert.assertTrue(solo.searchText("Quartile 1"));
-        Assert.assertTrue(solo.searchText("Quartile 2"));
-        Assert.assertTrue(solo.searchText("Quartile 3"));
-        Assert.assertTrue(solo.searchText("Median"));
-        Assert.assertTrue(solo.searchText("Mean"));
-        Assert.assertTrue(solo.searchText("Std. Dev."));
+        checkStatsText();
+
     }
 
 
@@ -119,12 +115,8 @@ public class StatisticsTest {
         solo.sleep(1000);
         solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
 
-        Assert.assertTrue(solo.searchText("Quartile 1"));
-        Assert.assertTrue(solo.searchText("Quartile 2"));
-        Assert.assertTrue(solo.searchText("Quartile 3"));
-        Assert.assertTrue(solo.searchText("Median"));
-        Assert.assertTrue(solo.searchText("Mean"));
-        Assert.assertTrue(solo.searchText("Std. Dev."));
+        checkStatsText();
+
     }
 
 
