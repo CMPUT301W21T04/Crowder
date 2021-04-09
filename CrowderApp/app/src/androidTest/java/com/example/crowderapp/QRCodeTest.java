@@ -15,13 +15,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class QRCodeTest {
 
-    static List<String> expNames = Arrays.asList("CountQRTest", "BinQRTest", "MeasureQRTest", "TallyQRTest");
 
     private Solo solo;
 
@@ -33,116 +30,62 @@ public class QRCodeTest {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), testRule.getActivity());
     }
 
-
     @Test
-    public void testQRGenerateCount() {
-        String expname = expNames.get(0);
+    public void testQRGenerate() {
+        String expName;
 
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.COUNT);
-        solo.sleep(1000);
+        for (UiTestHelperFunctions.expTypes type : UiTestHelperFunctions.expTypes.values()) {
+            solo.sleep(1000);
+
+            expName = type.toString();
+
+            UiTestHelperFunctions.createExperiment(solo, expName, 1, false,
+                    true, type);
+            solo.sleep(1000);
+            UiTestHelperFunctions.goToMyExperiments(solo);
+            solo.sleep(1000);
+            solo.clickOnText(expName);
+            View dropdown = solo.getView(R.id.more_item);
+            solo.clickOnView(dropdown);
+            solo.sleep(1500);
+            solo.clickOnText("Generate QR Codes");
+
+            solo.sleep(1000);
+            if (type.equals(UiTestHelperFunctions.expTypes.BINOMIAL)) {
+                Spinner dropDown = (Spinner) solo.getView(R.id.dropdown_binomial);
+                solo.sleep(1000);
+                solo.pressSpinnerItem(0, 1);
+                solo.clickOnView(solo.getView(android.R.id.button1));
+            } else if (type.equals(UiTestHelperFunctions.expTypes.MEASUREMENT)) {
+                EditText measureText = (EditText) solo.getView(R.id.measure_EditText);
+                solo.enterText(measureText, "100");
+                solo.sleep(1000);
+
+                solo.clickOnView(solo.getView(android.R.id.button1));
+            } else if (type.equals(UiTestHelperFunctions.expTypes.TALLY)) {
+                EditText TallyText = (EditText) solo.getView(R.id.non_neg_EditText);
+                solo.enterText(TallyText, "100");
+                solo.clickOnView(solo.getView(android.R.id.button1));
+                solo.sleep(1000);
+            }
+
+            solo.assertCurrentActivity("Not in QRCodeActivity.", QRCodeActivity.class);
+
+            solo.goBack();
+            solo.sleep(1000);
+            UiTestHelperFunctions.goToAllExperiments(solo);
+            solo.sleep(1000);
+        }
+
+        // Clean up
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.sleep(1000);
-        solo.clickOnText(expname);
-
-        View dropdown = solo.getView(R.id.more_item);
-        solo.clickOnView(dropdown);
-        solo.sleep(1500);
-        solo.clickOnText("Generate QR Codes");
-
-        solo.assertCurrentActivity("Not in QRCodeActivity.", QRCodeActivity.class);
-        
-    }
-
-
-    @Test
-    public void testQRGenerateBinomial() {
-        String expname = expNames.get(1);
-
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.BINOMIAL);
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-        solo.sleep(1000);
-        solo.clickOnText(expname);
-
-        View dropdown = solo.getView(R.id.more_item);
-        solo.clickOnView(dropdown);
-        solo.sleep(1500);
-        solo.clickOnText("Generate QR Codes");
-
-        Spinner dropDown = (Spinner) solo.getView(R.id.dropdown_binomial);
-        solo.sleep(1000);
-
-        solo.pressSpinnerItem(0, 1);
-        solo.clickOnView(solo.getView(android.R.id.button1));
-
-        solo.assertCurrentActivity("Not in QRCodeActivity.", QRCodeActivity.class);
-    }
-
-
-    @Test
-    public void testQRGenerateMeasurement() {
-        String expname = expNames.get(2);
-
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.MEASUREMENT);
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-        solo.sleep(1000);
-        solo.clickOnText(expname);
-
-        View dropdown = solo.getView(R.id.more_item);
-        solo.clickOnView(dropdown);
-        solo.sleep(1500);
-        solo.clickOnText("Generate QR Codes");
-
-        EditText measureText = (EditText) solo.getView(R.id.measure_EditText);
-        solo.enterText(measureText, "100");
-        solo.sleep(1000);
-
-        solo.clickOnView(solo.getView(android.R.id.button1));
-
-        solo.assertCurrentActivity("Not in QRCodeActivity.", QRCodeActivity.class);
-    }
-
-
-    @Test
-    public void testQRGenerateTally() {
-        String expname = expNames.get(3);
-
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.TALLY);
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-        solo.sleep(1000);
-        solo.clickOnText(expname);
-
-        View dropdown = solo.getView(R.id.more_item);
-        solo.clickOnView(dropdown);
-        solo.sleep(1500);
-        solo.clickOnText("Generate QR Codes");
-
-        EditText TallyText = (EditText) solo.getView(R.id.non_neg_EditText);
-        solo.enterText(TallyText, "100");
-        solo.sleep(1000);
-
-        solo.clickOnView(solo.getView(android.R.id.button1));
-
-        solo.assertCurrentActivity("Not in QRCodeActivity.", QRCodeActivity.class);
-    }
-
-    // QR activity has no back button so  we delete in a separate test
-    // Must be the last test to run, unfortunately JUnit4 runs tests in a deterministic but
-    // unpredictable ordering way
-    @Test
-    public void manualCleanUp() {
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-        solo.sleep(1000);
-
         while (solo.searchText("__UI.TEST__")) {
+            solo.sleep(1500);
             solo.clickOnText("__UI.TEST__");
             UiTestHelperFunctions.unpublishExp(solo);
             solo.sleep(1000);
             UiTestHelperFunctions.goToMyExperiments(solo);
-            solo.sleep(1000);
         }
     }
 }
