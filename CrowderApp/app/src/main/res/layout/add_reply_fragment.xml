@@ -16,7 +16,7 @@
         android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Enter Reply Here"
+        android:hint="@string/enter_reply_here"
         android:text="" />
 
 </LinearLayout>

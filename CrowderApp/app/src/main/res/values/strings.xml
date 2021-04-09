@@ -47,4 +47,10 @@
     <string name="average_per_measurement">Average per measurement:</string>
     <string name="measurement_value">Measurement Value</string>
     <string name="measure_trial">Measure Trial</string>
+    <string name="type_question_here">Type Question Here</string>
+    <string name="enter_reply_here">Enter Reply Here</string>
+    <string name="mintrials">MinTrials</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="enter_keyword">Enter Keyword</string>
+    <string name="search">Search</string>
 </resources>
