@@ -207,31 +207,6 @@ public class ExperimentHandlerUnitTest {
 
     }
 
-
-    @Test
-    public void getAllSubscribedExperimentsTest() {
-        ExperimentFSDAO dao = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
-        Task<List<Experiment>> task = mock(Task.class, RETURNS_DEEP_STUBS);
-        ExperimentHandler handler = new ExperimentHandler(dao);
-
-        when(dao.getUserExperiments(any())).thenReturn(task);
-        when(task.isSuccessful()).thenReturn(true);
-
-        ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
-        getAllSubscribedExperimentsCallBack cb = mock(getAllSubscribedExperimentsCallBack.class);
-
-        handler.getAllSubscribedExperiments(any(), cb);
-
-        finishAllTasks();
-
-        verify(dao, times(1)).getUserExperiments(any());
-        verify(task, times(1)).addOnCompleteListener(captor.capture());
-
-        captor.getValue().onComplete(task);
-        verify(cb, times(1)).callBackResult(any());
-    }
-
-
     @Test
     public void addTrialTest() {
         ExperimentFSDAO eDAO = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);

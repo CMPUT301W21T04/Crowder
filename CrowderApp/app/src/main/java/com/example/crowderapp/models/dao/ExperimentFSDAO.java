@@ -2,8 +2,6 @@ package com.example.crowderapp.models.dao;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.crowderapp.models.BinomialExperiment;
 import com.example.crowderapp.models.CounterExperiment;
 import com.example.crowderapp.models.Experiment;
@@ -18,7 +16,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -113,28 +110,6 @@ public class ExperimentFSDAO extends ExperimentDAO {
                 }
             } else {
                 Log.e(TAG, "getAllExperiments: Failed to get all experiments.", task.getException());
-            }
-
-            return list;
-        });
-    }
-
-    /**
-     * Gets all the experiments the user owns.
-     * @param userId The user's ID
-     * @return
-     */
-    @Override
-    public Task<List<Experiment>> getUserExperiments(String userId) {
-        return experimentCollection.whereEqualTo("ownerID", userId).get().continueWith(task -> {
-            List<Experiment> list = null;
-            if (task.isSuccessful()) {
-                list = new LinkedList<>();
-                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                    list.add(createProperExperiment(doc));
-                }
-            } else {
-                Log.e(TAG, "getAllExperiments: Failed to get all user experiments.", task.getException());
             }
 
             return list;
