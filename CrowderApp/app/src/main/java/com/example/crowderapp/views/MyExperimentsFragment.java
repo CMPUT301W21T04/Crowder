@@ -93,7 +93,6 @@ public class MyExperimentsFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view,
                                                     int position, long id) {
-//                                    Log.e("Click", "yo");
                                 currentExperiment = subExperiments.get(position);
                                 String experimentType = currentExperiment.getExperimentType();
                                 switch (experimentType) {
