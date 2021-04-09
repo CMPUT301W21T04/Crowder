@@ -4,8 +4,6 @@ This is an app designed to make the process of crowd sourcing experiments easier
 ## How to use
 For a tutorial on how to use the app, please see the linked demo video (In progress)
 
-## Dependencies
-
 ## References
 https://zeeshan-elahi.medium.com/how-to-use-googles-ml-kit-to-scan-barcodes-8a009ab491d2
 https://medium.com/@aanandshekharroy/generate-barcode-in-android-app-using-zxing-64c076a5d83a
@@ -35,5 +33,23 @@ https://github.com/yuriy-budiyev/lib-demo-app/blob/master/app/src/main/java/com/
 https://developers.google.com/android/guides/tasks
 https://stackoverflow.com/questions/13616547/calling-callbacks-with-mockito
 https://stackoverflow.com/users/1081110/dawood-ibn-kareem
+
+## License
+
+Copyright 2021 Crowder Team
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
 
 
