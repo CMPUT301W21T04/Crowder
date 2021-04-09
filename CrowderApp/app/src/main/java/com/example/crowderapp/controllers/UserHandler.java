@@ -31,13 +31,11 @@ public class UserHandler {
 
     // Key for items in shared preferences
     final private String USER_ID_KEY = "USER_DATA_ID";
-    final private String USER_NAME = "USER_DATA_NAME";
-    final private String USER_EMAIL = "USER_DATA_EMAIL";
-    final private String USER_PHONE = "USER_DATA_PHONE";
 
     private UserDAO userDAO;
     private SharedPreferences sharedPreferences;
 
+    // Async representing current user
     private Task<User> currentUserTask;
 
     /**

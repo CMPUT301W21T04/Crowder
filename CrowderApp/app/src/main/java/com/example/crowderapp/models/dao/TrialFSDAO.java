@@ -34,6 +34,10 @@ import io.perfmark.Link;
     Licensed under Apache 2.0 License.
  */
 
+/**
+ * Concrete implementation of Trial DAO that uses Firestore
+ * Trials are stored as subcollection under experiments.
+ */
 public class TrialFSDAO extends TrialDAO {
 
     // Logging Tag
@@ -66,6 +70,11 @@ public class TrialFSDAO extends TrialDAO {
         }
     }
 
+    /**
+     * For dependency injection.
+     * @param experiment
+     * @param db
+     */
     public TrialFSDAO(Experiment experiment, FirebaseFirestore db) {
         super(experiment);
         this.db = db;

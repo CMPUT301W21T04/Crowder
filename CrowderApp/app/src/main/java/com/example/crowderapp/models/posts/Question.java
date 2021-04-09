@@ -40,13 +40,15 @@ public class Question extends Comment {
     }
 
     /**
-     * The list of all replies that answer this question.
-     * @return
+     * @return The list of all replies that answer this question.
      */
     public List<Reply> getReplyList() {
         return replyList;
     }
 
+    /**
+     * @param replyList Reply List to set to.
+     */
     public void setReplyList(List<Reply> replyList) {
         this.replyList = replyList;
     }
