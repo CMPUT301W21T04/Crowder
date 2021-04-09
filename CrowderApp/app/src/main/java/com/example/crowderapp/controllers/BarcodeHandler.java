@@ -26,12 +26,18 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * Barcode handler that is meant to generate QR code and scan QR and barcode
+ */
 public class BarcodeHandler {
 
     public void BarcodeHandler() {
     }
 
-
+    /**
+     * scans barcode using mlkit. This has been depricated, but kept for backup
+     * @param barcode
+     */
     public void scanBarcode(Bitmap barcode) {
 
         BarcodeScanner barcodeScanner = BarcodeScanning.getClient();
@@ -49,6 +55,10 @@ public class BarcodeHandler {
 
     }
 
+    /**
+     * scans qr using mlkit. This has been depricated, but kept for backup
+     * @param qr
+     */
     public void scanQR(Bitmap qr) {
 
         BarcodeScannerOptions options = new BarcodeScannerOptions.Builder().setBarcodeFormats(
@@ -70,6 +80,11 @@ public class BarcodeHandler {
 
     }
 
+    /**
+     * generates a QR based on a string
+     * @param actionText : an action string
+     * @return QR code bitmap
+     */
     public Bitmap generateQR(String actionText) {
 
         try {
