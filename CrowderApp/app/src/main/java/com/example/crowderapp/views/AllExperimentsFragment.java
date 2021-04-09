@@ -80,6 +80,7 @@ public class AllExperimentsFragment extends Fragment {
                     @Override
                     public void callBackResult() {
 //                        getNewSubs();
+                        allExperimentListItems.set(position, new AllExperimentListItem(exp, true));
                         v.setBackgroundColor(getResources().getColor(R.color.black));
                     }
                 });
@@ -90,11 +91,13 @@ public class AllExperimentsFragment extends Fragment {
                     @Override
                     public void callBackResult() {
                         //getNewSubs();
+                        allExperimentListItems.set(position, new AllExperimentListItem(exp, false));
                         v.setBackgroundColor(getResources().getColor(R.color.teal_200));
                     }
                 });
 //                Log.v(String.valueOf(exp.getExperimentID()), "Unsubscribed to: ");
             }
+            allExpAdapter.notifyDataSetChanged();
 //            getNewSubs();
 //            Log.v(String.valueOf(thisUser.getUid()), "Current User");
 //            Log.v(String.valueOf(v.getSolidColor()), "Button changed");
