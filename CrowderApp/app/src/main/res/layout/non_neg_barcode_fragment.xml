@@ -10,10 +10,10 @@
         android:id="@+id/non_neg_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="30dp"
-        android:autofillHints="Number of Trials"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="30dp"
         android:ems="10"
+        android:hint="Value"
         android:textIsSelectable="true"
         android:inputType="number" />
 

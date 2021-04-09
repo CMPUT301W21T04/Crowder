@@ -16,6 +16,7 @@
         android:layout_marginBottom="?attr/actionBarSize" >
 
     </ListView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_question_button"
         android:layout_width="match_parent"
@@ -24,6 +25,7 @@
         android:layout_marginBottom="?attr/actionBarSize"
         android:backgroundTint="@color/purple_200"
         android:clickable="true"
+        android:contentDescription="@string/add_a_question"
         android:elevation="10dp"
         android:focusable="true"
         app:srcCompat="@android:drawable/ic_input_add" />

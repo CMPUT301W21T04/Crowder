@@ -9,7 +9,6 @@
         android:id="@+id/dropdown_binomial"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp" />
 
 
