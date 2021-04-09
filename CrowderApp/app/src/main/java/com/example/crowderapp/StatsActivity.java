@@ -35,7 +35,6 @@ public class StatsActivity extends AppCompatActivity {
     TextView meanTextView;
     TextView medianTextView;
     TextView stdDevTextView;
-    LineChart lineView;
 
 
     @Override
@@ -51,7 +50,6 @@ public class StatsActivity extends AppCompatActivity {
         meanTextView = findViewById(R.id.mean_value_TextView);
         medianTextView = findViewById(R.id.median_value_TextView);
         stdDevTextView = findViewById(R.id.std_dev_value_TextView);
-        lineView = (LineChart) findViewById(R.id.linechart);
 
         handler.refreshExperimentTrials(experiment, new getExperimentCallBack() {
             @Override
@@ -66,26 +64,6 @@ public class StatsActivity extends AppCompatActivity {
                         meanTextView.setText(df.format(experimentStats.getMean()));
                         medianTextView.setText(df.format(experimentStats.getMedian()));
                         stdDevTextView.setText(df.format(experimentStats.getStdev()));
-                        DateFormat df = new SimpleDateFormat("MMdd");
-                        ExperimentStats.Graph graph = experimentStats.getPlotPoints();
-                        List<ExperimentStats.Point> points = graph.getPoints();
-                        List<Entry> data = new ArrayList<Entry>();
-                        String date;
-                        for(ExperimentStats.Point point : points) {
-                            date = df.format(point.getX());
-                            //Float.valueOf(date);
-                            data.add(new Entry(Float.valueOf(date), (float)point.getY()));
-                        }
-
-                        LineDataSet set1 = new LineDataSet(data, graph.getName());
-
-                        set1.setFillAlpha(110);
-
-                        List<ILineDataSet> dataSets = new ArrayList<>();
-                        dataSets.add(set1);
-                        LineData lineData = new LineData(dataSets);
-
-                        lineView.setData(lineData);
                     }
                 });
             }
