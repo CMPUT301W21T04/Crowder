@@ -182,28 +182,6 @@ public class ExperimentHandler {
     }
 
     /**
-     * creates and returns the task for all experiments the user is subscribed to.
-     * @param userID contains the userID
-     * @param callback the callback function that is called when the async call finish
-     */
-    public void getAllSubscribedExperiments(String userID, getAllSubscribedExperimentsCallBack callback) {
-
-        Task<List<Experiment>> task = experimentDAO.getUserExperiments(userID);
-
-        task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
-            @Override
-            public void onComplete(@NonNull Task<List<Experiment>> task) {
-                if (task.isSuccessful()){
-                    callback.callBackResult(task.getResult());
-                } else {
-                    logger.log(Level.SEVERE, "Error in get all subscribed experiments in handler");
-                }
-            }
-        });
-
-    }
-
-    /**
      * ends experiment then passes the updated experiment to be updated in the db
      * @param experiment the experiment to be ended
      */
