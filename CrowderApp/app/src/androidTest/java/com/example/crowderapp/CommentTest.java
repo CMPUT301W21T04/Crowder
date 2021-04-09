@@ -96,8 +96,6 @@ public class CommentTest {
         solo.sleep(500);
 
         //cleanup
-        UiTestHelperFunctions.goToAllExperiments(solo);
-        UiTestHelperFunctions.toggleSubExperiment(solo, expname);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.clickOnText(expname);
         UiTestHelperFunctions.unpublishExp(solo);

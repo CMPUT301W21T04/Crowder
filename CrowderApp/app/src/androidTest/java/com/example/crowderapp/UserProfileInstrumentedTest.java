@@ -45,7 +45,7 @@ public class UserProfileInstrumentedTest {
         solo.clearEditText(userNameField);
         solo.enterText(userNameField, "Test User 123");
         solo.clearEditText(phoneField);
-        solo.enterText(phoneField, "9991112222");
+        solo.enterText(phoneField, "999-111-2222");
         solo.clearEditText(emailField);
         solo.enterText(emailField, "test@email.com");
         solo.clickOnView(editButton);
@@ -54,7 +54,7 @@ public class UserProfileInstrumentedTest {
         UiTestHelperFunctions.goToProfile(solo);
 
         Assert.assertTrue(solo.searchText("Test User 123"));
-        Assert.assertTrue(solo.searchText("9991112222"));
+        Assert.assertTrue(solo.searchText("999-111-2222"));
         Assert.assertTrue(solo.searchText("test@email.com"));
     }
 }

@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robotium.solo.Solo;
 
+import org.junit.Assert;
+
 public class UiTestHelperFunctions {
 
     public enum expTypes {
@@ -28,32 +30,30 @@ public class UiTestHelperFunctions {
         solo.clickOnView(addExpButton);
 
         EditText expNameText = (EditText) solo.getView(R.id.experiment_name_EditText);
-        Spinner dropDown = (Spinner) solo.getView(R.id.dropdown);
         EditText minTrials = (EditText) solo.getView(R.id.min_trials_EditText);
-
         solo.enterText(expNameText, expName);
-        solo.clickOnView(dropDown);
+        solo.enterText(minTrials, String.valueOf(minTrialAmt));
 
+        Spinner dropDown = (Spinner) solo.getView(R.id.dropdown);
         solo.sleep(2000);
 
         switch (type) {
             case COUNT:
-                solo.clickOnText("Count");
+                solo.pressSpinnerItem(0, 1);
                 break;
             case BINOMIAL:
-                solo.clickOnText("Binomial");
+                solo.pressSpinnerItem(0, 2);
                 break;
             case TALLY:
-                solo.clickOnText("Non-Negative Integer");
+                solo.pressSpinnerItem(0, 3);
                 break;
             case MEASUREMENT:
-                solo.clickOnText("Measurement");
+                solo.pressSpinnerItem(0, 4);
                 break;
             default:
-                solo.clickOnText("Count");
+                solo.pressSpinnerItem(0, 1);
         }
 
-        solo.enterText(minTrials, String.valueOf(minTrialAmt));
         // https://stackoverflow.com/questions/10359192/how-to-select-which-button-to-click-on-robotium-for-an-alert-dialog/10858118
         solo.clickOnView(solo.getView(android.R.id.button1));
     }
@@ -74,11 +74,13 @@ public class UiTestHelperFunctions {
 
     public static void goToProfile(Solo solo) {
         View profButton = solo.getView(R.id.navigation_profile);
+        solo.sleep(1000);
         solo.clickOnView(profButton);
     }
 
     public static void toggleSubExperiment(Solo solo, String expname) {
         //https://stackoverflow.com/questions/22299328/how-to-click-button-adjacent-to-a-specific-text-in-robotium
+        Assert.assertTrue(solo.waitForText(expname,1, 50000,  true));
         TextView expText = solo.getText(expname);
         ViewGroup expPair = (ViewGroup) expText.getParent();
         Button subButton = (Button) expPair.getChildAt(1);
@@ -91,8 +93,6 @@ public class UiTestHelperFunctions {
         createExperiment(solo, expname, 1, type);
 
         solo.sleep(2000);
-
-        toggleSubExperiment(solo, expname);
 
         goToMyExperiments(solo);
         solo.clickOnText(expname);
