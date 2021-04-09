@@ -19,8 +19,10 @@ import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.StatsActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.ScanHandler;
+import com.example.crowderapp.controllers.ScanObjHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
+import com.example.crowderapp.controllers.callbackInterfaces.ScanObjectCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
@@ -30,6 +32,7 @@ import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
+import com.example.crowderapp.models.ScanObj;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.BinomialBarcodeFragment;
@@ -53,8 +56,10 @@ public class TrialFragment extends Fragment {
     Experiment experiment;
     Menu menu;
     ExperimentHandler handler = new ExperimentHandler();
+    ScanObjHandler soHandler;
     UserHandler userHandler;
     int curIndex=0;
+    String option;
 
 
     @Override
@@ -122,13 +127,13 @@ public class TrialFragment extends Fragment {
                 else if(experiment.getExperimentType().equals("Non-Negative Integer"))
                     new NonNegBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "NonNegBarcode");
                 else if(experiment.getExperimentType().equals("Count"))
-                    launchScanner();
+                    scanCode("Count");
                 else if(experiment.getExperimentType().equals("Measurement"))
                     new MeasurementBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "MeasureBarcode");
                 // TODO barcode
                 break;
             case R.id.scan_item:
-                scanCode();
+                scanCode("Scan");
                 break;
             case R.id.qr_code_gen_item:
                 if(experiment.getExperimentType().equals("Binomial"))
@@ -198,7 +203,8 @@ public class TrialFragment extends Fragment {
             }
         });
     }
-    public void scanCode() {
+    public void scanCode(String message) {
+        option = message;
         Intent intent = new Intent(getActivity(), ScanActivity.class);
         startActivityForResult(intent, 2);
     }
@@ -209,14 +215,22 @@ public class TrialFragment extends Fragment {
         if(data == null)
             return;
         String code = data.getStringExtra("CODE");
-        ScanHandler scanHandler = new ScanHandler(getActivity(), experiment, user);
-        scanHandler.execute(code);
+        if(option.equals("Scan")) {
+            ScanHandler scanHandler = new ScanHandler(getActivity(), experiment, user);
+            scanHandler.execute(code);
+        } else {
+            soHandler = new ScanObjHandler(experiment.getExperimentID());
+            soHandler.createScanObj(code, "1", new ScanObjectCallback() {
+                @Override
+                public void callback(ScanObj o) {
+
+                }
+            });
+        }
+        option = "";
+
     }
 
-    private void launchScanner() {
-        Intent intent = new Intent(getActivity(), ScanActivity.class);
-        startActivity(intent);
-    }
 
     private void openStats() {
         Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
