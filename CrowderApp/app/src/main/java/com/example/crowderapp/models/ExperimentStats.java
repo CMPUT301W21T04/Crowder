@@ -1,18 +1,22 @@
 package com.example.crowderapp.models;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public abstract class ExperimentStats <T extends Trial> {
     protected double mean;
     protected double median;
     protected double stdev;
     protected double[] values;
+    protected List<T> trials;
     protected List<Double> quartiles;
-    protected List<Graph> plotPoints;
+    protected Graph plotPoints;
     protected List<Bar> histPoints;
 
     public class Graph {
@@ -62,20 +66,22 @@ public abstract class ExperimentStats <T extends Trial> {
 
     // Template pattern
     ExperimentStats(List<T> trials) {
-        values = setValues(trials);
+        this.trials = trials;
+        Collections.sort(this.trials);
+        values = setValues();
         mean = calcMean(values);
         median = calcMedian(values);
         stdev = calcStdev(values, mean);
         quartiles = calcQuart(values);
-        plotPoints = createPlot(trials);
-        histPoints = createHistogram(trials);
+        plotPoints = createPlot();
+        histPoints = createHistogram();
     }
 
-    protected abstract double[] setValues(List<T> trials);
+    protected abstract double[] setValues();
 
-    protected abstract List<Graph> createPlot(List<T> trials);
+    protected abstract Graph createPlot();
 
-    protected abstract List<Bar> createHistogram(List<T> trials);
+    protected abstract List<Bar> createHistogram();
 
     public double getMean() {
         return mean;
@@ -93,7 +99,7 @@ public abstract class ExperimentStats <T extends Trial> {
         return quartiles;
     }
 
-    public List<Graph> getPlotPoints() { return plotPoints; }
+    public Graph getPlotPoints() { return plotPoints; }
 
     public List<Bar> getHistPoints() { return histPoints; }
 
@@ -124,8 +130,8 @@ public abstract class ExperimentStats <T extends Trial> {
 
     // https://stackoverflow.com/questions/18390548/how-to-calculate-standard-deviation-using-java
     protected double calcStdev(double[] values, double mean) {
-        if (values.length == 0) {
-            return 0;
+        if (values.length < 2) {
+            return Double.NaN;
         }
         double[] val = new double[values.length];
         for (int index = 0; index < values.length; index++) {
@@ -140,11 +146,11 @@ public abstract class ExperimentStats <T extends Trial> {
 
     // https://stackoverflow.com/questions/42381759/finding-first-quartile-and-third-quartile-in-integer-array-using-java
     protected List<Double> calcQuart(double[] val) {
-        if (val.length == 0) {
+        if (val.length < 4) {
             List<Double> output = new ArrayList<Double>();
-            output.add(0d);
-            output.add(0d);
-            output.add(0d);
+            output.add(Double.NaN);
+            output.add(Double.NaN);
+            output.add(Double.NaN);
             return output;
         }
         Arrays.sort(val);
@@ -165,5 +171,16 @@ public abstract class ExperimentStats <T extends Trial> {
         }
         List<Double> output = new ArrayList<>(Arrays.asList(ans));
         return output;
+    }
+
+    protected int daysDiff(Date d1, Date d2) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d2);
+        cal.set(Calendar.HOUR_OF_DAY,23);
+        cal.set(Calendar.MINUTE,59);
+        cal.set(Calendar.SECOND,59);
+        Date other = cal.getTime();
+        long diff = other.getTime() - d1.getTime();
+        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 }

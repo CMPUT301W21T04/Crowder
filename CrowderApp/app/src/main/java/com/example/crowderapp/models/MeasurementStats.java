@@ -1,20 +1,20 @@
 package com.example.crowderapp.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
 
-    List<MeasurementTrial> trials;
-
     public MeasurementStats(List<MeasurementTrial> trials) {
         super(trials);
-        this.trials = trials;
     }
 
     @Override
-    protected double[] setValues(List<MeasurementTrial> trials) {
+    protected double[] setValues() {
         double[] val = new double[trials.size()];
         int index = 0;
         for (MeasurementTrial trial : trials) {
@@ -25,18 +25,41 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
     }
 
     @Override
-    protected List<Graph> createPlot(List<MeasurementTrial> trials) {
-        List<Point> points = new ArrayList<>();
-        for (MeasurementTrial trial : trials) {
-            points.add(new Point(trial.getDate(), trial.getMeasurement()));
+    protected Graph createPlot() {
+        if (trials.size() == 0) {
+            List<Point> points = new ArrayList<>();
+            points.add(new Point(new Date(), 0d));
+            return new Graph("", points);
         }
-        List<Graph> graphs = new ArrayList<>();
-        graphs.add(new Graph("Measurements", points));
-        return graphs;
+        Calendar start = Calendar.getInstance();
+        start.setTime(trials.get(0).getDate());
+        Calendar end = Calendar.getInstance();
+        end.setTime(trials.get(trials.size()-1).getDate());
+        end.set(Calendar.HOUR_OF_DAY, 23);
+        end.set(Calendar.MINUTE, 59);
+        end.set(Calendar.SECOND, 59);
+
+        int index = 0;
+        List<Point> points = new ArrayList<>();
+        double[] maxMeas = new double[trials.size()];
+        double[] measActual;
+        int countPerDay = 0;
+        //https://stackoverflow.com/questions/4534924/how-to-iterate-through-range-of-dates-in-java
+        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            while (index < trials.size() && daysDiff(date, trials.get(index).getDate()) == 0) {
+                maxMeas[countPerDay] = trials.get(index).getMeasurement();
+                countPerDay++;
+                index++;
+            }
+            measActual = Arrays.copyOfRange(maxMeas, 0, countPerDay);
+            points.add(new Point(date, calcMean(measActual)));
+            countPerDay = 0;
+        }
+        return new Graph("Mean Measurement Over Time", points);
     }
 
     @Override
-    protected List<Bar> createHistogram(List<MeasurementTrial> trials) {
+    protected List<Bar> createHistogram() {
         List<Bar> bars = new ArrayList<>();
         int[] quarters = {0,0,0,0};
         for (MeasurementTrial trial : trials) {

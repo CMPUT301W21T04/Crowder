@@ -9,17 +9,17 @@ public class MockExpStats extends ExperimentStats<Trial> {
     }
 
     @Override
-    protected double[] setValues(List trials) {
+    protected double[] setValues() {
         return new double[0];
     }
 
     @Override
-    protected List<Graph> createPlot(List trials) {
+    protected Graph createPlot() {
         return null;
     }
 
     @Override
-    protected List<Bar> createHistogram(List trials) {
+    protected List<Bar> createHistogram() {
         return null;
     }
 

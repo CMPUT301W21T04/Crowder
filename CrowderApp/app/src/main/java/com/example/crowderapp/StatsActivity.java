@@ -67,8 +67,8 @@ public class StatsActivity extends AppCompatActivity {
                         medianTextView.setText(df.format(experimentStats.getMedian()));
                         stdDevTextView.setText(df.format(experimentStats.getStdev()));
                         DateFormat df = new SimpleDateFormat("MMdd");
-                        List<ExperimentStats.Graph> graphs = experimentStats.getPlotPoints();
-                        List<ExperimentStats.Point> points = graphs.get(0).getPoints();
+                        ExperimentStats.Graph graph = experimentStats.getPlotPoints();
+                        List<ExperimentStats.Point> points = graph.getPoints();
                         List<Entry> data = new ArrayList<Entry>();
                         String date;
                         for(ExperimentStats.Point point : points) {
@@ -77,7 +77,7 @@ public class StatsActivity extends AppCompatActivity {
                             data.add(new Entry(Float.valueOf(date), (float)point.getY()));
                         }
 
-                        LineDataSet set1 = new LineDataSet(data, "Points");
+                        LineDataSet set1 = new LineDataSet(data, graph.getName());
 
                         set1.setFillAlpha(110);
 

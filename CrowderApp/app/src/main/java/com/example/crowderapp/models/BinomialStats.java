@@ -1,6 +1,7 @@
 package com.example.crowderapp.models;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -12,16 +13,12 @@ import java.util.TreeMap;
 
 public class BinomialStats extends ExperimentStats<BinomialTrial> {
 
-    List<BinomialTrial> trials;
-
     public BinomialStats(List<BinomialTrial> trials) {
         super(trials);
-        this.trials = trials;
-        Collections.sort(this.trials);
     }
 
     @Override
-    protected double[] setValues(List<BinomialTrial> trials) {
+    protected double[] setValues() {
         double[] val = new double[trials.size()];
         int index = 0;
         for (BinomialTrial trial : trials) {
@@ -33,52 +30,41 @@ public class BinomialStats extends ExperimentStats<BinomialTrial> {
     }
 
     @Override
-    protected List<Graph> createPlot(List<BinomialTrial> trials) {
-        SortedMap<Date, Integer> hashedPasses = new TreeMap<>();
-        SortedMap<Date, Integer> hashedFails = new TreeMap<>();
+    protected Graph createPlot() {
+        if (trials.size() == 0) {
+            List<Point> points = new ArrayList<>();
+            points.add(new Point(new Date(), 0d));
+            return new Graph("", points);
+        }
+        Calendar start = Calendar.getInstance();
+        start.setTime(trials.get(0).getDate());
+        Calendar end = Calendar.getInstance();
+        end.setTime(trials.get(trials.size()-1).getDate());
+        end.set(Calendar.HOUR_OF_DAY,23);
+        end.set(Calendar.MINUTE,59);
+        end.set(Calendar.SECOND,59);
 
-        BinomialTrial lastPassedTrial = null;
-        BinomialTrial lastFailedTrial = null;
-        for (BinomialTrial trial : trials) {
-            if (trial.isResult()) {
-                if (lastPassedTrial == null || trial.compareTo(lastPassedTrial) != 0) {
-                    lastPassedTrial = trial;
-                    hashedPasses.put(lastPassedTrial.getDate(), 1);
+        int index = 0;
+        List<Point> points = new ArrayList<>();
+        double cumPasses = 0;
+        double cumFails = 0;
+        //https://stackoverflow.com/questions/4534924/how-to-iterate-through-range-of-dates-in-java
+        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            while (index < trials.size() && daysDiff(date, trials.get(index).getDate()) == 0) {
+                if (trials.get(index).isResult()) {
+                    cumPasses+=1d;
                 } else {
-                    hashedPasses.put(lastPassedTrial.getDate(), hashedPasses.get(lastPassedTrial.getDate())+1);
+                    cumFails+=1d;
                 }
-            } else {
-                if (lastFailedTrial == null || trial.compareTo(lastFailedTrial) != 0) {
-                    lastFailedTrial = trial;
-                    hashedFails.put(lastFailedTrial.getDate(), 1);
-                } else {
-                    hashedFails.put(lastFailedTrial.getDate(), hashedFails.get(lastFailedTrial.getDate())+1);
-                }
+                index++;
             }
+            points.add(new Point(date, cumPasses/(cumFails+cumPasses)));
         }
-
-        List<Point> passes = new ArrayList<>();
-        List<Point> fails = new ArrayList<>();
-        Set<Date> setp = hashedPasses.keySet();
-        for (Date key : setp) {
-            passes.add(new Point(key, hashedPasses.get(key)));
-        }
-        Set<Date> setf = hashedFails.keySet();
-        for (Date key : setf) {
-            passes.add(new Point(key, hashedFails.get(key)));
-        }
-
-        Graph passGraph = new Graph("Passes per Day", passes);
-        Graph failGraph = new Graph("Fails per Day", fails);
-        List<Graph> output = new ArrayList<>();
-        output.add(passGraph);
-        output.add(failGraph);
-
-        return output;
+        return new Graph("Success Rate Over Time", points);
     }
 
     @Override
-    protected List<Bar> createHistogram(List<BinomialTrial> trials) {
+    protected List<Bar> createHistogram() {
         List<Bar> bars = new ArrayList<Bar>();
         int passes = 0;
         int fails = 0;
