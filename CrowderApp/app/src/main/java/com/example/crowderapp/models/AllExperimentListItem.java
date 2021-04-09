@@ -14,7 +14,15 @@ public class AllExperimentListItem {
         this.isSubscribed = isSubscribed;
     }
 
+    /**
+     * gets the experiment
+     * @return the experiment obtained
+     */
     public Experiment getExperiment() {return this.experiment;}
 
+    /**
+     * obtains the boolean if the user is subscribed to the list
+     * @return boolean result
+     */
     public boolean getIsSubscribed() {return this.isSubscribed;}
 }

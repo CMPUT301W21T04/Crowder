@@ -44,6 +44,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The experiment handler. A controller that handles all the functionalities
+ * with regards to the experiment model
+ */
 public class ExperimentHandler {
     private ExperimentDAO experimentDAO;
     private Logger logger;
@@ -53,6 +57,10 @@ public class ExperimentHandler {
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
+    /**
+     * an injectable experiment Handler for testing purposes. Injectable with a dao
+     * @param dao
+     */
     public ExperimentHandler(ExperimentDAO dao) {
         experimentDAO = dao;
         logger = Logger.getLogger(ExperimentHandler.class.getName());
@@ -93,7 +101,8 @@ public class ExperimentHandler {
     }
 
     /**
-     * Unpublishes or deletes the experiment in the db
+     * Unpublishes or deletes the experiment in the db. Depricated unpublish experiment to match
+     * project specifications
      * @param experimentID contains the experiment ID
      * @param callback
      */
@@ -119,6 +128,7 @@ public class ExperimentHandler {
     /**
      * removes all subscribers from an experiment
      * @param experiment contains the experiment object
+     * @param UID : contains the user ID
      * @param callback
      */
     public void unPublishExperiment(Experiment experiment, String UID, unPublishExperimentCallBack callback) {
@@ -361,6 +371,7 @@ public class ExperimentHandler {
 
     /**
      * Searches all experiments for a particular string in any field in the experiment object
+     * depricated, but kept for backup purposes
      * @param filterStrings the strings to be searched
      * @param callback the callback function when the async call finishes
      */
