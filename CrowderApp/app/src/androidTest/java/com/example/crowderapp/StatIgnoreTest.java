@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class StatIgnoreTest {
     private Solo solo;
-    String expname = "End Test.__UI.TEST__";
+    String expname = "End Test";
 
     @Rule
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class, true, true);
@@ -38,7 +38,7 @@ public class StatIgnoreTest {
 
         Button save = (Button) solo.getView(R.id.count_save_Button);
 
-        solo.clickOnView(count);
+        solo.clickOnView(save);
 
         solo.sleep(1000);
 
@@ -46,7 +46,9 @@ public class StatIgnoreTest {
 
         UiTestHelperFunctions.openStatistics(solo);
 
-        Assert.assertFalse(solo.searchText("1"));
+        solo.sleep(500);
+
+        Assert.assertFalse(solo.searchText("1.00"));
 
         solo.goBack();
 
