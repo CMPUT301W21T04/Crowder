@@ -150,15 +150,4 @@ public class Experiment implements Serializable {
 
     public void setExperimentType(String experimentType) { this.experimentType = experimentType; }
 
-    // this requires attention will need
-    // to use some api to generate QR codes
-    public void generateQR() {
-
-    }
-
-    // similar to the generateQR we will
-    // need some api to read barcodes in
-    public void registerBarcode(Long barcode) {
-
-    }
 }

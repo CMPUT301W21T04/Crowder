@@ -12,7 +12,7 @@ public class Question extends Comment {
     private List<Reply> replyList;
 
     /**
-     * Default conzstructor for user in firebase.
+     * Default constructor for user in firebase.
      */
     public Question() {
         super();
