@@ -33,108 +33,50 @@ public class StatisticsTest {
         Assert.assertTrue(solo.searchText("Std. Dev."));
     }
 
-    @Test
-    public void testStatsCount() {
-        solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.COUNT);
-
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-
-        solo.sleep(1000);
-        solo.clickOnText(expName);
-
-        solo.sleep(1000);
-        UiTestHelperFunctions.openStatistics(solo);
-
-        solo.sleep(1000);
-        solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
-
-        checkStatsText();
-    }
-
 
     @Test
-    public void testStatsBinomial() {
-        solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.BINOMIAL);
+    public void testStats() {
+        String expName;
 
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-
-        solo.sleep(1000);
-        solo.clickOnText(expName);
-
-        solo.sleep(1000);
-        UiTestHelperFunctions.openStatistics(solo);
-
-        solo.sleep(1000);
-        solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
-
-        checkStatsText();
-
-    }
-
-
-    @Test
-    public void testStatsMeasurement() {
-        solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.MEASUREMENT);
-
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-
-        solo.sleep(1000);
-        solo.clickOnText(expName);
-
-        solo.sleep(1000);
-        UiTestHelperFunctions.openStatistics(solo);
-
-        solo.sleep(1000);
-        solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
-
-        checkStatsText();
-
-    }
-
-
-    @Test
-    public void testStatsTally() {
-        solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.TALLY);
-
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-
-        solo.sleep(1000);
-        solo.clickOnText(expName);
-
-        solo.sleep(1000);
-        UiTestHelperFunctions.openStatistics(solo);
-
-        solo.sleep(1000);
-        solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
-
-        checkStatsText();
-
-    }
-
-
-    // Stats Activity has no back button. Need to clean up experiments separately
-    @Test
-    public void manualCleanUp() {
-        solo.sleep(1000);
-        UiTestHelperFunctions.goToMyExperiments(solo);
-        solo.sleep(1000);
-
-        while (solo.searchText("__UI.TEST__")) {
-            solo.clickOnText("__UI.TEST__");
+        for (UiTestHelperFunctions.expTypes type : UiTestHelperFunctions.expTypes.values()) {
             solo.sleep(1000);
-            UiTestHelperFunctions.unpublishExp(solo);
+
+            expName = type.toString();
+
+            UiTestHelperFunctions.createExperiment(solo, expName, 1, false,
+                    true, type);
+
             solo.sleep(1000);
             UiTestHelperFunctions.goToMyExperiments(solo);
+
+            solo.sleep(1000);
+            solo.clickOnText(expName);
+
+            solo.sleep(1000);
+            UiTestHelperFunctions.openStatistics(solo);
+
+            solo.sleep(1000);
+            solo.assertCurrentActivity("Not in Stats Activity", StatsActivity.class);
+
+            checkStatsText();
+
+            solo.goBack();
+
+            solo.sleep(1000);
+            UiTestHelperFunctions.goToAllExperiments(solo);
             solo.sleep(1000);
         }
 
+        // Clean up
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.sleep(1000);
+        while (solo.searchText("__UI.TEST__")) {
+            solo.sleep(1500);
+            solo.clickOnText("__UI.TEST__");
+            UiTestHelperFunctions.unpublishExp(solo);
+            solo.sleep(1000);
+            UiTestHelperFunctions.goToMyExperiments(solo);
+        }
     }
+
 }
