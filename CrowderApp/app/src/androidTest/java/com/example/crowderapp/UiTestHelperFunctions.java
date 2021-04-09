@@ -151,12 +151,14 @@ public class UiTestHelperFunctions {
         solo.clickOnText(expname);
     }
 
+
     public static void endExp(Solo solo) {
         View dropdown = solo.getView(R.id.more_item);
         solo.clickOnView(dropdown);
         solo.sleep(1500);
         solo.clickOnText("End Experiment");
     }
+
 
     public static void unpublishExp(Solo solo) {
         View dropdown = solo.getView(R.id.more_item);
@@ -165,10 +167,19 @@ public class UiTestHelperFunctions {
         solo.clickOnText("Unpublish Experiment");
     }
 
+
     public static void openHeatMap(Solo solo) {
         View dropdown = solo.getView(R.id.more_item);
         solo.clickOnView(dropdown);
         solo.sleep(1500);
         solo.clickOnText("Location Heatmap");
+    }
+
+
+    public static void openStatistics(Solo solo) {
+        View dropdown = solo.getView(R.id.more_item);
+        solo.clickOnView(dropdown);
+        solo.sleep(1500);
+        solo.clickOnText("Statistics");
     }
 }
