@@ -42,6 +42,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
 
     TextView numCountTextView;
     TextView aveCountTextView;
+    TextView nameTextView;
     EditText integerValueEditText;
     String integerValueString;
     Button enterButton;
@@ -102,6 +103,8 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         integerValueEditText = view.findViewById(R.id.non_neg_value_editText);
         enterButton = view.findViewById(R.id.non_neg_button_enter);
         saveButton = view.findViewById(R.id.non_neg_button_save);
+        nameTextView = view.findViewById(R.id.non_neg_trial_TextView);
+        nameTextView.setText(experiment.getName());
 
         if(tallyExperiment.isEnded()) {
             integerValueEditText.setEnabled(false);

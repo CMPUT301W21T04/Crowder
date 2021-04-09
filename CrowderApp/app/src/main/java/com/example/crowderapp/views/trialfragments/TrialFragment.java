@@ -94,6 +94,9 @@ public class TrialFragment extends Fragment {
                 if(!experiment.isLocationRequired()) {
                     menu.findItem(R.id.location_item).setVisible(false);
                 }
+                if(experiment.isUnpublished() && !isOwner) {
+                    menu.findItem(R.id.unpublish_item).setVisible(false);
+                }
             }
         });
 
@@ -109,17 +112,18 @@ public class TrialFragment extends Fragment {
                 startActivity(intentLocation);
                 break;
             case R.id.unpublish_item:
-                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
-                    @Override
-                    public void callBackResult() {
-                        userHandler.unsubscribeExperiment(experiment.getExperimentID(), new unsubscribedExperimentCallBack() {
-                            @Override
-                            public void callBackResult() {
-                                openFragment(MyExperimentsFragment.newInstance());
-                            }
-                        });
-                    }
-                });
+//                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
+//                    @Override
+//                    public void callBackResult() {
+//                        userHandler.unsubscribeExperiment(experiment.getExperimentID(), new unsubscribedExperimentCallBack() {
+//                            @Override
+//                            public void callBackResult() {
+//                                openFragment(MyExperimentsFragment.newInstance());
+//                            }
+//                        });
+//                    }
+//                });
+                experiment.setUnpublished(true);
                 break;
             case R.id.assign_barcode_item:
                 if(experiment.getExperimentType().equals("Binomial"))

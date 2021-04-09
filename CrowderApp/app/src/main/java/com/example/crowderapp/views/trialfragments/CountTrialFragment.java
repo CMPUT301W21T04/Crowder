@@ -2,10 +2,7 @@ package com.example.crowderapp.views.trialfragments;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,15 +11,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
-import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.LocationHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.LocationCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
-import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
-import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CounterExperiment;
 import com.example.crowderapp.models.CounterTrial;
 import com.example.crowderapp.models.Experiment;
@@ -37,6 +30,7 @@ import java.util.List;
 
 public class CountTrialFragment extends TrialFragment {
     TextView totalCountTextView;
+    TextView expName;
     int totalCount;
     Button countButton;
     Button saveButton;
@@ -83,7 +77,9 @@ public class CountTrialFragment extends TrialFragment {
 
         countExperiment = (CounterExperiment) experiment;
         user = (User) bundle.getSerializable("User");
-        totalCountTextView = view.findViewById(R.id.count_total_TextView);
+        totalCountTextView = view.findViewById(R.id.count_name_TextView);
+        expName = view.findViewById(R.id.count_trial_textView);
+        expName.setText(experiment.getName());
         countButton = view.findViewById(R.id.count_button);
         saveButton = view.findViewById(R.id.count_save_Button);
 

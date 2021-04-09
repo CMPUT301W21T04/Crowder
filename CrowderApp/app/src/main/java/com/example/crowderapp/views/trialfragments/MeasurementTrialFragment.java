@@ -46,6 +46,7 @@ public class MeasurementTrialFragment extends TrialFragment {
     MeasurementExperiment measurementExperiment;
     TextView measurementsTextView;
     TextView aveMeasureTextView;
+    TextView nameTextView;
     Button enterButton;
     Button saveButton;
     int numMeasurements;
@@ -105,6 +106,8 @@ public class MeasurementTrialFragment extends TrialFragment {
         enterButton = view.findViewById(R.id.measurement_button_enter);
         saveButton = view.findViewById(R.id.measurement_button_save);
         measurementInput = view.findViewById(R.id.measurement_value_editText);
+        nameTextView = view.findViewById(R.id.measure_trial_TextView);
+        nameTextView.setText(experiment.getName());
 
         if(measurementExperiment.isEnded()) {
             measurementInput.setEnabled(false);
