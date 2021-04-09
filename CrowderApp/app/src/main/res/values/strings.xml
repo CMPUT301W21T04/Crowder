@@ -27,4 +27,10 @@
     <string name="qr_code">QR Code</string>
     <string name="number_of_counts">Number of Counts:</string>
     <string name="deletableExpSuffix">__UI.TEST__</string>
+    <string name="minimum_number_of_trials">Minimum Number of Trials</string>
+    <string name="location_required">Location Required?</string>
+    <string name="region">Region</string>
+    <string name="set_region_of_experiment">Set region of experiment</string>
+    <string name="set_minimum_number_of_trials_for_experiment">Set minimum number of trials</string>
+    <string name="set_the_name_of_the_experiment">Set the name of the Experiment</string>
 </resources>

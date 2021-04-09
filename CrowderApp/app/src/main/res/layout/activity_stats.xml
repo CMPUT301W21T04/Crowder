@@ -17,7 +17,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/quarter_1" />
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/_0" />
     </LinearLayout>
 
@@ -39,7 +39,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/quarter_2" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/_0" />
     </LinearLayout>
 
@@ -61,7 +61,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/quarter_3" />
 
         <TextView
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/_0" />
     </LinearLayout>
 
@@ -84,14 +84,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/median"
-            android:textSize="40dp" />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/median_value_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/_0" />
     </LinearLayout>
 
@@ -106,14 +106,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/mean"
-            android:textSize="40dp" />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/mean_value_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/_0" />
     </LinearLayout>
 
@@ -127,7 +127,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/std_dev" />
 
         <TextView
@@ -135,7 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="40dp"
+            android:textSize="40sp"
             android:text="@string/_0" />
     </LinearLayout>
 
