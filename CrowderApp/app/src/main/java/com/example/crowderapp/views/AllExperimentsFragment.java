@@ -198,11 +198,13 @@ public class AllExperimentsFragment extends Fragment {
     private void updateSubs() {
         allExperimentListItems.clear();
         for(Experiment exp : allExpDataList) {
+            if(!exp.isUnpublished() || (exp.isUnpublished() && thisUser.equals(exp.getOwnerID()))) {
                 if (subscribed.contains(exp.getExperimentID())) {
                     allExperimentListItems.add(new AllExperimentListItem(exp, true));
                 } else {
                     allExperimentListItems.add(new AllExperimentListItem(exp, false));
                 }
+            }
         }
     }
 
