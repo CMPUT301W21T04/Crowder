@@ -44,7 +44,6 @@ public class ScanActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ScanActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                         Intent intent=new Intent();
                         intent.putExtra("CODE", result.getText());
                         setResult(2,intent);
