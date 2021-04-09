@@ -24,36 +24,40 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
+import com.example.crowderapp.QRCodeActivity;
 import com.example.crowderapp.R;
+import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
-import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
+import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
+import com.example.crowderapp.views.trialfragments.TrialFragment;
 
-public class AddExperimentFragment extends DialogFragment {
+public class BinomialQRFragment extends DialogFragment {
 
     private static final String[] options = new String[]{
-            "Select Trial Type", "Count", "Binomial", "Non-Negative Integer", "Measurement"};
+            "Select Trial Type", "Pass", "Fail"};
 
     private Spinner dropdown;
-    private EditText minTrialsEditText;
-    private EditText regionEditText;
-    private EditText experimentNameEditText;
-    private CheckBox locationRequiredCheckBox;
-    private User thisUser;
-
-    private UserHandler userHandler;
-    private ExperimentHandler handler = new ExperimentHandler();
     private OnFragmentInteractionListener listener;
+    private Experiment experiment;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
     }
 
+    public static BinomialQRFragment newInstance(Experiment experiment) {
+        BinomialQRFragment frag = new BinomialQRFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Experiment", experiment);
+        frag.setArguments(bundle);
+        return frag;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -66,22 +70,23 @@ public class AddExperimentFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+
+        super.onCreate(saveInstanceState);
+
+        experiment = (Experiment) getArguments().get("Experiment");
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_experiment_fragment_layout, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.binomial_barcode_fragment, null);
 
-        userHandler = new UserHandler(getActivity().getSharedPreferences(
-                UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
-        minTrialsEditText = view.findViewById(R.id.min_trials_EditText);
-        regionEditText = view.findViewById(R.id.region_EditText);
-        experimentNameEditText = view.findViewById(R.id.experiment_name_EditText);
-        locationRequiredCheckBox = view.findViewById(R.id.location_required_CheckBox);
-
-        dropdown = view.findViewById(R.id.dropdown);
+        dropdown = view.findViewById(R.id.dropdown_binomial);
         // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
-        
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options) {
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
@@ -105,7 +110,7 @@ public class AddExperimentFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("Add Experiment")
+                .setTitle("Set Type")
                 .setIcon(R.drawable.baseline_science_24)
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -133,51 +138,26 @@ public class AddExperimentFragment extends DialogFragment {
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String experimentType = dropdown.getSelectedItem().toString();
-                String experimentName = experimentNameEditText.getText().toString();
-                String minTrials = minTrialsEditText.getText().toString();
-                String region = regionEditText.getText().toString();
-                Boolean isLocationRequired;
-                if(locationRequiredCheckBox.isChecked())
-                    isLocationRequired = true;
-                else
-                    isLocationRequired = false;
+                String binomialAction = dropdown.getSelectedItem().toString();
 
-                if(experimentType == options[0] || minTrials.matches("") ||
-                        experimentName.matches("") || region.matches("")) {
+
+                if(binomialAction == options[0]) {
                     Context context = getContext();
-                    CharSequence text = "Missing Fields";
+                    CharSequence text = "No Option Selected";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
-                    userHandler.getCurrentUser(new getUserByIDCallBack() {
-                        @Override
-                        public void callBackResult(User user) {
-                            thisUser = user;
-                            handler.createExperiment(experimentName, isLocationRequired, region,
-                                    Integer.valueOf(minTrials), experimentType, thisUser.getUid(),
-                                    new createExperimentCallBack() {
-                                        @Override
-                                        public void callBackResult(Experiment experiment) {
-                                            userHandler.subscribeExperiment(experiment.getExperimentID(), new subscribeExperimentCallBack() {
-                                                @Override
-                                                public void callBackResult() {
-                                                    listener.onOkPressed();
-                                                    ad.dismiss();
-                                                }
-                                            });
-                                        }
-                                    });
-                        }
-                    });
+                    Intent intent = new Intent(getActivity(), QRCodeActivity.class);
+                    intent.putExtra("Experiment", experiment);
+                    intent.putExtra("Value", binomialAction);
+                    startActivity(intent);
+                    ad.dismiss();
                 }
             }
         });
 
     }
-
-
 
 
 }

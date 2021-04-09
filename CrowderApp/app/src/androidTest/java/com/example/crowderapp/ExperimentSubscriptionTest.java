@@ -40,9 +40,8 @@ public class ExperimentSubscriptionTest {
 
         UiTestHelperFunctions.createExperiment(solo, expname, 1);
 
-        solo.sleep(2000);
+        solo.sleep(1000);
 
-        UiTestHelperFunctions.toggleSubExperiment(solo, expname);
 
         UiTestHelperFunctions.goToMyExperiments(solo);
         Assert.assertTrue(solo.searchText(expname));
@@ -61,7 +60,8 @@ public class ExperimentSubscriptionTest {
         solo.clickOnText(expname);
 
         UiTestHelperFunctions.unpublishExp(solo);
-
-        UiTestHelperFunctions.goToAllExperiments(solo);
+        solo.sleep(1000);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        Assert.assertFalse(solo.searchText(expname));
     }
 }

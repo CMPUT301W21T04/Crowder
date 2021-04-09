@@ -29,24 +29,35 @@ import androidx.annotation.Nullable;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.ScanObjHandler;
 import com.example.crowderapp.controllers.UserHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.ScanObjectCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.ScanObj;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
 
 public class MeasurementBarcodeFragment extends DialogFragment {
 
-    EditText integerEditText;
-
+    EditText decEditText;
+    private Experiment experiment;
     private OnFragmentInteractionListener listener;
+    private ScanObjHandler soHandler;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
     }
 
+    public static MeasurementBarcodeFragment newInstance(Experiment experiment) {
+        MeasurementBarcodeFragment frag = new MeasurementBarcodeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Experiment", experiment);
+        frag.setArguments(bundle);
+        return frag;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -59,12 +70,21 @@ public class MeasurementBarcodeFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+
+        super.onCreate(saveInstanceState);
+
+        experiment = (Experiment) getArguments().get("Experiment");
+    }
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.non_neg_barcode_fragment, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.measurement_barcode_fragment, null);
 
-        integerEditText = view.findViewById(R.id.non_neg_EditText);
+        decEditText = view.findViewById(R.id.measure_EditText);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
@@ -97,7 +117,7 @@ public class MeasurementBarcodeFragment extends DialogFragment {
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newIntegerVal = integerEditText.getText().toString();
+                String newIntegerVal = decEditText.getText().toString();
 
 
                 if(newIntegerVal.equals("")) {
@@ -123,10 +143,18 @@ public class MeasurementBarcodeFragment extends DialogFragment {
             return;
 
         String code = data.getStringExtra("CODE");
+        String newDecVal = decEditText.getText().toString();
         Log.v("Barcode Frag", code);
 
-        AlertDialog ad = (AlertDialog) getDialog();
-        ad.dismiss();
+        soHandler = new ScanObjHandler(experiment.getExperimentID());
+        soHandler.createScanObj(code, newDecVal, new ScanObjectCallback() {
+            @Override
+            public void callback(ScanObj o) {
+                AlertDialog ad = (AlertDialog) getDialog();
+                ad.dismiss();
+            }
+        });
+
     }
 
 }
