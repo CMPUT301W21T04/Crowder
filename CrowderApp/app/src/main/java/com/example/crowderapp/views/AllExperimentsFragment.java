@@ -73,7 +73,12 @@ public class AllExperimentsFragment extends Fragment {
         return fragment;
     }
 
-
+/* Used as an idea of what do when clicking a subscribe button
+URL: https://stackoverflow.com/questions/14782901/android-how-to-handle-button-click
+Author: https://stackoverflow.com/users/2048952/dumamilk
+Editor: https://stackoverflow.com/users/-1/community
+License: CC BY-SA 3.0
+ */
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

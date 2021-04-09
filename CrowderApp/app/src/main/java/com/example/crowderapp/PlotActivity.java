@@ -25,6 +25,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Used this library for barcharts
+URL: https://github.com/PhilJay/MPAndroidChart
+Author: https://github.com/PhilJay/MPAndroidChart/commits?author=PhilJay
+Accessed April 8, 2021
+License: Apache License, Version 2.0
+ */
+
 public class PlotActivity extends AppCompatActivity  {
 
     ExperimentHandler handler = new ExperimentHandler();

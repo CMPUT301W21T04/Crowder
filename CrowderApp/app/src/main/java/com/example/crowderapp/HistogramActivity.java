@@ -35,6 +35,20 @@ import java.util.List;
 
 //https://medium.com/@karthikganiga007/create-barchart-in-android-studio-14943339a211
 //https://www.tutorialspoint.com/how-to-use-bar-chart-graph-in-android
+
+/* Tips on how to use bar charts
+URL: https://medium.com/@karthikganiga007/create-barchart-in-android-studio-14943339a211
+Author: https://medium.com/@karthikganiga007
+Accessed : April 8, 2020
+License: Not Specified
+ */
+
+/* Used this library for barcharts
+URL: https://github.com/PhilJay/MPAndroidChart
+Author: https://github.com/PhilJay/MPAndroidChart/commits?author=PhilJay
+Accessed April 8, 2021
+License: Apache License, Version 2.0
+ */
 public class HistogramActivity  extends AppCompatActivity {
 
     ExperimentHandler handler = new ExperimentHandler();
@@ -75,7 +89,12 @@ public class HistogramActivity  extends AppCompatActivity {
                         BarDataSet set = new BarDataSet(data, experiment.getName() + " Bar Graph");
                         BarData barData = new BarData(set);
 
-                        https://stackoverflow.com/questions/38857038/mpandroidchart-adding-labels-to-bar-chart
+                        /*
+                        URL: https:stackoverflow.com/questions/38857038/mpandroidchart-adding-labels-to-bar-chart
+                        Author: https://stackoverflow.com/users/5731450/tr4android
+                        Accessed: April 8, 2021
+                        Lisence: CC BY-SA 3.0
+                         */
                         barView.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
                         barView.getXAxis().setGranularity(1f);
                         barView.getXAxis().setGranularityEnabled(true);
