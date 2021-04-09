@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.LocationHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.LocationCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.CounterTrial;
@@ -40,23 +42,31 @@ import java.util.List;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
+/**
+ * Fragment for adding trials to a measurement experiment
+ */
 public class MeasurementTrialFragment extends TrialFragment {
+
     MeasurementExperiment measurementExperiment;
     TextView measurementsTextView;
     TextView aveMeasureTextView;
+    TextView nameTextView;
     Button enterButton;
     Button saveButton;
+    EditText measurementInput;
+
     int numMeasurements;
     double aveMeasurement;
     String aveMeasurementString;
     double currentMeasurement;
     double totalMeasurement;
-    EditText measurementInput;
+
+    private Location location;
+    private LocationHandler locationHandler;
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
     private List<MeasurementTrial> trials = new ArrayList<>();
-
 
 
     public MeasurementTrialFragment() {
@@ -79,19 +89,34 @@ public class MeasurementTrialFragment extends TrialFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+
+        // Check if location is required and show location pop up
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+            locationHandler = new LocationHandler(getActivity().getApplicationContext());
+            if(locationHandler.hasGPSPermissions()) {
+                locationHandler.getCurrentLocation(new LocationCallback() {
+                    @Override
+                    public void callbackResult(Location loc) {
+                        location = loc;
+                    }
+                });
+            }
         }
 
         measurementExperiment = (MeasurementExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 
+        // Get UI Elements
         measurementsTextView = view.findViewById(R.id.num_measurements_value_textView);
         aveMeasureTextView = view.findViewById(R.id.ave_measurement_value_textView);
         enterButton = view.findViewById(R.id.measurement_button_enter);
         saveButton = view.findViewById(R.id.measurement_button_save);
         measurementInput = view.findViewById(R.id.measurement_value_editText);
+        nameTextView = view.findViewById(R.id.measure_trial_TextView);
+        nameTextView.setText(experiment.getName());
 
+        // Disable edit text when experiment is ended
         if(measurementExperiment.isEnded()) {
             measurementInput.setEnabled(false);
             measurementInput.setText("Experiment Ended");
@@ -100,6 +125,7 @@ public class MeasurementTrialFragment extends TrialFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Don't allow users to add trials when the experiment has ended
                 if(measurementExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
@@ -111,7 +137,7 @@ public class MeasurementTrialFragment extends TrialFragment {
                     currentMeasurement = Double.parseDouble(measurementInput.getText().toString());
                     totalMeasurement += currentMeasurement;
                     calculateAverage();
-                    trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, new Location(), measurementExperiment.getExperimentID()));
+                    trials.add(new MeasurementTrial(user.getUid(), new Date(), currentMeasurement, location, measurementExperiment.getExperimentID()));
                     measurementsTextView.setText(String.valueOf(numMeasurements));
                     aveMeasureTextView.setText(aveMeasurementString);
                     measurementInput.setText("");
@@ -122,10 +148,12 @@ public class MeasurementTrialFragment extends TrialFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Don't allow users to add trials when the experiment has ended
                 if(measurementExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
                     handler.updateExperiment(measurementExperiment);
+                    // Add Trials
                     for (Trial trial : trials) {
                         Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
                         handler.addTrial(trial, new addTrialCallBack() {

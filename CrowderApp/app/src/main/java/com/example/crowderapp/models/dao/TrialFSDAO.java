@@ -112,16 +112,30 @@ public class TrialFSDAO extends TrialDAO {
      */
     @Override
     public Task<List<Trial>> getExperimentTrialsUserFiltered(List<String> excludedUsers) {
-        return trialCollection.whereNotIn("experimenter", excludedUsers).get().continueWith(task -> {
-            List<Trial> trialList = new LinkedList<>();
-            for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                Trial trial = getProperTrial(doc);
-                trialList.add(trial);
-            }
-            return trialList;
-        }).addOnFailureListener(e -> {
-            Log.e(TAG, "getExperimentTrials: Failed to get all user filtered trials for experiment " + experimentID, e);
-        });
+        List<Trial> trialList = new LinkedList<>();
+        if(excludedUsers.size() == 0) {
+            return trialCollection.get().continueWith(task -> {
+                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                    Trial trial = getProperTrial(doc);
+                    trialList.add(trial);
+                }
+                return trialList;
+            }).addOnFailureListener(e -> {
+                Log.e(TAG, "getExperimentTrials: Failed to get all trials for experiment " + experimentID, e);
+            });
+        }
+        else {
+            return trialCollection.whereNotIn("experimenter", excludedUsers).get().continueWith(task -> {
+
+                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
+                    Trial trial = getProperTrial(doc);
+                    trialList.add(trial);
+                }
+                return trialList;
+            }).addOnFailureListener(e -> {
+                Log.e(TAG, "getExperimentTrials: Failed to get all user filtered trials for experiment " + experimentID, e);
+            });
+        }
     }
 
     /**

@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.LocationHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.LocationCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.CounterTrial;
@@ -35,15 +37,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Fragment for adding trials to a non negatice experiment
+ */
 public class NonNegativeCountTrialFragment extends TrialFragment {
-    TallyExperiment tallyExperiment;
 
+    TallyExperiment tallyExperiment;
     TextView numCountTextView;
     TextView aveCountTextView;
+    TextView nameTextView;
     EditText integerValueEditText;
-    String integerValueString;
     Button enterButton;
     Button saveButton;
+
+    private Location location;
+    private LocationHandler locationHandler;
 
     private static DecimalFormat df = new DecimalFormat("0.00");
 
@@ -51,6 +59,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
     int currentCount;
     double average;
     String averageString;
+    String integerValueString;
 
     private List<TallyTrial> trials = new ArrayList<>();
 
@@ -74,22 +83,37 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+
+        // Notify location is required for the experiment
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+            locationHandler = new LocationHandler(getActivity().getApplicationContext());
+            if(locationHandler.hasGPSPermissions()) {
+                locationHandler.getCurrentLocation(new LocationCallback() {
+                    @Override
+                    public void callbackResult(Location loc) {
+                        location = loc;
+                    }
+                });
+            }
         }
-
 
         tallyExperiment = (TallyExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 
+        // Get UI Elements
         numCountTextView = view.findViewById(R.id.num_non_neg_value_textView);
         aveCountTextView = view.findViewById(R.id.ave_non_neg_value_textView);
         integerValueEditText = view.findViewById(R.id.non_neg_value_editText);
         enterButton = view.findViewById(R.id.non_neg_button_enter);
         saveButton = view.findViewById(R.id.non_neg_button_save);
+        nameTextView = view.findViewById(R.id.non_neg_trial_TextView);
+        nameTextView.setText(experiment.getName());
 
+        // Disable editText
         if(tallyExperiment.isEnded()) {
             integerValueEditText.setEnabled(false);
             integerValueEditText.setText("Experiment Ended");
@@ -98,6 +122,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Do not allow user to add when experiment is ended
                 if (tallyExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
@@ -112,9 +137,9 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
 
                     numCountTextView.setText(String.valueOf(numCounts));
                     calculateAverage();
-                    trials.add(new TallyTrial(user.getUid(), new Date(), currentCount, new Location(), tallyExperiment.getExperimentID()));
+                    trials.add(new TallyTrial(user.getUid(), new Date(), currentCount, location, tallyExperiment.getExperimentID()));
                     numCounts++;
-                    tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), new Location());
+                    tallyExperiment.addNonNegativeCount(currentCount, user.getUid(), location);
                     aveCountTextView.setText(averageString);
                     integerValueEditText.setText("");
                 }
@@ -124,6 +149,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Do not allow user to add when experiment is ended
                 if(tallyExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {

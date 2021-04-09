@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class BinomialTrial extends Trial {
     private boolean result;
+    public BinomialTrial() {}
 
     /**
      * Constructor

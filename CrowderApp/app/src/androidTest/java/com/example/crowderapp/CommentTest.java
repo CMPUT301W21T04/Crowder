@@ -31,6 +31,34 @@ public class CommentTest {
     }
 
     @Test
+    public void testTitleBar() {
+        UiTestHelperFunctions.createExperiment(solo, expname, 1);
+
+        solo.clickOnText(expname);
+
+        Assert.assertTrue(solo.searchText("Questions"));
+
+        FloatingActionButton addQuestButton = (FloatingActionButton) solo.getView(R.id.add_question_button);
+        solo.clickOnView(addQuestButton);
+
+        solo.sleep(1000);
+
+        EditText questText = (EditText) solo.getView(R.id.question_EditText);
+
+        solo.enterText(questText, question);
+        solo.clickOnView(solo.getView(android.R.id.button1));
+        solo.clickOnText(question);
+
+        Assert.assertTrue(solo.searchText("Replies"));
+
+        // Clean up
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.clickOnText(expname);
+        UiTestHelperFunctions.unpublishExp(solo);
+        solo.sleep(1000);
+    }
+
+    @Test
     public void testPostQuestion() {
         UiTestHelperFunctions.createExperiment(solo, expname, 1);
 
@@ -96,8 +124,6 @@ public class CommentTest {
         solo.sleep(500);
 
         //cleanup
-        UiTestHelperFunctions.goToAllExperiments(solo);
-        UiTestHelperFunctions.toggleSubExperiment(solo, expname);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.clickOnText(expname);
         UiTestHelperFunctions.unpublishExp(solo);

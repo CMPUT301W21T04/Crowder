@@ -1,4 +1,4 @@
-package com.example.crowderapp.views;
+ package com.example.crowderapp.views;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -23,7 +23,10 @@ import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.models.posts.Reply;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
 
-public class LocationPopupFragment extends DialogFragment {
+ /**
+  * Displays to user that a location is needed for experiments that use geo-location
+  */
+ public class LocationPopupFragment extends DialogFragment {
 
     private TextView popupText;
     private Experiment currentExp;
@@ -66,6 +69,7 @@ public class LocationPopupFragment extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup_fragment, null);
         popupText = view.findViewById(R.id.locationPopupText);
 
+        // Set text based on if location services is required
         if(currentExp.isLocationRequired()) {
             if(locHandler.hasGPSPermissions()) {
                 popupText.setText("Using your current location for this experiment.");
@@ -81,8 +85,7 @@ public class LocationPopupFragment extends DialogFragment {
         return builder
                 .setView(view)
                 .setTitle("Location Services")
-                .setIcon(R.drawable.ic_baseline_mode_comment_24)
-                .setNegativeButton("Cancel", null)
+                .setIcon(R.drawable.ic_baseline_location_on_24)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -99,6 +102,9 @@ public class LocationPopupFragment extends DialogFragment {
         if (ad == null) {
             return;
         }
+
+        ad.setCanceledOnTouchOutside(false);
+
         Button posButton = ad.getButton(Dialog.BUTTON_POSITIVE);
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override

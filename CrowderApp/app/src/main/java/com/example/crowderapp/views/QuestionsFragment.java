@@ -13,6 +13,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.CommentHandler;
 import com.example.crowderapp.controllers.ExperimentHandler;
@@ -24,6 +25,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays Questions on a given experiment
+ */
 public class QuestionsFragment extends Fragment {
 
     private List<Question> questionsList = new ArrayList<Question>();
@@ -69,6 +73,8 @@ public class QuestionsFragment extends Fragment {
         Bundle bundle = getArguments();
         experimentId = (String) bundle.getSerializable("ExperimentID");
         userId = (String) bundle.getSerializable("UserId");
+        // Set app bar title
+        ( (MainActivity) getActivity()).setActionBarTitle("Questions");
 
     }
 
@@ -89,23 +95,21 @@ public class QuestionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.questions_fragment, container, false);
-//        Question question = new Question("Does This work?", "Ray");
 
+        // Set floating action button to add a question
         fab = view.findViewById(R.id.add_question_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Bundle args = new Bundle();
-//                args.putString("ExperimentID", experimentId);
                 new AddQuestionFragment().newInstance(experimentId, userId).show(getFragmentManager(), "ADD_QUES");
             }
         });
 
+        // Display questions and open reply fragment based on question
         commentHandler.getExperimentQuestions(experimentId, new getExperimentQuestionsCallBack() {
             @Override
             public void callBackResult(List<Question> questionList) {
                 questionsList = questionList;
-//                questionsList.add(question);
                 questionAdapter = new CustomListQuestions(thisContext, questionsList);
                 questionsView = getView().findViewById(R.id.question_list);
                 questionsView.setAdapter(questionAdapter);
@@ -118,5 +122,12 @@ public class QuestionsFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Reset to appbar title
+        ( (MainActivity) getActivity()).setActionBarTitle("Questions");
     }
 }

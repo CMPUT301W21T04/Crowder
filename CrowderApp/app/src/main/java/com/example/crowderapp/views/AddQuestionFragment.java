@@ -37,6 +37,9 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.posts.Question;
 
+/**
+ * Fragment to add questions
+ */
 public class AddQuestionFragment extends DialogFragment {
 
 
@@ -120,9 +123,11 @@ public class AddQuestionFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 newQuestion = newQuestionField.getText().toString();
+                // Check for empty text
                 if(newQuestion.matches("")) {
                     Toast.makeText(getContext(), "Invalid Question", Toast.LENGTH_LONG);
                 } else {
+                    // Add question and dismiss dialog box
                     commentHandler.addQuestionToExperiment(experimentID, new Question(newQuestionField.getText().toString(), userID), new addQuestionToExperimentCallBack() {
                         @Override
                         public void callBackResult(String questionID) {

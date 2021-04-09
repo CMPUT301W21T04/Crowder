@@ -47,16 +47,15 @@ public class ExperimentSearchTest {
         }
 
         // Clean up
-        UiTestHelperFunctions.goToAllExperiments(solo);
-        for (String name : expNames) {
-            UiTestHelperFunctions.toggleSubExperiment(solo, name);
-        }
-
         UiTestHelperFunctions.goToMyExperiments(solo);
 
         for (String name : expNames) {
             solo.clickOnText(name);
             UiTestHelperFunctions.unpublishExp(solo);
+            solo.sleep(1000);
+            UiTestHelperFunctions.goToMyExperiments(solo);
         }
+
+        solo.sleep(1000);
     }
 }

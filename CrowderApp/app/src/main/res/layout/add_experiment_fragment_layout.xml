@@ -34,20 +34,39 @@
         android:paddingLeft="30dp"
         android:text="@string/trial_type"
         android:paddingStart="30dp" />
+
     <Spinner
         android:id="@+id/dropdown"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="22dp"
-        android:layout_marginStart="22dp" />
+        android:layout_width="226dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp" />
 
-    <CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    <CheckBox
         android:id="@+id/location_required_CheckBox"
-        android:text="Location Required?"
         android:layout_width="wrap_content"
+        android:layout_height="61dp"
         android:layout_marginLeft="25dp"
-        android:layout_height="match_parent"
-        />
+        android:text="Location Required?" />
+
+    <TextView
+        android:id="@+id/region_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:paddingStart="30dp"
+        android:text="Region" />
+    <EditText
+        android:id="@+id/region_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="30dp"
+        android:autofillHints="Number of Trials"
+        android:ems="10"
+        android:textIsSelectable="true"
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/min_trials_textView"

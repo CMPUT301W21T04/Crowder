@@ -2,18 +2,21 @@ package com.example.crowderapp;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robotium.solo.Solo;
 
+import org.junit.Assert;
+
 public class UiTestHelperFunctions {
+
+    // Experiment deletes on unpublish
+    // Must match R.string.deletableExpSuffix in string.xml
+    static String deleteSuffix = "__UI.TEST__";
 
     public enum expTypes {
         COUNT,
@@ -22,42 +25,92 @@ public class UiTestHelperFunctions {
         MEASUREMENT
     }
 
+
+    // Optional location enabled experiment
+    public static void createExperiment(Solo solo, String expName, int minTrialAmt, boolean enableLocation, expTypes type) {
+        FloatingActionButton addExpButton = (FloatingActionButton) solo.getView(R.id.add_experiment_button);
+
+        solo.clickOnView(addExpButton);
+
+        EditText expNameText = (EditText) solo.getView(R.id.experiment_name_EditText);
+        EditText minTrials = (EditText) solo.getView(R.id.min_trials_EditText);
+        solo.enterText(expNameText, expName + deleteSuffix);
+        solo.enterText(minTrials, String.valueOf(minTrialAmt));
+
+        // Add region to constructor of createExperiment later on
+        EditText regionText = (EditText) solo.getView(R.id.region_EditText);
+        solo.enterText(regionText, "North America");
+
+        Spinner dropDown = (Spinner) solo.getView(R.id.dropdown);
+        solo.sleep(1000);
+
+        switch (type) {
+            case COUNT:
+                solo.pressSpinnerItem(0, 1);
+                break;
+            case BINOMIAL:
+                solo.pressSpinnerItem(0, 2);
+                break;
+            case TALLY:
+                solo.pressSpinnerItem(0, 3);
+                break;
+            case MEASUREMENT:
+                solo.pressSpinnerItem(0, 4);
+                break;
+            default:
+                solo.pressSpinnerItem(0, 1);
+        }
+
+        if (enableLocation) {
+            solo.clickOnCheckBox(0);
+        }
+
+        // https://stackoverflow.com/questions/10359192/how-to-select-which-button-to-click-on-robotium-for-an-alert-dialog/10858118
+        solo.clickOnView(solo.getView(android.R.id.button1));
+    }
+
+
+    // Location disabled experiment
     public static void createExperiment(Solo solo, String expName, int minTrialAmt, expTypes type) {
         FloatingActionButton addExpButton = (FloatingActionButton) solo.getView(R.id.add_experiment_button);
 
         solo.clickOnView(addExpButton);
 
         EditText expNameText = (EditText) solo.getView(R.id.experiment_name_EditText);
-        Spinner dropDown = (Spinner) solo.getView(R.id.dropdown);
         EditText minTrials = (EditText) solo.getView(R.id.min_trials_EditText);
+        solo.enterText(expNameText, expName + deleteSuffix);
+        solo.enterText(minTrials, String.valueOf(minTrialAmt));
 
-        solo.enterText(expNameText, expName);
-        solo.clickOnView(dropDown);
+        // TODO: Add region to constructor of createExperiment
+        EditText regionText = (EditText) solo.getView(R.id.region_EditText);
+        solo.enterText(regionText, "North America");
 
-        solo.sleep(2000);
+        Spinner dropDown = (Spinner) solo.getView(R.id.dropdown);
+        solo.sleep(1000);
 
         switch (type) {
             case COUNT:
-                solo.clickOnText("Count");
+                solo.pressSpinnerItem(0, 1);
                 break;
             case BINOMIAL:
-                solo.clickOnText("Binomial");
+                solo.pressSpinnerItem(0, 2);
                 break;
             case TALLY:
-                solo.clickOnText("Non-Negative Integer");
+                solo.pressSpinnerItem(0, 3);
                 break;
             case MEASUREMENT:
-                solo.clickOnText("Measurement");
+                solo.pressSpinnerItem(0, 4);
                 break;
             default:
-                solo.clickOnText("Count");
+                solo.pressSpinnerItem(0, 1);
         }
 
-        solo.enterText(minTrials, String.valueOf(minTrialAmt));
         // https://stackoverflow.com/questions/10359192/how-to-select-which-button-to-click-on-robotium-for-an-alert-dialog/10858118
         solo.clickOnView(solo.getView(android.R.id.button1));
     }
 
+
+    // Default experiment type
     public static void createExperiment(Solo solo, String expName, int minTrialAmt) {
         createExperiment(solo, expName, minTrialAmt, expTypes.COUNT);
     }
@@ -74,11 +127,13 @@ public class UiTestHelperFunctions {
 
     public static void goToProfile(Solo solo) {
         View profButton = solo.getView(R.id.navigation_profile);
+        solo.sleep(1000);
         solo.clickOnView(profButton);
     }
 
     public static void toggleSubExperiment(Solo solo, String expname) {
         //https://stackoverflow.com/questions/22299328/how-to-click-button-adjacent-to-a-specific-text-in-robotium
+        Assert.assertTrue(solo.waitForText(expname,1, 50000,  true));
         TextView expText = solo.getText(expname);
         ViewGroup expPair = (ViewGroup) expText.getParent();
         Button subButton = (Button) expPair.getChildAt(1);
@@ -91,8 +146,6 @@ public class UiTestHelperFunctions {
         createExperiment(solo, expname, 1, type);
 
         solo.sleep(2000);
-
-        toggleSubExperiment(solo, expname);
 
         goToMyExperiments(solo);
         solo.clickOnText(expname);
@@ -110,5 +163,12 @@ public class UiTestHelperFunctions {
         solo.clickOnView(dropdown);
         solo.sleep(1500);
         solo.clickOnText("Unpublish Experiment");
+    }
+
+    public static void openHeatMap(Solo solo) {
+        View dropdown = solo.getView(R.id.more_item);
+        solo.clickOnView(dropdown);
+        solo.sleep(1500);
+        solo.clickOnText("Location Heatmap");
     }
 }

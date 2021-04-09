@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,8 +31,14 @@ import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.views.AddExperimentFragment;
 import com.example.crowderapp.views.AddQuestionFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
+import com.example.crowderapp.views.BinomialBarcodeFragment;
+import com.example.crowderapp.views.BinomialQRFragment;
 import com.example.crowderapp.views.LocationPopupFragment;
+import com.example.crowderapp.views.MeasurementBarcodeFragment;
+import com.example.crowderapp.views.MeasurementQRFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
+import com.example.crowderapp.views.NonNegBarcodeFragment;
+import com.example.crowderapp.views.NonNegQRFragment;
 import com.example.crowderapp.views.ProfileFragment;
 import com.example.crowderapp.views.QuestionsFragment;
 import com.example.crowderapp.views.ReplyFragment;
@@ -47,11 +54,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainActivity extends AppCompatActivity
         implements AddExperimentFragment.OnFragmentInteractionListener,
         AddQuestionFragment.OnFragmentInteractionListener,
-        LocationPopupFragment.OnFragmentInteractionListener{
+        LocationPopupFragment.OnFragmentInteractionListener,
+        BinomialBarcodeFragment.OnFragmentInteractionListener,
+        NonNegBarcodeFragment.OnFragmentInteractionListener,
+        MeasurementBarcodeFragment.OnFragmentInteractionListener,
+        BinomialQRFragment.OnFragmentInteractionListener,
+        NonNegQRFragment.OnFragmentInteractionListener,
+        MeasurementQRFragment.OnFragmentInteractionListener{
 
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
-    public FloatingActionButton fab;
     AllExperimentsFragment allExpFrag;
 
     // Permissions dialogue
@@ -96,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -105,11 +118,7 @@ public class MainActivity extends AppCompatActivity
 
 
     public void openFragment(Fragment fragment) {
-        // https://stackoverflow.com/questions/6186433/clear-back-stack-using-fragments
         FragmentManager fm = getSupportFragmentManager();
-//        for(int i = 0; i < fm.getBackStackEntryCount() - 1; ++i) {
-//            fm.popBackStack();
-//        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         if(fm.getBackStackEntryCount() != 0) {
@@ -122,18 +131,16 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    setActionBarTitle("CrowderApp");
                     switch (item.getItemId()) {
                         case R.id.navigation_all_experiments:
-//                            fab.show();
                             allExpFrag = AllExperimentsFragment.newInstance();
                             openFragment(allExpFrag);
                             return true;
                         case R.id.navigation_my_experiments:
-//                            fab.hide();
                             openFragment(MyExperimentsFragment.newInstance());
                             return true;
                         case R.id.navigation_profile:
-//                            fab.hide();
                             openFragment(ProfileFragment.newInstance());
                             return true;
                     }
@@ -141,6 +148,13 @@ public class MainActivity extends AppCompatActivity
                 }
             };
 
+
+    public void setActionBarTitle(String title){
+        toolbar.setTitle(title);
+    }
+
+
+    // onOkPressed Methods
     @Override
     public void onOkPressed(boolean allow) {
         if(!allow) {
@@ -164,5 +178,8 @@ public class MainActivity extends AppCompatActivity
         }
         openFragment(AllExperimentsFragment.newInstance());
     }
+
+
+
 
 }

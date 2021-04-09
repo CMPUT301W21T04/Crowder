@@ -30,9 +30,13 @@ import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
+import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperimentCallBack;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
 
+/**
+ * Fragment to add experiments
+ */
 public class AddExperimentFragment extends DialogFragment {
 
     private static final String[] options = new String[]{
@@ -40,6 +44,7 @@ public class AddExperimentFragment extends DialogFragment {
 
     private Spinner dropdown;
     private EditText minTrialsEditText;
+    private EditText regionEditText;
     private EditText experimentNameEditText;
     private CheckBox locationRequiredCheckBox;
     private User thisUser;
@@ -73,12 +78,17 @@ public class AddExperimentFragment extends DialogFragment {
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
         minTrialsEditText = view.findViewById(R.id.min_trials_EditText);
+        regionEditText = view.findViewById(R.id.region_EditText);
         experimentNameEditText = view.findViewById(R.id.experiment_name_EditText);
         locationRequiredCheckBox = view.findViewById(R.id.location_required_CheckBox);
 
         dropdown = view.findViewById(R.id.dropdown);
         // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
-        
+        // Taken from StackOverflow, https://stackoverflow.com/
+        // answer by Kamran Ahmed Khan https://stackoverflow.com/users/5239819/kamran-ahmed-khan
+        // to question "how to create an unselectable hint text for Spinner in android ? (without reflection)"
+        // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
+        // under CC-BY-SA License
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options) {
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
@@ -133,31 +143,38 @@ public class AddExperimentFragment extends DialogFragment {
                 String experimentType = dropdown.getSelectedItem().toString();
                 String experimentName = experimentNameEditText.getText().toString();
                 String minTrials = minTrialsEditText.getText().toString();
+                String region = regionEditText.getText().toString();
                 Boolean isLocationRequired;
                 if(locationRequiredCheckBox.isChecked())
                     isLocationRequired = true;
                 else
                     isLocationRequired = false;
-
+                // Check for empty fields
                 if(experimentType == options[0] || minTrials.matches("") ||
-                        experimentName.matches("")) {
+                        experimentName.matches("") || region.matches("")) {
                     Context context = getContext();
                     CharSequence text = "Missing Fields";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
+                    // get user and create the experiment
                     userHandler.getCurrentUser(new getUserByIDCallBack() {
                         @Override
                         public void callBackResult(User user) {
                             thisUser = user;
-                            handler.createExperiment(experimentName, isLocationRequired,
+                            handler.createExperiment(experimentName, isLocationRequired, region,
                                     Integer.valueOf(minTrials), experimentType, thisUser.getUid(),
                                     new createExperimentCallBack() {
                                         @Override
                                         public void callBackResult(Experiment experiment) {
-                                            listener.onOkPressed();
-                                            ad.dismiss();
+                                            userHandler.subscribeExperiment(experiment.getExperimentID(), new subscribeExperimentCallBack() {
+                                                @Override
+                                                public void callBackResult() {
+                                                    listener.onOkPressed();
+                                                    ad.dismiss();
+                                                }
+                                            });
                                         }
                                     });
                         }
