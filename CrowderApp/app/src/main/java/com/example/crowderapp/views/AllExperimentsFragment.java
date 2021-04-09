@@ -84,6 +84,7 @@ public class AllExperimentsFragment extends Fragment {
                 userHandler.subscribeExperiment(exp.getExperimentID(), new subscribeExperimentCallBack() {
                     @Override
                     public void callBackResult() {
+                        allExperimentListItems.set(position, new AllExperimentListItem(exp, true));
                         v.setBackgroundColor(getResources().getColor(R.color.black));
                     }
                 });
@@ -93,12 +94,13 @@ public class AllExperimentsFragment extends Fragment {
                 userHandler.unsubscribeExperiment(exp.getExperimentID(), new unsubscribedExperimentCallBack() {
                     @Override
                     public void callBackResult() {
-
+                        allExperimentListItems.set(position, new AllExperimentListItem(exp, false));
                         v.setBackgroundColor(getResources().getColor(R.color.teal_200));
                     }
                 });
 
             }
+            allExpAdapter.notifyDataSetChanged();
         }
     };
 
