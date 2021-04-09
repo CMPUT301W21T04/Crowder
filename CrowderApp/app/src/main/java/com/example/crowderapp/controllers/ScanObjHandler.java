@@ -8,13 +8,16 @@ import com.example.crowderapp.models.dao.ScanObjectDAO;
 import com.example.crowderapp.models.dao.ScanObjectFSDAO;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * Handles QR code and Barcode Data.
+ * Does not process commands in the codes.
+ */
 public class ScanObjHandler {
 
     private static final String TAG = "ScanObjHandler";
     private static final String INVALID_CODE_STRING = "NOT_VALID";
 
     private String experimentId;
-
     private ScanObjectDAO dao;
 
     /**
@@ -24,6 +27,11 @@ public class ScanObjHandler {
         this(experiment, new ScanObjectFSDAO());
     }
 
+    /**
+     * For dependency injection.
+     * @param experiment
+     * @param dao
+     */
     public ScanObjHandler(String experiment, ScanObjectDAO dao) {
         if (experiment == null) {
             throw new IllegalArgumentException("Experiment cannot be null");

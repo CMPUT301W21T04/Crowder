@@ -12,6 +12,8 @@ import java.util.List;
 public abstract class TrialDAO {
 
     protected String experimentID;
+
+    // Binomial, Count, etc.
     protected String experimentType;
 
     /**

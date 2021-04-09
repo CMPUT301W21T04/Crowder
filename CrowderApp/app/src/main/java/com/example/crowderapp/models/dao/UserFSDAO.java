@@ -17,18 +17,16 @@ import java.util.List;
 import java.util.Observer;
 
 /**
- * Firestore implementation for UserDAO
+ * Concrete Firestore implementation for UserDAO
  */
 public class UserFSDAO extends UserDAO {
 
     final private String TAG = "UserFSDAO";
-
     private FirebaseFirestore db;
+    private List<Observer> observerList;
 
     // Firestore collections that has all our users
     private CollectionReference userCollections;
-
-    List<Observer> observerList;
 
     public UserFSDAO() {
         db = FirebaseFirestore.getInstance();

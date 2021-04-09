@@ -7,6 +7,10 @@ import com.google.android.gms.tasks.TaskCompletionSource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Mock class for testing.
+ * @deprecated
+ */
 public class ExperimentMockDAO extends ExperimentDAO {
 
     private ArrayList<Experiment> expList;

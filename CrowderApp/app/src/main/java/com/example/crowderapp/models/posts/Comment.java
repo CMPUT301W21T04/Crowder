@@ -12,7 +12,7 @@ public abstract class Comment implements Serializable {
     String body;
     String userId;
 
-    @DocumentId //
+    @DocumentId
     String commentId;
 
     /**

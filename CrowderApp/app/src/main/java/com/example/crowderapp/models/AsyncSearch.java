@@ -30,8 +30,8 @@ public class AsyncSearch {
             }
         };
 
+        // User Id to user name LUT
         userIdToUsernameMap = userDAO.getAllUsers().continueWith(task -> {
-
             Map map = new HashMap();
 
             for (User user : task.getResult()) {

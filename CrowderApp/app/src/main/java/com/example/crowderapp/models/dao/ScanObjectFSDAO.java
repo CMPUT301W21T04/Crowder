@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Firestore implementation for ScanObjectDAO
+ * Scan objects are stored in subcollection under experiments.
  */
 public class ScanObjectFSDAO extends ScanObjectDAO {
 
@@ -18,6 +19,10 @@ public class ScanObjectFSDAO extends ScanObjectDAO {
         this(FirebaseFirestore.getInstance());
     }
 
+    /**
+     * For dependency injection.
+     * @param db
+     */
     public ScanObjectFSDAO(FirebaseFirestore db) {
         this.db = db;
         expCollection = db.collection("experiment");
