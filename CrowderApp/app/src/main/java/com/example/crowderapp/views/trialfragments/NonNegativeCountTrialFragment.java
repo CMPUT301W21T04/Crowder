@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Fragment for adding trials to a non negatice experiment
+ */
 public class NonNegativeCountTrialFragment extends TrialFragment {
 
     TallyExperiment tallyExperiment;

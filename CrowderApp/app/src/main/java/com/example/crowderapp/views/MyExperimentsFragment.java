@@ -36,6 +36,9 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays experiments a user is subscribed to
+ */
 public class MyExperimentsFragment extends Fragment {
 
     UserHandler userHandler;
@@ -89,6 +92,7 @@ public class MyExperimentsFragment extends Fragment {
                         myExpView = getView().findViewById(R.id.my_experiment_list);
                         myExpView.setAdapter(myExpAdapter);
 
+                        // Open a fragment based on experiment type
                         myExpView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view,
@@ -122,7 +126,9 @@ public class MyExperimentsFragment extends Fragment {
     }
 
 
-
+    /**
+     * Create a list of experiments a user is subscribed to
+     */
     private void createSubList() {
         for(Experiment exp : allExpDataList) {
             if (subscribed.contains(exp.getExperimentID()) && !subExperiments.contains(exp.getExperimentID())) {
@@ -130,8 +136,11 @@ public class MyExperimentsFragment extends Fragment {
             }
         }
     }
-    
 
+    /**
+     * Opens a fragment with arguments
+     * @param fragment fragment to open
+     */
     public void openFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Experiment", currentExperiment);

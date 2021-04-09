@@ -52,6 +52,9 @@ import com.example.crowderapp.views.UserFilterFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Base Class for all Trial fragments
+ */
 public class TrialFragment extends Fragment {
 
 
@@ -70,6 +73,7 @@ public class TrialFragment extends Fragment {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
+        // Get user Handler
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
     }
@@ -87,6 +91,7 @@ public class TrialFragment extends Fragment {
                 MenuItem menuItem = menu.findItem(R.id.more_item);
                 menuItem.setVisible(true);
                 boolean isOwner = experiment.getOwnerID().matches(user.getUid());
+                // Set menu items to be visible or not
                 if(experiment.isEnded() || !isOwner ) {
                     menu.findItem(R.id.end_item).setVisible(false);
                 }
@@ -108,6 +113,8 @@ public class TrialFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        // Handle logic for menu items
         switch (item.getItemId()) {
             case R.id.location_item:
                 Intent intentLocation = new Intent(getActivity(), HeatmapActivity.class);
@@ -207,6 +214,8 @@ public class TrialFragment extends Fragment {
             }
         });
     }
+
+    // Launch code Scanner
     public void scanCode(String message) {
         option = message;
         Intent intent = new Intent(getActivity(), ScanActivity.class);
@@ -235,25 +244,28 @@ public class TrialFragment extends Fragment {
 
     }
 
-
+    // Open Stats
     private void openStats() {
         Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
         statsIntent.putExtra("Experiment", experiment);
         startActivity(statsIntent);
     }
 
+    // Open activity to display plot
     private void openPlot() {
         Intent plotIntent =  new Intent(getActivity(), PlotActivity.class);
         plotIntent.putExtra("Experiment", experiment);
         startActivity(plotIntent);
     }
 
+    // Open activity to display histogram
     private void openHistogram() {
         Intent histogramIntent =  new Intent(getActivity(), HistogramActivity.class);
         histogramIntent.putExtra("Experiment", experiment);
         startActivity(histogramIntent);
     }
 
+    // open fragment and pass experiment id to fragment
     private void openFragmentWithExperimentID(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ExperimentID", experiment.getExperimentID());
@@ -264,13 +276,5 @@ public class TrialFragment extends Fragment {
         transaction.commit();
     }
 
-
-    public void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-//        transaction.addToBackStack(null);
-        transaction.commit();
-        getFragmentManager().popBackStack();
-    }
 
 }

@@ -38,6 +38,9 @@ import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
 
+/**
+ * Pop up when user wants to create a QR for a binomial experiment
+ */
 public class BinomialQRFragment extends DialogFragment {
 
     private static final String[] options = new String[]{
@@ -85,7 +88,6 @@ public class BinomialQRFragment extends DialogFragment {
 
 
         dropdown = view.findViewById(R.id.dropdown_binomial);
-        // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options) {
             @Override
@@ -120,13 +122,7 @@ public class BinomialQRFragment extends DialogFragment {
                     }
                 }).create();
     }
-    // The use of onResume to be able to override the automatic dismiss was learned from
-    // StackOverflow, https://stackoverflow.com/
-    // an answer by Sogger on Mar 25 '13 at 15:48
-    // https://stackoverflow.com/users/579234/sogger
-    // to question "How to prevent a dialog from closing when a button is clicked"
-    // https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-    // under CC-BY-SA
+
     @Override
     public void onResume() {
         super.onResume();
@@ -142,12 +138,14 @@ public class BinomialQRFragment extends DialogFragment {
 
 
                 if(binomialAction == options[0]) {
+                    // Display error if user did not select an option
                     Context context = getContext();
                     CharSequence text = "No Option Selected";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
+                    // Show the generate QR in new activity
                     Intent intent = new Intent(getActivity(), QRCodeActivity.class);
                     intent.putExtra("Experiment", experiment);
                     intent.putExtra("Value", binomialAction);
