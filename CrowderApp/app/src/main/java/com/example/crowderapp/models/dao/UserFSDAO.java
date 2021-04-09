@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.crowderapp.models.User;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,9 +56,17 @@ public class UserFSDAO extends UserDAO {
      */
     @Override
     public Task<List<User>> getUserListById(List<String> userIds) {
-        return userCollections.whereIn(FieldPath.documentId(), userIds).get().continueWith(task -> {
-            return task.getResult().toObjects(User.class);
-        });
+        if(userIds.size() == 0) {
+            List<User> emptyListOfUsers = new ArrayList<>();
+            TaskCompletionSource<List<User>> emptyTaskSource = new TaskCompletionSource<>();
+            emptyTaskSource.setResult(emptyListOfUsers);
+            return emptyTaskSource.getTask();
+        }
+        else {
+            return userCollections.whereIn(FieldPath.documentId(), userIds).get().continueWith(task -> {
+                return task.getResult().toObjects(User.class);
+            });
+        }
     }
 
     /**

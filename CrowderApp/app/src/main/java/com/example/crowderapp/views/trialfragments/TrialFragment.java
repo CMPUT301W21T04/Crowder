@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -199,8 +200,12 @@ public class TrialFragment extends Fragment {
                 userHandler.getUserListById(usersIDs, new GetUserListCallback() {
                     @Override
                     public void callBackResult(List<User> userList) {
-                        new UserFilterFragment().newInstance(experiment, userList).show(getFragmentManager(), "UserFilter");
-
+                        if(userList.size() == 0) {
+                            Toast.makeText(getContext(), "No Users to filter!", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            new UserFilterFragment().newInstance(experiment, userList).show(getFragmentManager(), "UserFilter");
+                        }
                     }
                 });
             }
