@@ -69,6 +69,7 @@ public class UiTestHelperFunctions {
         }
 
         // https://stackoverflow.com/questions/10359192/how-to-select-which-button-to-click-on-robotium-for-an-alert-dialog/10858118
+        // licence (2nd answer) CC BY-SA 3.0
         solo.clickOnView(solo.getView(android.R.id.button1));
     }
 
@@ -136,6 +137,7 @@ public class UiTestHelperFunctions {
 
     public static void toggleSubExperiment(Solo solo, String expname) {
         //https://stackoverflow.com/questions/22299328/how-to-click-button-adjacent-to-a-specific-text-in-robotium
+        // licence: CC BY-SA 3.0
         Assert.assertTrue(solo.waitForText(expname,1, 50000,  true));
         TextView expText = solo.getText(expname);
         ViewGroup expPair = (ViewGroup) expText.getParent();
