@@ -199,14 +199,22 @@ public class AllExperimentsFragment extends Fragment {
     private void updateSubs() {
         allExperimentListItems.clear();
         for(Experiment exp : allExpDataList) {
-            if(!exp.isUnpublished() || (exp.isUnpublished() && thisUser.getUid().equals(exp.getOwnerID()))) {
-                if (subscribed.contains(exp.getExperimentID())) {
-                    allExperimentListItems.add(new AllExperimentListItem(exp, true));
-                } else {
-                    allExperimentListItems.add(new AllExperimentListItem(exp, false));
-                }
+            if (subscribed.contains(exp.getExperimentID())) {
+                allExperimentListItems.add(new AllExperimentListItem(exp, true));
+            } else {
+                allExperimentListItems.add(new AllExperimentListItem(exp, false));
             }
         }
+    }
+
+    private void unpublishedCheck() {
+        List<Experiment> tempList = new ArrayList<>();
+        for(Experiment exp : allExpDataList) {
+            if(exp.isUnpublished() && !thisUser.getUid().equals(exp.getOwnerID())) {
+                tempList.add(exp);
+            }
+        }
+        allExpDataList.removeAll(tempList);
     }
 
 
@@ -223,6 +231,7 @@ public class AllExperimentsFragment extends Fragment {
                     @Override
                     public void callBackResult(List<Experiment> experimentList) {
                         allExpDataList = experimentList;
+                        unpublishedCheck();
                         updateSubs();
                         allExpAdapter = new CustomListAllExperiments(thisContext, allExperimentListItems, listener);
                         allExpView = getView().findViewById(R.id.all_experiment_list);
