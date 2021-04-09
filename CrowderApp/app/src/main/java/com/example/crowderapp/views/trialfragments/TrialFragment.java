@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.HeatmapActivity;
+import com.example.crowderapp.HistogramActivity;
+import com.example.crowderapp.PlotActivity;
 import com.example.crowderapp.QRCodeActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
@@ -134,7 +136,6 @@ public class TrialFragment extends Fragment {
                     scanCode("Count");
                 else if(experiment.getExperimentType().equals("Measurement"))
                     new MeasurementBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "MeasureBarcode");
-                // TODO barcode
                 break;
             case R.id.scan_item:
                 scanCode("Scan");
@@ -154,17 +155,15 @@ public class TrialFragment extends Fragment {
                     new MeasurementQRFragment().newInstance(experiment).show(getFragmentManager(), "MeasureQR");
                 break;
             case R.id.comment_item:
-                // TODO go to comments
                 openFragmentWithExperimentID(QuestionsFragment.newInstance());
                 break;
             case R.id.plot_item:
-                // TODO show plots
+                openPlot();
                 break;
             case R.id.histogram_item:
-                // TODO show hist
+                openHistogram();
                 break;
             case R.id.stats_item:
-                // TODO show stats
                 openStats();
                 break;
             case R.id.end_item:
@@ -240,6 +239,18 @@ public class TrialFragment extends Fragment {
         Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
         statsIntent.putExtra("Experiment", experiment);
         startActivity(statsIntent);
+    }
+
+    private void openPlot() {
+        Intent plotIntent =  new Intent(getActivity(), PlotActivity.class);
+        plotIntent.putExtra("Experiment", experiment);
+        startActivity(plotIntent);
+    }
+
+    private void openHistogram() {
+        Intent histogramIntent =  new Intent(getActivity(), HistogramActivity.class);
+        histogramIntent.putExtra("Experiment", experiment);
+        startActivity(histogramIntent);
     }
 
     private void openFragmentWithExperimentID(Fragment fragment) {

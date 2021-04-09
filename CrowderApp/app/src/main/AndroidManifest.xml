@@ -15,6 +15,8 @@
         android:theme="@style/Theme.Design.NoActionBar">
         <activity android:name=".QRCodeActivity"></activity>
         <activity android:name=".StatsActivity" />
+        <activity android:name=".PlotActivity" />
+        <activity android:name=".HistogramActivity" />
         <activity
             android:name=".ScanActivity"
             android:clearTaskOnLaunch="true"
