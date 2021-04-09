@@ -5,9 +5,9 @@ This is an app designed to make the process of crowd sourcing experiments easier
 For a tutorial on how to use the app, please see the linked demo video (In progress)
 
 ## Assumptions
-Provide a google-services.json for firestore
-Google map API key (included for now)
-Run on a Pixel3a API 30
+Provide a google-services.json for firestore  
+Google map API key (included for now)  
+Run on a Pixel3a API 30  
 
 ## References
 https://zeeshan-elahi.medium.com/how-to-use-googles-ml-kit-to-scan-barcodes-8a009ab491d2
