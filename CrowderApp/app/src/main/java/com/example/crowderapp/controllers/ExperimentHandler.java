@@ -16,6 +16,7 @@ import com.example.crowderapp.controllers.callbackInterfaces.getTrialsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
+import com.example.crowderapp.models.AsyncSearch;
 import com.example.crowderapp.models.BinomialStats;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CounterStats;
@@ -378,13 +379,14 @@ public class ExperimentHandler {
     public void searchExperiment(List<String> filterStrings, searchExperimentCallBack callback) {
         // TODO: get a list of experiments based on provided filter
 
-        Search search = new Search();
+        AsyncSearch search = new AsyncSearch();
 
         getAllExperiments(new allExperimentsCallBack() {
             @Override
             public void callBackResult(List<Experiment> experimentList) {
-                List<Experiment> filteredExperiments = search.searchExperiments((ArrayList<String>) filterStrings, experimentList);
-                callback.callBackResult(filteredExperiments);
+                search.searchExperiments((ArrayList<String>) filterStrings, experimentList).addOnSuccessListener(filteredExperiments -> {
+                    callback.callBackResult(filteredExperiments);
+                });
             }
         });
 
