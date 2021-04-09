@@ -32,6 +32,12 @@ public abstract class UserDAO {
     public abstract Task<List<User>> getUserListById(List<String> userIds);
 
     /**
+     * Gets all the users.
+     * @return Task with list of all users.
+     */
+    public abstract Task<List<User>> getAllUsers();
+
+    /**
      * Observes a user in storage.
      * @param userId The user to observe.
      * @param observer Callback to receive user.
@@ -50,4 +56,11 @@ public abstract class UserDAO {
      * @param user User class containing changes to the user.
      */
     public abstract void updateUser(User user);
+
+    /**
+     * Updates users in bulk in storage.
+     * @param users The list of users to update.
+     * @return Task for when transaction is done.
+     */
+    public abstract Task<Void> bulkUpdateUser(List<User> users);
 }
