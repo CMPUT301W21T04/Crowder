@@ -36,7 +36,7 @@ public class StatisticsTest {
     @Test
     public void testStatsCount() {
         solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.COUNT);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.COUNT);
 
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
@@ -57,7 +57,7 @@ public class StatisticsTest {
     @Test
     public void testStatsBinomial() {
         solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.BINOMIAL);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.BINOMIAL);
 
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
@@ -79,7 +79,7 @@ public class StatisticsTest {
     @Test
     public void testStatsMeasurement() {
         solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.MEASUREMENT);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.MEASUREMENT);
 
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
@@ -101,7 +101,7 @@ public class StatisticsTest {
     @Test
     public void testStatsTally() {
         solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.TALLY);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.TALLY);
 
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);

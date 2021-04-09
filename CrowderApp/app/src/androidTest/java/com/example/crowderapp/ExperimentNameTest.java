@@ -28,7 +28,7 @@ public class ExperimentNameTest {
     public void testExpName() {
         solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
 
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.COUNT);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.COUNT);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.clickOnText(expName);
@@ -44,7 +44,7 @@ public class ExperimentNameTest {
         solo.sleep(1000);
 
         UiTestHelperFunctions.goToAllExperiments(solo);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.BINOMIAL);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.BINOMIAL);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.clickOnText(expName);
@@ -60,7 +60,7 @@ public class ExperimentNameTest {
         solo.sleep(1000);
 
         UiTestHelperFunctions.goToAllExperiments(solo);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.MEASUREMENT);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.MEASUREMENT);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.clickOnText(expName);
@@ -76,7 +76,7 @@ public class ExperimentNameTest {
         solo.sleep(1000);
 
         UiTestHelperFunctions.goToAllExperiments(solo);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.TALLY);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, false, true, UiTestHelperFunctions.expTypes.TALLY);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.clickOnText(expName);
