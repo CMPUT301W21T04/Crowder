@@ -171,4 +171,20 @@ public class UiTestHelperFunctions {
         solo.sleep(1500);
         solo.clickOnText("Location Heatmap");
     }
+
+    public static void openStats(Solo solo) {
+        View dropdown = solo.getView(R.id.more_item);
+        solo.clickOnView(dropdown);
+        solo.sleep(1500);
+        solo.clickOnText("Statistics");
+    }
+
+    public static void ignoreSelfData(Solo solo) {
+        View dropdown = solo.getView(R.id.more_item);
+        solo.clickOnView(dropdown);
+        solo.sleep(1500);
+        solo.clickOnText("User Filter");
+        solo.clickOnCheckBox(0);
+        solo.clickOnView(solo.getView(android.R.id.button1));
+    }
 }
