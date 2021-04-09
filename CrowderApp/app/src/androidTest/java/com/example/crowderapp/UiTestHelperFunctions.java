@@ -1,5 +1,6 @@
 package com.example.crowderapp;
 
+import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,10 @@ import org.junit.Assert;
 
 public class UiTestHelperFunctions {
 
+    // Experiment deletes on unpublish
+    // Must match R.string.deletableExpSuffix in string.xml
+    static String deleteSuffix = "__UI.TEST__";
+
     public enum expTypes {
         COUNT,
         BINOMIAL,
@@ -31,8 +36,12 @@ public class UiTestHelperFunctions {
 
         EditText expNameText = (EditText) solo.getView(R.id.experiment_name_EditText);
         EditText minTrials = (EditText) solo.getView(R.id.min_trials_EditText);
-        solo.enterText(expNameText, expName);
+        solo.enterText(expNameText, expName + deleteSuffix);
         solo.enterText(minTrials, String.valueOf(minTrialAmt));
+
+        // TODO: Add region to constructor of createExperiment
+        EditText regionText = (EditText) solo.getView(R.id.region_EditText);
+        solo.enterText(regionText, "North America");
 
         Spinner dropDown = (Spinner) solo.getView(R.id.dropdown);
         solo.sleep(2000);
