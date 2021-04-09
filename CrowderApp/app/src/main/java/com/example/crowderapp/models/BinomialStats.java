@@ -49,6 +49,8 @@ public class BinomialStats extends ExperimentStats<BinomialTrial> {
         double cumPasses = 0;
         double cumFails = 0;
         //https://stackoverflow.com/questions/4534924/how-to-iterate-through-range-of-dates-in-java
+        //Answered by BalusC
+        //License CC BY-SA 3.0
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
             while (index < trials.size() && daysDiff(date, trials.get(index).getDate()) == 0) {
                 if (trials.get(index).isResult()) {
