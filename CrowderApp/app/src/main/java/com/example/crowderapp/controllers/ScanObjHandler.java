@@ -90,7 +90,7 @@ public class ScanObjHandler {
 
                 // Both key and value are invalid for this experiment!
                 invalidObj.setValue(INVALID_CODE_STRING);
-                invalidObj.setKey(INVALID_CODE_STRING);
+                invalidObj.setexpID(INVALID_CODE_STRING);
                 cb.callback(invalidObj);
             }
             else {

@@ -62,6 +62,11 @@ public class ScanHandler {
             public void callback(ScanObj o) {
                 scanObj = o;
 
+                if(o.getexpID().equals("NOT_VALID") || o.getValue().equals("NOT_VALID")) {
+                    Toast.makeText(activity.getApplicationContext(), "Invalid QR for this experiment", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Not subscribed to the experiment, return
                 if(!user.getSubscribedExperiments().contains(scanObj.getexpID())) {
                     Toast.makeText(activity.getApplicationContext(), "Not allowed to add to this experiment", Toast.LENGTH_SHORT).show();
