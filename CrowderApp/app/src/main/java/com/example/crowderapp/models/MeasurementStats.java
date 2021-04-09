@@ -12,6 +12,10 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * Has Stats for measurement experiment
+ *
+ */
 public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
 
     public MeasurementStats(List<MeasurementTrial> trials) {
