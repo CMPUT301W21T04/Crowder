@@ -172,8 +172,7 @@ public class TrialFragment extends Fragment {
                 openStats();
                 break;
             case R.id.end_item:
-                handler.endExperiment(experiment);
-                item.setVisible(false);
+                endExperiment(item);
                 break;
 
             case R.id.filter_item:
@@ -182,6 +181,20 @@ public class TrialFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void endExperiment(MenuItem item) {
+        handler.refreshExperimentTrials(experiment, new getExperimentCallBack() {
+            @Override
+            public void callBackResult(Experiment experiment) {
+                if(experiment.getTrials().size() >= experiment.getMinTrials()) {
+                    handler.endExperiment(experiment);
+                    item.setVisible(false);
+                } else {
+                    Toast.makeText(getContext(), "Not Enough Trials", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void createFilterFragment() {
