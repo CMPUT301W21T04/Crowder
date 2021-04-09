@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    setActionBarTitle("CrowderApp");
                     switch (item.getItemId()) {
                         case R.id.navigation_all_experiments:
 //                            fab.show();
@@ -177,6 +178,10 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         openFragment(AllExperimentsFragment.newInstance());
+    }
+
+    public void setActionBarTitle(String title){
+        toolbar.setTitle(title);
     }
 
 

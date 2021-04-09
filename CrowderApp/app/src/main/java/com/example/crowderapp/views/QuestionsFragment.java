@@ -13,6 +13,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.CommentHandler;
 import com.example.crowderapp.controllers.ExperimentHandler;
@@ -70,6 +71,8 @@ public class QuestionsFragment extends Fragment {
         experimentId = (String) bundle.getSerializable("ExperimentID");
         userId = (String) bundle.getSerializable("UserId");
 
+        ( (MainActivity) getActivity()).setActionBarTitle("Questions");
+
     }
 
 
@@ -118,5 +121,11 @@ public class QuestionsFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ( (MainActivity) getActivity()).setActionBarTitle("Questions");
     }
 }
