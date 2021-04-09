@@ -33,7 +33,7 @@ public class ExperimentNameTest {
     public void testExpName() {
         solo.assertCurrentActivity("Not in Main Activity.", MainActivity.class);
 
-        UiTestHelperFunctions.createExperiment(solo, expName, 1);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.COUNT);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.clickOnText(expName);
@@ -48,5 +48,51 @@ public class ExperimentNameTest {
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.sleep(1000);
 
+        UiTestHelperFunctions.goToAllExperiments(solo);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.BINOMIAL);
+        solo.sleep(1000);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.clickOnText(expName);
+        Assert.assertTrue(solo.searchText(expName));
+
+
+        // Clean up
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.clickOnText(expName);
+        UiTestHelperFunctions.unpublishExp(solo);
+        solo.sleep(1000);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.sleep(1000);
+
+        UiTestHelperFunctions.goToAllExperiments(solo);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.MEASUREMENT);
+        solo.sleep(1000);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.clickOnText(expName);
+        Assert.assertTrue(solo.searchText(expName));
+
+
+        // Clean up
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.clickOnText(expName);
+        UiTestHelperFunctions.unpublishExp(solo);
+        solo.sleep(1000);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.sleep(1000);
+
+        UiTestHelperFunctions.goToAllExperiments(solo);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, UiTestHelperFunctions.expTypes.TALLY);
+        solo.sleep(1000);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.clickOnText(expName);
+        Assert.assertTrue(solo.searchText(expName));
+
+        // Clean up
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.clickOnText(expName);
+        UiTestHelperFunctions.unpublishExp(solo);
+        solo.sleep(1000);
+        UiTestHelperFunctions.goToMyExperiments(solo);
+        solo.sleep(1000);
     }
 }
