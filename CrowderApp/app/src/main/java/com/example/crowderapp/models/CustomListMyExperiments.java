@@ -38,8 +38,12 @@ public class CustomListMyExperiments extends ArrayAdapter<Experiment> {
 
         Experiment experiment = experiments.get(position);
         TextView expName = view.findViewById(R.id.myExpNameText);
-        expName.setText(experiment.getName());
+        TextView minTrials = view.findViewById(R.id.minTrials_text);
+        TextView region = view.findViewById(R.id.region_text);
 
+        expName.setText(experiment.getName());
+        minTrials.setText("Minimum Trials: " + experiment.getMinTrials());
+        region.setText("Region: " + experiment.getRegion());
 
         return view;
     }

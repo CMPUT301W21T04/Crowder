@@ -63,11 +63,16 @@ public class CustomListAllExperiments extends ArrayAdapter<AllExperimentListItem
 
         TextView expName = view.findViewById(R.id.allExpNameText);
         Button subscribed = view.findViewById(R.id.subscribeButton);
+        TextView minTrials = view.findViewById(R.id.minTrials_text);
+        TextView region = view.findViewById(R.id.region_text);
 
         subscribed.setTag(position);
         subscribed.setOnClickListener(listener);
 
+
         expName.setText(experiment.getName());
+        minTrials.setText("Minimum Trials: " + experiment.getMinTrials());
+        region.setText("Region: " + experiment.getRegion());
         if (experimentItem.getIsSubscribed()) {
             subscribed.setBackgroundColor(context.getResources().getColor(R.color.black));
         }
