@@ -35,6 +35,8 @@ public class CounterStats extends ExperimentStats<CounterTrial> {
         int dateIndex = 0;
         double count = 0;
         //https://stackoverflow.com/questions/4534924/how-to-iterate-through-range-of-dates-in-java
+        //Answered by BalusC
+        //License CC BY-SA 3.0
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
             while (trialsIndex < trials.size() && daysDiff(date, trials.get(trialsIndex).getDate()) == 0) {
                 count++;

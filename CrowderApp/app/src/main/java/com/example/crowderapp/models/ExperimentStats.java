@@ -104,6 +104,7 @@ public abstract class ExperimentStats <T extends Trial> {
     public List<Bar> getHistPoints() { return histPoints; }
 
     // for mean+med: https://stackoverflow.com/questions/4191687/how-to-calculate-mean-median-mode-and-range-from-a-set-of-numbers
+    // by Nico Huysamen
     // licence: CC BY-SA 3.0
     protected double calcMean(double[] values) {
         if (values.length == 0) {
@@ -130,6 +131,7 @@ public abstract class ExperimentStats <T extends Trial> {
     }
 
     // https://stackoverflow.com/questions/18390548/how-to-calculate-standard-deviation-using-java
+    // by progrenhard
     // License: CC BY-SA 3.0
     protected double calcStdev(double[] values, double mean) {
         if (values.length < 2) {
@@ -147,6 +149,7 @@ public abstract class ExperimentStats <T extends Trial> {
     }
 
     // https://stackoverflow.com/questions/42381759/finding-first-quartile-and-third-quartile-in-integer-array-using-java
+    // by vasilis vittis
     // license: CC BY-SA 4.0
     protected List<Double> calcQuart(double[] val) {
         if (val.length < 4) {

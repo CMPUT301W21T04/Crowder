@@ -50,6 +50,8 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
         double[] measActual;
         int countPerDay = 0;
         //https://stackoverflow.com/questions/4534924/how-to-iterate-through-range-of-dates-in-java
+        //Answered by BalusC
+        //License CC BY-SA 3.0
         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
             while (index < trials.size() && daysDiff(date, trials.get(index).getDate()) == 0) {
                 maxMeas[countPerDay] = trials.get(index).getMeasurement();
@@ -69,6 +71,8 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
         for (MeasurementTrial trial : trials) {
 
             //https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+            // by jonik
+            // CC BY-SA 4.0
             BigDecimal bd = BigDecimal.valueOf(trial.getMeasurement());
             bd = bd.setScale(2, RoundingMode.HALF_UP);
             double roundedMeas =  bd.doubleValue();
