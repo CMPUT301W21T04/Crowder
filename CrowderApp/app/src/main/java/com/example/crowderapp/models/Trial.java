@@ -4,6 +4,7 @@ package com.example.crowderapp.models;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * Trials are added to an experiment
  */
-public class Trial implements Comparable<Trial> {
+public class Trial implements Comparable<Trial>, Serializable {
 
     @DocumentId // Mark this as document ID in firebase
     private String trialId;

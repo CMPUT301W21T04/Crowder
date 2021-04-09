@@ -33,7 +33,7 @@ public class BinomialStats extends ExperimentStats<BinomialTrial> {
     }
 
     @Override
-    protected List<Graph> createPlot() {
+    protected List<Graph> createPlot(List<BinomialTrial> trials) {
         SortedMap<Date, Integer> hashedPasses = new TreeMap<>();
         SortedMap<Date, Integer> hashedFails = new TreeMap<>();
 
@@ -78,7 +78,7 @@ public class BinomialStats extends ExperimentStats<BinomialTrial> {
     }
 
     @Override
-    protected List<Bar> createHistogram() {
+    protected List<Bar> createHistogram(List<BinomialTrial> trials) {
         List<Bar> bars = new ArrayList<Bar>();
         int passes = 0;
         int fails = 0;

@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,8 +31,14 @@ import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.views.AddExperimentFragment;
 import com.example.crowderapp.views.AddQuestionFragment;
 import com.example.crowderapp.views.AllExperimentsFragment;
+import com.example.crowderapp.views.BinomialBarcodeFragment;
+import com.example.crowderapp.views.BinomialQRFragment;
 import com.example.crowderapp.views.LocationPopupFragment;
+import com.example.crowderapp.views.MeasurementBarcodeFragment;
+import com.example.crowderapp.views.MeasurementQRFragment;
 import com.example.crowderapp.views.MyExperimentsFragment;
+import com.example.crowderapp.views.NonNegBarcodeFragment;
+import com.example.crowderapp.views.NonNegQRFragment;
 import com.example.crowderapp.views.ProfileFragment;
 import com.example.crowderapp.views.QuestionsFragment;
 import com.example.crowderapp.views.ReplyFragment;
@@ -47,7 +54,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MainActivity extends AppCompatActivity
         implements AddExperimentFragment.OnFragmentInteractionListener,
         AddQuestionFragment.OnFragmentInteractionListener,
-        LocationPopupFragment.OnFragmentInteractionListener{
+        LocationPopupFragment.OnFragmentInteractionListener,
+        BinomialBarcodeFragment.OnFragmentInteractionListener,
+        NonNegBarcodeFragment.OnFragmentInteractionListener,
+        MeasurementBarcodeFragment.OnFragmentInteractionListener,
+        BinomialQRFragment.OnFragmentInteractionListener,
+        NonNegQRFragment.OnFragmentInteractionListener,
+        MeasurementQRFragment.OnFragmentInteractionListener{
 
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
@@ -95,6 +108,7 @@ public class MainActivity extends AppCompatActivity
             permissionsDialogue.launch(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -164,5 +178,6 @@ public class MainActivity extends AppCompatActivity
         }
         openFragment(AllExperimentsFragment.newInstance());
     }
+
 
 }

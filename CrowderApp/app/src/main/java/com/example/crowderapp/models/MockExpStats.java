@@ -14,12 +14,12 @@ public class MockExpStats extends ExperimentStats<Trial> {
     }
 
     @Override
-    protected List<Graph> createPlot() {
+    protected List<Graph> createPlot(List trials) {
         return null;
     }
 
     @Override
-    protected List<Bar> createHistogram() {
+    protected List<Bar> createHistogram(List trials) {
         return null;
     }
 

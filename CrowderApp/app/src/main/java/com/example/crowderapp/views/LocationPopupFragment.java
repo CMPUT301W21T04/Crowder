@@ -81,8 +81,7 @@ public class LocationPopupFragment extends DialogFragment {
         return builder
                 .setView(view)
                 .setTitle("Location Services")
-                .setIcon(R.drawable.ic_baseline_mode_comment_24)
-                .setNegativeButton("Cancel", null)
+                .setIcon(R.drawable.ic_baseline_location_on_24)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -99,6 +98,9 @@ public class LocationPopupFragment extends DialogFragment {
         if (ad == null) {
             return;
         }
+
+        ad.setCanceledOnTouchOutside(false);
+
         Button posButton = ad.getButton(Dialog.BUTTON_POSITIVE);
         posButton.setOnClickListener(new View.OnClickListener() {
             @Override

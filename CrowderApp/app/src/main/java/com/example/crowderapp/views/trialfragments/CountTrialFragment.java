@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.LocationHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.LocationCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.addTrialCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
 import com.example.crowderapp.models.BinomialTrial;
@@ -38,7 +40,9 @@ public class CountTrialFragment extends TrialFragment {
     int totalCount;
     Button countButton;
     Button saveButton;
-    CounterExperiment countExperiment;
+    private CounterExperiment countExperiment;
+    private Location location;
+    private LocationHandler locationHandler;
     private List<CounterTrial> trials = new ArrayList<>();
 
 
@@ -62,9 +66,20 @@ public class CountTrialFragment extends TrialFragment {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
+
+        locationHandler = new LocationHandler(getActivity().getApplicationContext());
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
+            if(locationHandler.hasGPSPermissions()) {
+                locationHandler.getCurrentLocation(new LocationCallback() {
+                    @Override
+                    public void callbackResult(Location loc) {
+                        location = loc;
+                    }
+                });
+            }
         }
+
 
         countExperiment = (CounterExperiment) experiment;
         user = (User) bundle.getSerializable("User");
@@ -82,8 +97,8 @@ public class CountTrialFragment extends TrialFragment {
                 } else {
                     totalCount++;
                     totalCountTextView.setText(String.valueOf(totalCount));
-                    countExperiment.incrementCount(user.getUid(), new Location());
-                    trials.add(new CounterTrial(user.getUid(), new Date(), new Location(), countExperiment.getExperimentID()));
+                    countExperiment.incrementCount(user.getUid(), location);
+                    trials.add(new CounterTrial(user.getUid(), new Date(), location, countExperiment.getExperimentID()));
                 }
 
             }

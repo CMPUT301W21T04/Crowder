@@ -1,9 +1,11 @@
 package com.example.crowderapp.models;
 
+import java.io.Serializable;
+
 /**
  * Represents a location for a trial.
  */
-public class Location {
+public class Location implements Serializable {
     private double longitude;
     private double latitude;
 
