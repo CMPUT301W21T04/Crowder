@@ -47,4 +47,5 @@
     <string name="average_per_measurement">Average per measurement:</string>
     <string name="measurement_value">Measurement Value</string>
     <string name="measure_trial">Measure Trial</string>
+    <string name="total_trials">Total Trials</string>
 </resources>
