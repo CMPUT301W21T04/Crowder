@@ -174,10 +174,8 @@ public class AllExperimentsFragment extends Fragment {
         String[] searchArray = searchEditText.getText().toString().split(" ");
         ArrayList<String> searchList = new ArrayList<>(Arrays.asList(searchArray));
 
-        handler.getAllExperiments(experimentList -> {
-            Search searcher = new Search();
-            allExpDataList = searcher.searchExperiments(searchList, experimentList);
-
+        handler.searchExperiment(searchList, experimentList -> {
+            allExpDataList = experimentList;
             allExperimentListItems.clear();
             updateSubs();
 
@@ -191,7 +189,6 @@ public class AllExperimentsFragment extends Fragment {
                 allExpView.setAdapter(searchListAdapter);
                 searchListAdapter.notifyDataSetChanged();
             }
-
         });
     }
 
