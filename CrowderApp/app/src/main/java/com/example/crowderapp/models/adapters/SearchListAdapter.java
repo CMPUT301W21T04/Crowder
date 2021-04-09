@@ -52,6 +52,7 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
     public View getView(int position, @Nullable View view, @NonNull ViewGroup parent) {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.all_experiments_search_result, parent, false);
+            view.setTag(R.string.update_index_tag, 0);
         }
 
         AllExperimentListItem experimentItem = experiments.get(position);
@@ -73,7 +74,21 @@ public class SearchListAdapter extends ArrayAdapter<AllExperimentListItem> {
 
         // Fetch username
         if (experiment.getOwnerID() != null && !experiment.getOwnerID().isEmpty()) {
+
+            /*
+                Multiple asyncs can cause race conditions. Fix by having each associated with
+                a update index. If the update index is higher than expected, then a more
+                recent async has been launched.
+             */
+            final int targetTag = (Integer) view.getTag(R.string.update_index_tag) + 1;
+            view.setTag(R.string.update_index_tag, targetTag);
+            final View targetView = view;
+
             handler.getUserByID(experiment.getOwnerID(), user -> {
+                if ((Integer) targetView.getTag(R.string.update_index_tag) != targetTag) {
+                    // A more recent async has been launched. Don't do anything!.
+                    return;
+                }
 
                 if (user == null) {
                     // SOMEONE MESSED UP THE DB!
