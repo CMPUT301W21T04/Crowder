@@ -30,8 +30,8 @@ public class AsyncSearch {
             }
         };
 
+        // User Id to user name LUT
         userIdToUsernameMap = userDAO.getAllUsers().continueWith(task -> {
-
             Map map = new HashMap();
 
             for (User user : task.getResult()) {
@@ -46,7 +46,7 @@ public class AsyncSearch {
      * Extra search words to add to search string
      * @return Whether the experiment should be returned in search.
      */
-    public String extraProcessing(Experiment exp) {
+    private String extraProcessing(Experiment exp) {
         if(!userIdToUsernameMap.isSuccessful()) {
             throw new RuntimeException("Async Usernames not yet available!");
         }

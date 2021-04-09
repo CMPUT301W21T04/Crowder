@@ -25,6 +25,11 @@ import java.util.List;
     Licensed under Apache 2.0 License.
  */
 
+/**
+ * Concrete implementation of ExperimentDAO that uses Firestore
+ *
+ * Uses Root collection: experiments
+ */
 public class ExperimentFSDAO extends ExperimentDAO {
 
     // Logging Tag

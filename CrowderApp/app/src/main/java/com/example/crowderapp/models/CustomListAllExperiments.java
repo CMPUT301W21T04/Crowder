@@ -71,7 +71,7 @@ public class CustomListAllExperiments extends ArrayAdapter<AllExperimentListItem
 
 
         expName.setText(experiment.getName());
-        minTrials.setText("Minimum Trials: " + experiment.getMinTrials());
+        minTrials.setText("Min. Trials: " + String.valueOf(experiment.getMinTrials()));
         region.setText("Region: " + experiment.getRegion());
         if (experimentItem.getIsSubscribed()) {
             subscribed.setBackgroundColor(context.getResources().getColor(R.color.black));

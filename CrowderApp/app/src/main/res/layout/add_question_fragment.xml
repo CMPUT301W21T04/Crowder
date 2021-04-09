@@ -16,7 +16,7 @@
         android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Type Question Here"
+        android:hint="@string/type_question_here"
         android:text="" />
 
 </LinearLayout>

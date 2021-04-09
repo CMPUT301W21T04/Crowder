@@ -31,6 +31,11 @@ public class LocationHandler {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
+    /**
+     * For dependency injection.
+     * @param context
+     * @param provider
+     */
     public LocationHandler(Context context, FusedLocationProviderClient provider) {
         this.context = context;
         this.fusedLocationClient = provider;

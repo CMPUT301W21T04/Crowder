@@ -7,6 +7,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+/*
+    Tasks based on guide by Google Developers.
+    https://developers.google.com/android/guides/tasks
+    Licensed under Apache 2.0 License.
+ */
+
 /**
  * Concrete Implementation of CommentDAO that uses the Firestore Database.
  *
@@ -24,7 +30,7 @@ public class CommentFSDAO extends CommentDAO {
     private CollectionReference commentsReference;
 
     /**
-     * For user dependency injection in tests.
+     * For dependency injection in tests.
      * @param db
      */
     public CommentFSDAO(FirebaseFirestore db) {
@@ -33,7 +39,7 @@ public class CommentFSDAO extends CommentDAO {
     }
 
     /**
-     * Preffered constructor for using this dao.
+     * Preferred constructor for using this dao.
      */
     public CommentFSDAO() {
         this(FirebaseFirestore.getInstance());

@@ -18,8 +18,10 @@
             android:id="@+id/search_EditText"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
-            android:hint="Enter Keyword"
-            android:paddingLeft="10dp">
+            android:hint="@string/enter_keyword"
+            android:paddingStart="10dp"
+            android:importantForAutofill="no"
+            android:inputType="text">
 
         </EditText>
 
@@ -28,8 +30,8 @@
             android:id="@+id/search_btn"
             android:layout_width="102dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="Search" />
+            android:layout_marginEnd="5dp"
+            android:text="@string/search" />
     </TableRow>
 
     <ListView
@@ -44,12 +46,13 @@
         android:id="@+id/add_experiment_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
         android:layout_gravity="bottom|end"
-        android:elevation="10dp"
         android:layout_marginBottom="?attr/actionBarSize"
         android:backgroundTint="@color/purple_200"
+        android:clickable="true"
+        android:contentDescription="@string/add_experiment"
+        android:elevation="10dp"
+        android:focusable="true"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </FrameLayout>

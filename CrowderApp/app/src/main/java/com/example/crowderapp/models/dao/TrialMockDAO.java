@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mock class for testing.
+ * @deprecated
+ */
 public class TrialMockDAO extends TrialDAO {
 
     List<Trial> trialList;

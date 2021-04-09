@@ -8,6 +8,9 @@ import com.google.android.gms.tasks.Task;
 import java.util.List;
 import java.util.Observer;
 
+/**
+ * Data Access Object for persistent user data.
+ */
 public abstract class UserDAO {
 
     /**

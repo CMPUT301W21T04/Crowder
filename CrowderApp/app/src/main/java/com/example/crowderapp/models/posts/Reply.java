@@ -5,6 +5,7 @@ package com.example.crowderapp.models.posts;
  */
 public class Reply extends Comment {
 
+    // Question ID of parent
     private String qid;
 
     /**
@@ -34,6 +35,9 @@ public class Reply extends Comment {
         return qid;
     }
 
+    /**
+     * @param qid Parent QID
+     */
     public void setQid(String qid) {
         this.qid = qid;
     }
