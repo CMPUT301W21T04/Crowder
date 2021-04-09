@@ -1,11 +1,16 @@
 package com.example.crowderapp.models;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
 
@@ -60,23 +65,26 @@ public class MeasurementStats extends ExperimentStats<MeasurementTrial> {
 
     @Override
     protected List<Bar> createHistogram() {
-        List<Bar> bars = new ArrayList<>();
-        int[] quarters = {0,0,0,0};
+        SortedMap<Double, Integer> counts = new TreeMap<>();
         for (MeasurementTrial trial : trials) {
-            if (trial.getMeasurement() <= quartiles.get(0)) {
-                quarters[0]++;
-            } else if (trial.getMeasurement() <= quartiles.get(1)) {
-                quarters[1]++;
-            } else if (trial.getMeasurement() <= quartiles.get(2)) {
-                quarters[2]++;
-            } else {
-                quarters[3]++;
+
+            //https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+            BigDecimal bd = BigDecimal.valueOf(trial.getMeasurement());
+            bd = bd.setScale(2, RoundingMode.HALF_UP);
+            double roundedMeas =  bd.doubleValue();
+
+            if (counts.containsKey(roundedMeas)) {
+                counts.put(roundedMeas, counts.get(roundedMeas)+1);
+            }
+            else {
+                counts.put(roundedMeas, 1);
             }
         }
-        bars.add(new Bar("<"+quartiles.get(0).toString(), quarters[0]));
-        bars.add(new Bar(quartiles.get(0).toString()+"-"+quartiles.get(1).toString(), quarters[1]));
-        bars.add(new Bar(quartiles.get(1).toString()+"-"+quartiles.get(2).toString(), quarters[2]));
-        bars.add(new Bar(">"+quartiles.get(2).toString(), quarters[3]));
+        List<Bar> bars = new ArrayList<>();
+        Set<Double> set = counts.keySet();
+        for (Double in : set) {
+            bars.add(new Bar(in.toString(), counts.get(in)));
+        }
         return bars;
     }
 }
