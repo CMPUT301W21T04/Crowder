@@ -38,7 +38,7 @@ public class QRCodeTest {
     public void testQRGenerateCount() {
         String expname = expNames.get(0);
 
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, UiTestHelperFunctions.expTypes.COUNT);
+        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.COUNT);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.sleep(1000);
@@ -58,7 +58,7 @@ public class QRCodeTest {
     public void testQRGenerateBinomial() {
         String expname = expNames.get(1);
 
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, UiTestHelperFunctions.expTypes.BINOMIAL);
+        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.BINOMIAL);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.sleep(1000);
@@ -83,7 +83,7 @@ public class QRCodeTest {
     public void testQRGenerateMeasurement() {
         String expname = expNames.get(2);
 
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, UiTestHelperFunctions.expTypes.MEASUREMENT);
+        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.MEASUREMENT);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.sleep(1000);
@@ -108,7 +108,7 @@ public class QRCodeTest {
     public void testQRGenerateTally() {
         String expname = expNames.get(3);
 
-        UiTestHelperFunctions.createExperiment(solo, expname, 1, UiTestHelperFunctions.expTypes.TALLY);
+        UiTestHelperFunctions.createExperiment(solo, expname, 1, false, true, UiTestHelperFunctions.expTypes.TALLY);
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
         solo.sleep(1000);
