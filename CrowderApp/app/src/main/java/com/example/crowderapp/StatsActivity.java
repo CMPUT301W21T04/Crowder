@@ -32,6 +32,7 @@ public class StatsActivity extends AppCompatActivity {
     Experiment experiment;
     private static DecimalFormat df = new DecimalFormat("0.00");
 
+    TextView totalTextView;
     TextView q1TextView;
     TextView q2TextView;
     TextView q3TextView;
@@ -48,6 +49,7 @@ public class StatsActivity extends AppCompatActivity {
         experiment = (Experiment) getIntent().getSerializableExtra("Experiment");
 
         // Get UI elements
+        totalTextView = findViewById(R.id.total_value_TextView);
         q1TextView = findViewById(R.id.q1_value_TextView);
         q2TextView = findViewById(R.id.q2_value_TextView);
         q3TextView = findViewById(R.id.q3_value_TextView);
@@ -59,7 +61,8 @@ public class StatsActivity extends AppCompatActivity {
         // Handle case when value is NaN and display N/A instead
         handler.refreshExperimentTrials(experiment, new getExperimentCallBack() {
             @Override
-            public void callBackResult(Experiment experiment) {
+            public void callBackResult(Experiment exp) {
+                totalTextView.setText(String.valueOf(exp.getTrials().size()));
                 handler.getStatistics(experiment, new getExperimentStatsCallBack() {
                     @Override
                     public void callBackResult(ExperimentStats experimentStats) {
