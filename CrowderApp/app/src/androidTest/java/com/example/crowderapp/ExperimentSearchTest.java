@@ -52,6 +52,8 @@ public class ExperimentSearchTest {
         for (String name : expNames) {
             solo.clickOnText(name);
             UiTestHelperFunctions.unpublishExp(solo);
+            solo.sleep(1000);
+            UiTestHelperFunctions.goToMyExperiments(solo);
         }
 
         solo.sleep(1000);

@@ -18,6 +18,9 @@ public class CounterStats extends ExperimentStats<CounterTrial> {
 
     @Override
     protected double[] setValues() {
+        if (trials.size() == 0) {
+            return new double[0];
+        }
         double[] val = new double[daysDiff(trials.get(0).getDate(), trials.get(trials.size()-1).getDate())+1];
 
         Calendar start = Calendar.getInstance();

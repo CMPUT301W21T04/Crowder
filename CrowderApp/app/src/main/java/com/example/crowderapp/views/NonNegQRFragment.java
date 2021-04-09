@@ -37,7 +37,9 @@ import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
-
+/**
+ * Allows user to enter a non negative integer they want to be associated to a QR Code
+ */
 public class NonNegQRFragment extends DialogFragment {
 
     EditText integerEditText;
@@ -95,13 +97,7 @@ public class NonNegQRFragment extends DialogFragment {
                     }
                 }).create();
     }
-    // The use of onResume to be able to override the automatic dismiss was learned from
-    // StackOverflow, https://stackoverflow.com/
-    // an answer by Sogger on Mar 25 '13 at 15:48
-    // https://stackoverflow.com/users/579234/sogger
-    // to question "How to prevent a dialog from closing when a button is clicked"
-    // https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-    // under CC-BY-SA
+
     @Override
     public void onResume() {
         super.onResume();
@@ -115,7 +111,7 @@ public class NonNegQRFragment extends DialogFragment {
             public void onClick(View v) {
                 String newIntegerVal = integerEditText.getText().toString();
 
-
+                // Check for empty text box
                 if(newIntegerVal.equals("")) {
                     Context context = getContext();
                     CharSequence text = "No Option Selected";
@@ -123,6 +119,7 @@ public class NonNegQRFragment extends DialogFragment {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
+                    // Show QR code in new activity
                     Intent intent = new Intent(getActivity(), QRCodeActivity.class);
                     intent.putExtra("Experiment", experiment);
                     intent.putExtra("Value", newIntegerVal);

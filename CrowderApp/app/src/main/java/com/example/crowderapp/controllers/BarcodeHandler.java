@@ -26,60 +26,24 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * Barcode handler that is meant to generate QR code and scan QR and barcode
+ */
 public class BarcodeHandler {
 
     public void BarcodeHandler() {
     }
 
-    //, registerBarcodeCallBack callback
-    public void scanBarcode(Context context) {
-
-        InputStream imgFile = context.getResources().openRawResource(R.raw.barcode);
-
-        if (imgFile != null) {
-            BarcodeScanner barcodeScanner = BarcodeScanning.getClient();
-            Bitmap bitmapResult = BitmapFactory.decodeResource(context.getResources(), R.raw.barcode);
-            InputImage inputImage = InputImage.fromBitmap(bitmapResult, 0);
-            Task<List<Barcode>> task = barcodeScanner.process(inputImage);
-
-            task.addOnCompleteListener(new OnCompleteListener<List<Barcode>>() {
-                @Override
-                public void onComplete(@NonNull Task<List<Barcode>> task) {
-                    List<Barcode> barcodeList = task.getResult();
-                    Barcode barcode = barcodeList.get(0);
-                    String result = barcode.getRawValue();
-                }
-            });
-        }
-    }
-
-    //, addQRCallBack callback
-    public void scanQR(Context context) {
-
-        InputStream imgFile = context.getResources().openRawResource(R.raw.qr);
-
-        if (imgFile != null) {
-            BarcodeScannerOptions options = new BarcodeScannerOptions.Builder().setBarcodeFormats(
-                    Barcode.FORMAT_QR_CODE
-            ).build();
-            BarcodeScanner barcodeScanner = BarcodeScanning.getClient(options);
-            Bitmap bitmapResult = BitmapFactory.decodeResource(context.getResources(), R.raw.qr);
-            InputImage inputImage = InputImage.fromBitmap(bitmapResult, 0);
-            Task<List<Barcode>> task = barcodeScanner.process(inputImage);
-
-            task.addOnCompleteListener(new OnCompleteListener<List<Barcode>>() {
-                @Override
-                public void onComplete(@NonNull Task<List<Barcode>> task) {
-                    List<Barcode> barcodeList = task.getResult();
-                    Barcode barcode = barcodeList.get(0);
-                    String result = barcode.getRawValue();
-                }
-            });
-        }
-    }
-
+    /**
+     * scans barcode using mlkit. This has been depricated, but kept for backup
+     * @param barcode
+     */
     public void scanBarcode(Bitmap barcode) {
-
+        /*
+            Reference : https://zeeshan-elahi.medium.com/how-to-use-googles-ml-kit-to-scan-barcodes-8a009ab491d2
+            Author : Zeeshan Elahi
+            Details : Showed how to scan QR and barcode using mlkit
+         */
         BarcodeScanner barcodeScanner = BarcodeScanning.getClient();
         InputImage inputImage = InputImage.fromBitmap(barcode, 0);
         Task<List<Barcode>> task = barcodeScanner.process(inputImage);
@@ -95,8 +59,16 @@ public class BarcodeHandler {
 
     }
 
+    /**
+     * scans qr using mlkit. This has been depricated, but kept for backup
+     * @param qr
+     */
     public void scanQR(Bitmap qr) {
-
+        /*
+            Reference : https://zeeshan-elahi.medium.com/how-to-use-googles-ml-kit-to-scan-barcodes-8a009ab491d2
+            Author : Zeeshan Elahi
+            Details : Showed how to scan QR and barcode using mlkit
+         */
         BarcodeScannerOptions options = new BarcodeScannerOptions.Builder().setBarcodeFormats(
                 Barcode.FORMAT_QR_CODE
         ).build();
@@ -116,14 +88,17 @@ public class BarcodeHandler {
 
     }
 
-    /*
-        This QR code generator will take in a string that
-        has an action associated with it. Then it will encode that string into a QR code
-        for example: 'PASS' or 'FAIL' will be passed into the generator and a corresponding
-        QR code will be generated that when read it will output the string that was passed into the generator
+    /**
+     * generates a QR based on a string
+     * @param actionText : an action string
+     * @return QR code bitmap
      */
     public Bitmap generateQR(String actionText) {
-
+        /*
+            Reference: https://medium.com/@aanandshekharroy/generate-barcode-in-android-app-using-zxing-64c076a5d83a
+            Author : Aanand Shekhar Roy
+            Details : Showed how to use zxing to generate barcode
+         */
         try {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(actionText.toString(), BarcodeFormat.QR_CODE, 500, 500, null);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -135,13 +110,5 @@ public class BarcodeHandler {
 
         return null;
     }
-
-    public void fetchBarcode(getBarcodeCallBack callback) {}
-
-    public void fetchQR(getQRCallBack callback) {}
-
-    public void deleteBarcode() {}
-
-    public void deleteQR(){}
 
 }

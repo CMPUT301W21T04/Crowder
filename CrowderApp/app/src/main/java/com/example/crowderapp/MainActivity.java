@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity
 
     BottomNavigationView bottomNavigation;
     Toolbar toolbar;
-    public FloatingActionButton fab;
     AllExperimentsFragment allExpFrag;
 
     // Permissions dialogue
@@ -119,11 +118,7 @@ public class MainActivity extends AppCompatActivity
 
 
     public void openFragment(Fragment fragment) {
-        // https://stackoverflow.com/questions/6186433/clear-back-stack-using-fragments
         FragmentManager fm = getSupportFragmentManager();
-//        for(int i = 0; i < fm.getBackStackEntryCount() - 1; ++i) {
-//            fm.popBackStack();
-//        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         if(fm.getBackStackEntryCount() != 0) {
@@ -139,16 +134,13 @@ public class MainActivity extends AppCompatActivity
                     setActionBarTitle("CrowderApp");
                     switch (item.getItemId()) {
                         case R.id.navigation_all_experiments:
-//                            fab.show();
                             allExpFrag = AllExperimentsFragment.newInstance();
                             openFragment(allExpFrag);
                             return true;
                         case R.id.navigation_my_experiments:
-//                            fab.hide();
                             openFragment(MyExperimentsFragment.newInstance());
                             return true;
                         case R.id.navigation_profile:
-//                            fab.hide();
                             openFragment(ProfileFragment.newInstance());
                             return true;
                     }
@@ -156,6 +148,13 @@ public class MainActivity extends AppCompatActivity
                 }
             };
 
+
+    public void setActionBarTitle(String title){
+        toolbar.setTitle(title);
+    }
+
+
+    // onOkPressed Methods
     @Override
     public void onOkPressed(boolean allow) {
         if(!allow) {
@@ -180,9 +179,7 @@ public class MainActivity extends AppCompatActivity
         openFragment(AllExperimentsFragment.newInstance());
     }
 
-    public void setActionBarTitle(String title){
-        toolbar.setTitle(title);
-    }
+
 
 
 }

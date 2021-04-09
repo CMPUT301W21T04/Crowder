@@ -34,6 +34,9 @@ import com.example.crowderapp.controllers.callbackInterfaces.subscribeExperiment
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.User;
 
+/**
+ * Fragment to add experiments
+ */
 public class AddExperimentFragment extends DialogFragment {
 
     private static final String[] options = new String[]{
@@ -81,7 +84,11 @@ public class AddExperimentFragment extends DialogFragment {
 
         dropdown = view.findViewById(R.id.dropdown);
         // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
-        
+        // Taken from StackOverflow, https://stackoverflow.com/
+        // answer by Kamran Ahmed Khan https://stackoverflow.com/users/5239819/kamran-ahmed-khan
+        // to question "how to create an unselectable hint text for Spinner in android ? (without reflection)"
+        // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
+        // under CC-BY-SA License
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options) {
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
@@ -142,7 +149,7 @@ public class AddExperimentFragment extends DialogFragment {
                     isLocationRequired = true;
                 else
                     isLocationRequired = false;
-
+                // Check for empty fields
                 if(experimentType == options[0] || minTrials.matches("") ||
                         experimentName.matches("") || region.matches("")) {
                     Context context = getContext();
@@ -151,6 +158,7 @@ public class AddExperimentFragment extends DialogFragment {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
+                    // get user and create the experiment
                     userHandler.getCurrentUser(new getUserByIDCallBack() {
                         @Override
                         public void callBackResult(User user) {

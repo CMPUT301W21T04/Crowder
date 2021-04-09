@@ -131,13 +131,14 @@ public class ExperimentHandlerUnitTest {
         ExperimentFSDAO dao = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
         Task<Experiment> task = mock(Task.class, RETURNS_DEEP_STUBS);
         ExperimentHandler handler = new ExperimentHandler(dao);
+        String testString = "test";
 
         when(dao.getExperiment(any())).thenReturn(task);
 
         ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
         unPublishExperimentCallBack mockedExperimentCB = mock(unPublishExperimentCallBack.class);
 
-        handler.unPublishExperiment(any(), mockedExperimentCB);
+        handler.unPublishExperimentTesting(testString, mockedExperimentCB);
 
         finishAllTasks();
 

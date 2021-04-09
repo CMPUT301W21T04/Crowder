@@ -36,13 +36,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Fragment for adding trials to a binomial experiment
+ */
 public class BinomialTrialFragment extends TrialFragment {
+
     private User user;
     private BinomialExperiment binomialExperiment;
     private ExperimentHandler handler = new ExperimentHandler();
     private List<BinomialTrial> trials = new ArrayList<BinomialTrial>();
+
     private Location location;
     private LocationHandler locationHandler;
+
     private int succView;
     private int failView;
     private double succRateView;
@@ -84,6 +90,7 @@ public class BinomialTrialFragment extends TrialFragment {
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
 
+        // Pop up location if it is required
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
             locationHandler = new LocationHandler(getActivity().getApplicationContext());

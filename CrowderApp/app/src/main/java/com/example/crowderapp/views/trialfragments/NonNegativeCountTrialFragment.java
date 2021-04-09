@@ -37,15 +37,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Fragment for adding trials to a non negatice experiment
+ */
 public class NonNegativeCountTrialFragment extends TrialFragment {
-    TallyExperiment tallyExperiment;
 
+    TallyExperiment tallyExperiment;
     TextView numCountTextView;
     TextView aveCountTextView;
+    TextView nameTextView;
     EditText integerValueEditText;
-    String integerValueString;
     Button enterButton;
     Button saveButton;
+
     private Location location;
     private LocationHandler locationHandler;
 
@@ -55,6 +59,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
     int currentCount;
     double average;
     String averageString;
+    String integerValueString;
 
     private List<TallyTrial> trials = new ArrayList<>();
 
@@ -78,9 +83,11 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
 
+        // Notify location is required for the experiment
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
             locationHandler = new LocationHandler(getActivity().getApplicationContext());
@@ -97,12 +104,16 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         tallyExperiment = (TallyExperiment) experiment;
         user = (User) bundle.getSerializable("User");
 
+        // Get UI Elements
         numCountTextView = view.findViewById(R.id.num_non_neg_value_textView);
         aveCountTextView = view.findViewById(R.id.ave_non_neg_value_textView);
         integerValueEditText = view.findViewById(R.id.non_neg_value_editText);
         enterButton = view.findViewById(R.id.non_neg_button_enter);
         saveButton = view.findViewById(R.id.non_neg_button_save);
+        nameTextView = view.findViewById(R.id.non_neg_trial_TextView);
+        nameTextView.setText(experiment.getName());
 
+        // Disable editText
         if(tallyExperiment.isEnded()) {
             integerValueEditText.setEnabled(false);
             integerValueEditText.setText("Experiment Ended");
@@ -111,6 +122,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Do not allow user to add when experiment is ended
                 if (tallyExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
@@ -137,6 +149,7 @@ public class NonNegativeCountTrialFragment extends TrialFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Do not allow user to add when experiment is ended
                 if(tallyExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {

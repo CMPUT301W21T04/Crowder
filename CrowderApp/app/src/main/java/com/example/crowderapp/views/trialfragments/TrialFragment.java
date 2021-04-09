@@ -1,18 +1,19 @@
 package com.example.crowderapp.views.trialfragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.HeatmapActivity;
+import com.example.crowderapp.HistogramActivity;
+import com.example.crowderapp.PlotActivity;
 import com.example.crowderapp.QRCodeActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
@@ -23,24 +24,17 @@ import com.example.crowderapp.controllers.ScanObjHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.ScanObjectCallback;
-import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
-import com.example.crowderapp.controllers.callbackInterfaces.unsubscribedExperimentCallBack;
-import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.Experiment;
-import com.example.crowderapp.models.Location;
-import com.example.crowderapp.models.MeasurementExperiment;
 import com.example.crowderapp.models.ScanObj;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.BinomialBarcodeFragment;
 import com.example.crowderapp.views.BinomialQRFragment;
-import com.example.crowderapp.views.LocationPopupFragment;
 import com.example.crowderapp.views.MeasurementBarcodeFragment;
 import com.example.crowderapp.views.MeasurementQRFragment;
-import com.example.crowderapp.views.MyExperimentsFragment;
 import com.example.crowderapp.views.NonNegBarcodeFragment;
 import com.example.crowderapp.views.NonNegQRFragment;
 import com.example.crowderapp.views.QuestionsFragment;
@@ -49,6 +43,9 @@ import com.example.crowderapp.views.UserFilterFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Base Class for all Trial fragments
+ */
 public class TrialFragment extends Fragment {
 
 
@@ -67,6 +64,7 @@ public class TrialFragment extends Fragment {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
+        // Get user Handler
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
     }
@@ -84,15 +82,20 @@ public class TrialFragment extends Fragment {
                 MenuItem menuItem = menu.findItem(R.id.more_item);
                 menuItem.setVisible(true);
                 boolean isOwner = experiment.getOwnerID().matches(user.getUid());
+
+                // Set menu items to be visible or not
                 if(experiment.isEnded() || !isOwner ) {
                     menu.findItem(R.id.end_item).setVisible(false);
                 }
-                if(!isOwner) {
+                if(!isOwner && !experiment.getName().endsWith(getString(R.string.deletableExpSuffix))) {
                     menu.findItem(R.id.unpublish_item).setVisible(false);
                     menu.findItem(R.id.filter_item).setVisible(false);
                 }
                 if(!experiment.isLocationRequired()) {
                     menu.findItem(R.id.location_item).setVisible(false);
+                }
+                if(experiment.isUnpublished()) {
+                    menu.findItem(R.id.unpublish_item).setVisible(false);
                 }
             }
         });
@@ -102,6 +105,8 @@ public class TrialFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        // Handle logic for menu items
         switch (item.getItemId()) {
             case R.id.location_item:
                 Intent intentLocation = new Intent(getActivity(), HeatmapActivity.class);
@@ -109,17 +114,23 @@ public class TrialFragment extends Fragment {
                 startActivity(intentLocation);
                 break;
             case R.id.unpublish_item:
-                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
-                    @Override
-                    public void callBackResult() {
-                        userHandler.unsubscribeExperiment(experiment.getExperimentID(), new unsubscribedExperimentCallBack() {
-                            @Override
-                            public void callBackResult() {
-                                openFragment(MyExperimentsFragment.newInstance());
-                            }
-                        });
-                    }
-                });
+                item.setVisible(false);
+                experiment.setUnpublished(true);
+                handler.updateExperiment(experiment);
+                if (!experiment.getName().endsWith(getString(R.string.deletableExpSuffix))) {
+                    handler.unPublishExperiment(experiment, user.getUid(), new unPublishExperimentCallBack() {
+                        @Override
+                        public void callBackResult() {
+                        }
+                    });
+                } else {
+                    // experiments generated by UI tests will be deleted instead
+                    handler.unPublishExperimentTesting(experiment.getExperimentID(), new unPublishExperimentCallBack() {
+                        @Override
+                        public void callBackResult() {
+                        }
+                    });
+                }
                 break;
             case R.id.assign_barcode_item:
                 if(experiment.getExperimentType().equals("Binomial"))
@@ -130,7 +141,6 @@ public class TrialFragment extends Fragment {
                     scanCode("Count");
                 else if(experiment.getExperimentType().equals("Measurement"))
                     new MeasurementBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "MeasureBarcode");
-                // TODO barcode
                 break;
             case R.id.scan_item:
                 scanCode("Scan");
@@ -150,17 +160,15 @@ public class TrialFragment extends Fragment {
                     new MeasurementQRFragment().newInstance(experiment).show(getFragmentManager(), "MeasureQR");
                 break;
             case R.id.comment_item:
-                // TODO go to comments
                 openFragmentWithExperimentID(QuestionsFragment.newInstance());
                 break;
             case R.id.plot_item:
-                // TODO show plots
+                openPlot();
                 break;
             case R.id.histogram_item:
-                // TODO show hist
+                openHistogram();
                 break;
             case R.id.stats_item:
-                // TODO show stats
                 openStats();
                 break;
             case R.id.end_item:
@@ -196,13 +204,19 @@ public class TrialFragment extends Fragment {
                 userHandler.getUserListById(usersIDs, new GetUserListCallback() {
                     @Override
                     public void callBackResult(List<User> userList) {
-                        new UserFilterFragment().newInstance(experiment, userList).show(getFragmentManager(), "UserFilter");
-
+                        if(userList.size() == 0) {
+                            Toast.makeText(getContext(), "No Users to filter!", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            new UserFilterFragment().newInstance(experiment, userList).show(getFragmentManager(), "UserFilter");
+                        }
                     }
                 });
             }
         });
     }
+
+    // Launch code Scanner
     public void scanCode(String message) {
         option = message;
         Intent intent = new Intent(getActivity(), ScanActivity.class);
@@ -231,13 +245,28 @@ public class TrialFragment extends Fragment {
 
     }
 
-
+    // Open Stats
     private void openStats() {
         Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
         statsIntent.putExtra("Experiment", experiment);
         startActivity(statsIntent);
     }
 
+    // Open activity to display plot
+    private void openPlot() {
+        Intent plotIntent =  new Intent(getActivity(), PlotActivity.class);
+        plotIntent.putExtra("Experiment", experiment);
+        startActivity(plotIntent);
+    }
+
+    // Open activity to display histogram
+    private void openHistogram() {
+        Intent histogramIntent =  new Intent(getActivity(), HistogramActivity.class);
+        histogramIntent.putExtra("Experiment", experiment);
+        startActivity(histogramIntent);
+    }
+
+    // open fragment and pass experiment id to fragment
     private void openFragmentWithExperimentID(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ExperimentID", experiment.getExperimentID());
@@ -248,13 +277,5 @@ public class TrialFragment extends Fragment {
         transaction.commit();
     }
 
-
-    public void openFragment(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-//        transaction.addToBackStack(null);
-        transaction.commit();
-        getFragmentManager().popBackStack();
-    }
 
 }

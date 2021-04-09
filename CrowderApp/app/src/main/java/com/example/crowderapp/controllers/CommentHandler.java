@@ -24,11 +24,20 @@ public class CommentHandler {
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
+    /**
+     * an injectable constructor for testing
+     * @param dao : the test dao
+     */
     public CommentHandler(CommentFSDAO dao) {
         this.dao = dao;
         logger = Logger.getLogger(ExperimentHandler.class.getName());
     }
 
+    /**
+     * grabs the questions for an experiment
+     * @param experimentID : the experiment ID
+     * @param callback : the callback interface after the async call finishes
+     */
     public void getExperimentQuestions(String experimentID, getExperimentQuestionsCallBack callback) {
         Task<List<Question>> task = dao.getQuestionsForExperiment(experimentID);
 
@@ -43,6 +52,12 @@ public class CommentHandler {
 
     }
 
+    /**
+     * adds a question to an experiment
+     * @param experimentID : the experiment ID
+     * @param question : the question to be added
+     * @param callback : the callback interface after the async call finishes
+     */
     public void addQuestionToExperiment(String experimentID, Question question, addQuestionToExperimentCallBack callback) {
         Task<String> task = dao.addQuestionForExperiment(experimentID, question);
 
@@ -57,18 +72,13 @@ public class CommentHandler {
 
     }
 
+    /**
+     * updates the question for an experiment
+     * @param experimentID : the experiment ID
+     * @param question : the question that is to be updated
+     */
     public void updateQuestionForExperiment(String experimentID, Question question) {
         dao.updateQuestionForExperiment(experimentID, question);
     }
-
-    /**
-     * This method adds a reply to a question
-     * @param reply the reply object
-     * @param experimentID the experiment ID the reply is binded to
-     * @param questionID the question ID the reply is binded to
-     * @param callback the callback on success
-     */
-    public void addReplyToQuestion(Reply reply, String experimentID, String questionID, addReplyToQuestionCallBack callback) {
-        // TODO ADD IMPLEMENTATION
-    }
+    
 }
