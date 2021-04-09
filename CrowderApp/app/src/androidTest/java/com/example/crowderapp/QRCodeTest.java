@@ -29,7 +29,7 @@ public class QRCodeTest {
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class, true, true);
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), testRule.getActivity());
     }
 
@@ -133,9 +133,9 @@ public class QRCodeTest {
     // unpredictable ordering way
     @Test
     public void manualCleanUp() {
-        solo.sleep(2000);
+        solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
-        solo.sleep(2000);
+        solo.sleep(1000);
 
         while (solo.searchText("__UI.TEST__")) {
             solo.clickOnText("__UI.TEST__");
