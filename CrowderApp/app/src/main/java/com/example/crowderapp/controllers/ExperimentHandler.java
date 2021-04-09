@@ -106,7 +106,7 @@ public class ExperimentHandler {
      * @param experimentID contains the experiment ID
      * @param callback
      */
-    public void unPublishExperiment(String experimentID, unPublishExperimentCallBack callback) {
+    public void unPublishExperimentTesting(String experimentID, unPublishExperimentCallBack callback) {
         // TODO: remove experiment from fire store
         Task<Experiment> task = experimentDAO.getExperiment(experimentID);
 
@@ -119,7 +119,7 @@ public class ExperimentHandler {
                     callback.callBackResult();
                 } else {
                     Exception e = task.getException();
-                    logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
+                    logger.throwing("Experiment Handler", "error in unPublishExperimentTesting obtaining Experiment", e);
                 }
             }
         });
@@ -165,14 +165,14 @@ public class ExperimentHandler {
                                 callback.callBackResult();
                             } else {
                                 Exception e = task.getException();
-                                logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment bulk update", e);
+                                logger.throwing("Experiment Handler", "error in unPublishExperimentTesting obtaining Experiment bulk update", e);
                             }
                         }
                     });
 
                 } else {
                     Exception e = task.getException();
-                    logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment grabbing all users", e);
+                    logger.throwing("Experiment Handler", "error in unPublishExperimentTesting obtaining Experiment grabbing all users", e);
                 }
             }
         });

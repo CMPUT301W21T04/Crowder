@@ -138,7 +138,7 @@ public class ExperimentHandlerUnitTest {
         ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
         unPublishExperimentCallBack mockedExperimentCB = mock(unPublishExperimentCallBack.class);
 
-        handler.unPublishExperiment(testString, mockedExperimentCB);
+        handler.unPublishExperimentTesting(testString, mockedExperimentCB);
 
         finishAllTasks();
 
