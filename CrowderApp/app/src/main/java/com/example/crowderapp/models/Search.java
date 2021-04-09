@@ -8,12 +8,19 @@ import java.util.List;
  */
 public class Search {
 
-
     public Search() {
     }
 
     /**
-     * search experiments and return a list matching key words
+     * Extra search words to add to search string
+     * @return Whether the experiment should be returned in search.
+     */
+    public String extraProcessing(Experiment exp) {
+        return "";
+    }
+
+    /**
+     * search experiments and return a list matching key words. Synchronous, no users.
      * @param filterStrings keywords to search for
      * @param experimentList list of all experiments
      * @return a list of all experiments matching the keywords
@@ -24,8 +31,8 @@ public class Search {
 
         for (Experiment exp : experimentList) {
             for (String search : filterStrings) {
-                // TODO: Need username searchable
                 String searchString = (exp.getName() + exp.getExperimentType()).toLowerCase();
+                searchString += extraProcessing(exp);
                 if (searchString.contains(search.toLowerCase())){
                     filteredExperiments.add(exp);
                     break;
@@ -35,5 +42,4 @@ public class Search {
 
         return filteredExperiments;
     }
-
 }

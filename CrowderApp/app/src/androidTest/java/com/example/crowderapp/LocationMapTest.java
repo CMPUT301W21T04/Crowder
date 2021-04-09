@@ -27,7 +27,7 @@ public class LocationMapTest {
     @Test
     public void testMap() {
         solo.sleep(1000);
-        UiTestHelperFunctions.createExperiment(solo, expName, 1, true, UiTestHelperFunctions.expTypes.COUNT);
+        UiTestHelperFunctions.createExperiment(solo, expName, 1, true, true, UiTestHelperFunctions.expTypes.COUNT);
 
         solo.sleep(1000);
         UiTestHelperFunctions.goToMyExperiments(solo);
