@@ -16,4 +16,5 @@
     <string name="search_username">Username:</string>
     <string name="search_status">Status:</string>
     <string name="search_type">"Type: "</string>
+    <string name="update_index_tag">update_index_tag</string>
 </resources>
