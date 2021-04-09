@@ -127,7 +127,10 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    // https://androidwave.com/bottom-navigation-bar-android-example/
+    // Code adapted from Material.io, https://material.io/
+    // available at
+    // https://material.io/components/bottom-navigation/android#using-bottom-navigation
+    // under Apache 2.0 License
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
