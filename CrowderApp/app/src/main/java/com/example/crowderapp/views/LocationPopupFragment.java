@@ -23,7 +23,10 @@ import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.models.posts.Reply;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
 
-public class LocationPopupFragment extends DialogFragment {
+ /**
+  * Displays to user that a location is needed for experiments that use geo-location
+  */
+ public class LocationPopupFragment extends DialogFragment {
 
     private TextView popupText;
     private Experiment currentExp;
@@ -66,6 +69,7 @@ public class LocationPopupFragment extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.location_popup_fragment, null);
         popupText = view.findViewById(R.id.locationPopupText);
 
+        // Set text based on if location services is required
         if(currentExp.isLocationRequired()) {
             if(locHandler.hasGPSPermissions()) {
                 popupText.setText("Using your current location for this experiment.");

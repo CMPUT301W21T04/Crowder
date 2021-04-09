@@ -38,6 +38,9 @@ import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
 
+/**
+ * Allows user to enter a measurement they want to be associated to a QR Code
+ */
 public class MeasurementQRFragment extends DialogFragment {
 
     EditText decEditText;
@@ -94,13 +97,7 @@ public class MeasurementQRFragment extends DialogFragment {
                     }
                 }).create();
     }
-    // The use of onResume to be able to override the automatic dismiss was learned from
-    // StackOverflow, https://stackoverflow.com/
-    // an answer by Sogger on Mar 25 '13 at 15:48
-    // https://stackoverflow.com/users/579234/sogger
-    // to question "How to prevent a dialog from closing when a button is clicked"
-    // https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-    // under CC-BY-SA
+
     @Override
     public void onResume() {
         super.onResume();
@@ -122,6 +119,7 @@ public class MeasurementQRFragment extends DialogFragment {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
+                    // Show the QR code in a new activity
                     Intent intent = new Intent(getActivity(), QRCodeActivity.class);
                     intent.putExtra("Experiment", experiment);
                     intent.putExtra("Value", newIntegerVal);

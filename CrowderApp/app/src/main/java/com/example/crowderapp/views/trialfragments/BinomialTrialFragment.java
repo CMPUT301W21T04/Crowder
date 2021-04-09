@@ -36,6 +36,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Fragment for adding trials to a binomial experiment
+ */
 public class BinomialTrialFragment extends TrialFragment {
 
     private User user;

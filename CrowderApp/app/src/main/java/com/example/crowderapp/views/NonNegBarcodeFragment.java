@@ -39,7 +39,9 @@ import com.example.crowderapp.models.ScanObj;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
-
+/**
+ * Allows user to enter a non negative integer they want to be associated to a barcode
+ */
 public class NonNegBarcodeFragment extends DialogFragment {
 
     EditText integerEditText;
@@ -100,13 +102,7 @@ public class NonNegBarcodeFragment extends DialogFragment {
                     }
                 }).create();
     }
-    // The use of onResume to be able to override the automatic dismiss was learned from
-    // StackOverflow, https://stackoverflow.com/
-    // an answer by Sogger on Mar 25 '13 at 15:48
-    // https://stackoverflow.com/users/579234/sogger
-    // to question "How to prevent a dialog from closing when a button is clicked"
-    // https://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-    // under CC-BY-SA
+
     @Override
     public void onResume() {
         super.onResume();
@@ -128,9 +124,10 @@ public class NonNegBarcodeFragment extends DialogFragment {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
+                    // Start the scanner
                     Intent intent = new Intent(getActivity(), ScanActivity.class);
                     startActivityForResult(intent, 0);
-//                    ad.dismiss();
+
                 }
             }
         });
@@ -139,7 +136,8 @@ public class NonNegBarcodeFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
+        // Get data from scanner activity
+
         if(data == null)
             return;
 
@@ -147,6 +145,7 @@ public class NonNegBarcodeFragment extends DialogFragment {
         Log.v("Barcode Frag", code);
         String newIntegerVal = integerEditText.getText().toString();
 
+        // Create scan object based on retrieved values
         soHandler = new ScanObjHandler(experiment.getExperimentID());
         soHandler.createScanObj(code, newIntegerVal, new ScanObjectCallback() {
             @Override

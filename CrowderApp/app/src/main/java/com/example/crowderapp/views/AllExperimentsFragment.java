@@ -36,6 +36,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Main Fragment
+ * Displays all experiments available to be subscribes to
+ */
 public class AllExperimentsFragment extends Fragment {
 
     public UserHandler userHandler;
@@ -73,13 +77,13 @@ public class AllExperimentsFragment extends Fragment {
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            // Handle subscribing and unsubscribing to experiments
             int position = (int) v.getTag();
             Experiment exp = allExpDataList.get(position);
             if(!subscribed.contains(exp.getExperimentID())) { // If not subscribed already
                 userHandler.subscribeExperiment(exp.getExperimentID(), new subscribeExperimentCallBack() {
                     @Override
                     public void callBackResult() {
-//                        getNewSubs();
                         v.setBackgroundColor(getResources().getColor(R.color.black));
                     }
                 });
@@ -89,16 +93,12 @@ public class AllExperimentsFragment extends Fragment {
                 userHandler.unsubscribeExperiment(exp.getExperimentID(), new unsubscribedExperimentCallBack() {
                     @Override
                     public void callBackResult() {
-                        //getNewSubs();
+
                         v.setBackgroundColor(getResources().getColor(R.color.teal_200));
                     }
                 });
-//                Log.v(String.valueOf(exp.getExperimentID()), "Unsubscribed to: ");
+
             }
-//            getNewSubs();
-//            Log.v(String.valueOf(thisUser.getUid()), "Current User");
-//            Log.v(String.valueOf(v.getSolidColor()), "Button changed");
-//            Log.v(String.valueOf(position), "At this position");
         }
     };
 
@@ -114,11 +114,16 @@ public class AllExperimentsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         thisContext = container.getContext();
         View view = inflater.inflate(R.layout.all_experiments_fragment, container, false);
+
         userHandler = new UserHandler(getActivity().getSharedPreferences(
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
+
         update();
+
+        // set floating action button
         fab = view.findViewById(R.id.add_experiment_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +131,7 @@ public class AllExperimentsFragment extends Fragment {
                 new AddExperimentFragment().show(getFragmentManager(), "ADD_EXPR");
             }
         });
+
         // Search Setup
         searchEditText = view.findViewById(R.id.search_EditText);
         searchBtn = view.findViewById(R.id.search_btn);
@@ -187,6 +193,11 @@ public class AllExperimentsFragment extends Fragment {
         });
     }
 
+    /**
+     * Check to see if an experiment id already exists
+     * @param exp an experiment
+     * @return boolean if experiment id already exists
+     */
     private boolean alreadyExists(Experiment exp) {
         for(AllExperimentListItem expItem : allExperimentListItems) {
             if(expItem.getExperiment().getExperimentID().equals(exp.getExperimentID())) {
@@ -196,6 +207,9 @@ public class AllExperimentsFragment extends Fragment {
         return false;
     }
 
+    /**
+     * Update subscriptions (buttons)
+     */
     private void updateSubs() {
         allExperimentListItems.clear();
         for(Experiment exp : allExpDataList) {
@@ -207,6 +221,10 @@ public class AllExperimentsFragment extends Fragment {
         }
     }
 
+    /**
+     * Removes unpublished experiments for allExpDataList
+     * If experiment is unpublished but user is owner, it is excluded
+     */
     private void unpublishedCheck() {
         List<Experiment> tempList = new ArrayList<>();
         for(Experiment exp : allExpDataList) {
@@ -217,7 +235,9 @@ public class AllExperimentsFragment extends Fragment {
         allExpDataList.removeAll(tempList);
     }
 
-
+    /**
+     * Update the view
+     */
     public void update() {
 
         userHandler.getCurrentUser(new getUserByIDCallBack() {
@@ -250,6 +270,12 @@ public class AllExperimentsFragment extends Fragment {
         });
     }
 
+    /**
+     * opens a fragment and bundles uid and experiment id
+     * @param fragment fragment to open
+     * @param uid User ID
+     * @param experimentID Experiment ID
+     */
     private void openFragmentWithExperimentIDAndUser(Fragment fragment, String uid, String experimentID) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("ExperimentID", experimentID);
@@ -264,6 +290,7 @@ public class AllExperimentsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // change the title of the app bar
         ( (MainActivity) getActivity()).setActionBarTitle("CrowderApp");
     }
 

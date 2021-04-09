@@ -23,6 +23,10 @@ import com.google.zxing.integration.android.IntentIntegrator;
 // and
 // https://github.com/yuriy-budiyev/lib-demo-app/blob/master/app/src/main/java/com/budiyev/android/libdemoapp/codescanner/CodeScannerActivity.java
 // under MIT license
+
+/**
+ * Opens a camera to scan QR or barcode and returns value of the can
+ */
 public class ScanActivity extends AppCompatActivity {
     private static final int RC_PERMISSION = 10;
     private CodeScanner mCodeScanner;
