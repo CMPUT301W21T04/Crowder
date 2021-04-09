@@ -44,7 +44,7 @@ public class StatIgnoreTest {
 
         UiTestHelperFunctions.ignoreSelfData(solo);
 
-        UiTestHelperFunctions.openStats(solo);
+        UiTestHelperFunctions.openStatistics(solo);
 
         Assert.assertFalse(solo.searchText("1"));
 

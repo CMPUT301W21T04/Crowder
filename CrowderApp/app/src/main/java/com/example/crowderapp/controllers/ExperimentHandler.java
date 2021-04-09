@@ -16,6 +16,7 @@ import com.example.crowderapp.controllers.callbackInterfaces.getTrialsCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.registerBarcodeCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.searchExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.unPublishExperimentCallBack;
+import com.example.crowderapp.models.AsyncSearch;
 import com.example.crowderapp.models.BinomialStats;
 import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.CounterStats;
@@ -106,7 +107,7 @@ public class ExperimentHandler {
      * @param experimentID contains the experiment ID
      * @param callback
      */
-    public void unPublishExperiment(String experimentID, unPublishExperimentCallBack callback) {
+    public void unPublishExperimentTesting(String experimentID, unPublishExperimentCallBack callback) {
         // TODO: remove experiment from fire store
         Task<Experiment> task = experimentDAO.getExperiment(experimentID);
 
@@ -119,7 +120,7 @@ public class ExperimentHandler {
                     callback.callBackResult();
                 } else {
                     Exception e = task.getException();
-                    logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment", e);
+                    logger.throwing("Experiment Handler", "error in unPublishExperimentTesting obtaining Experiment", e);
                 }
             }
         });
@@ -165,40 +166,18 @@ public class ExperimentHandler {
                                 callback.callBackResult();
                             } else {
                                 Exception e = task.getException();
-                                logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment bulk update", e);
+                                logger.throwing("Experiment Handler", "error in unPublishExperimentTesting obtaining Experiment bulk update", e);
                             }
                         }
                     });
 
                 } else {
                     Exception e = task.getException();
-                    logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment grabbing all users", e);
+                    logger.throwing("Experiment Handler", "error in unPublishExperimentTesting obtaining Experiment grabbing all users", e);
                 }
             }
         });
 
-
-    }
-
-    /**
-     * creates and returns the task for all experiments the user is subscribed to.
-     * @param userID contains the userID
-     * @param callback the callback function that is called when the async call finish
-     */
-    public void getAllSubscribedExperiments(String userID, getAllSubscribedExperimentsCallBack callback) {
-
-        Task<List<Experiment>> task = experimentDAO.getUserExperiments(userID);
-
-        task.addOnCompleteListener(new OnCompleteListener<List<Experiment>>() {
-            @Override
-            public void onComplete(@NonNull Task<List<Experiment>> task) {
-                if (task.isSuccessful()){
-                    callback.callBackResult(task.getResult());
-                } else {
-                    logger.log(Level.SEVERE, "Error in get all subscribed experiments in handler");
-                }
-            }
-        });
 
     }
 
@@ -378,13 +357,14 @@ public class ExperimentHandler {
     public void searchExperiment(List<String> filterStrings, searchExperimentCallBack callback) {
         // TODO: get a list of experiments based on provided filter
 
-        Search search = new Search();
+        AsyncSearch search = new AsyncSearch();
 
         getAllExperiments(new allExperimentsCallBack() {
             @Override
             public void callBackResult(List<Experiment> experimentList) {
-                List<Experiment> filteredExperiments = search.searchExperiments((ArrayList<String>) filterStrings, experimentList);
-                callback.callBackResult(filteredExperiments);
+                search.searchExperiments((ArrayList<String>) filterStrings, experimentList).addOnSuccessListener(filteredExperiments -> {
+                    callback.callBackResult(filteredExperiments);
+                });
             }
         });
 

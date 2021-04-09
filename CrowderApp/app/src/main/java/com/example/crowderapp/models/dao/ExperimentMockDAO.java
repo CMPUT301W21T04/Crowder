@@ -1,7 +1,6 @@
 package com.example.crowderapp.models.dao;
 
 import com.example.crowderapp.models.Experiment;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 
@@ -89,9 +88,4 @@ public class ExperimentMockDAO extends ExperimentDAO {
         }
     }
 
-    @Override
-    public Task<List<Experiment>> getUserExperiments(String userId) {
-        // TODO
-        return null;
-    }
 }
