@@ -11,11 +11,12 @@
         android:id="@+id/question_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="30dp"
         android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
+        android:hint="Type Question Here"
         android:text="" />
 
 </LinearLayout>

@@ -11,18 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:paddingLeft="30dp"
         android:text="@string/experiment_name"
-        android:paddingStart="30dp" />
+        android:paddingStart="30dp"
+        android:paddingEnd="0dp"/>
 
     <EditText
         android:id="@+id/experiment_name_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="30dp"
         android:autofillHints=""
         android:ems="10"
+        android:hint="@string/set_the_name_of_the_experiment"
         android:inputType="textPersonName"
         android:text="" />
 
@@ -31,40 +32,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:paddingLeft="30dp"
         android:text="@string/trial_type"
-        android:paddingStart="30dp" />
+        android:paddingStart="30dp"
+        android:paddingEnd="0dp"/>
 
     <Spinner
         android:id="@+id/dropdown"
         android:layout_width="226dp"
         android:layout_height="47dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp" />
+        android:layout_marginStart="22dp" />
 
     <CheckBox
         android:id="@+id/location_required_CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="61dp"
-        android:layout_marginLeft="25dp"
-        android:text="Location Required?" />
+        android:layout_marginStart="25dp"
+        android:text="@string/location_required" />
 
     <TextView
         android:id="@+id/region_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:paddingLeft="30dp"
         android:paddingStart="30dp"
-        android:text="Region" />
+        android:paddingEnd="0dp"
+        android:text="@string/region" />
     <EditText
         android:id="@+id/region_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="30dp"
         android:autofillHints="Number of Trials"
         android:ems="10"
+        android:hint="@string/set_region_of_experiment"
         android:textIsSelectable="true"
         android:inputType="textPersonName" />
 
@@ -73,17 +74,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:paddingLeft="30dp"
         android:paddingStart="30dp"
-        android:text="Minimum Number of Trials" />
+        android:paddingEnd="0dp"
+        android:text="@string/minimum_number_of_trials" />
     <EditText
         android:id="@+id/min_trials_EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="30dp"
         android:autofillHints="Number of Trials"
         android:ems="10"
+        android:hint="@string/set_minimum_number_of_trials_for_experiment"
         android:textIsSelectable="true"
         android:inputType="number" />
 </LinearLayout>

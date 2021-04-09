@@ -31,7 +31,7 @@ public class Search {
 
         for (Experiment exp : experimentList) {
             for (String search : filterStrings) {
-                String searchString = (exp.getName() + exp.getExperimentType()).toLowerCase();
+                String searchString = (exp.getName() + exp.getExperimentType() + exp.getRegion()).toLowerCase();
                 searchString += extraProcessing(exp);
                 if (searchString.contains(search.toLowerCase())){
                     filteredExperiments.add(exp);
