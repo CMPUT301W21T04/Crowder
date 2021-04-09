@@ -12,60 +12,70 @@ import java.util.TreeMap;
 
 public class CounterStats extends ExperimentStats<CounterTrial> {
 
-    List<CounterTrial> trials;
-
     public CounterStats(List<CounterTrial> trials) {
         super(trials);
-        this.trials = trials;
-        Collections.sort(this.trials);
     }
 
     @Override
-    protected double[] setValues(List<CounterTrial> trials) {
-        Collections.sort(trials);
+    protected double[] setValues() {
+        double[] val = new double[daysDiff(trials.get(0).getDate(), trials.get(trials.size()-1).getDate())+1];
 
-        double[] val = new double[trials.size()];
-        int index = 0;
+        Calendar start = Calendar.getInstance();
+        start.setTime(trials.get(0).getDate());
+        Calendar end = Calendar.getInstance();
+        end.setTime(trials.get(trials.size()-1).getDate());
+        end.set(Calendar.HOUR_OF_DAY, 23);
+        end.set(Calendar.MINUTE, 59);
+        end.set(Calendar.SECOND, 59);
 
-        CounterTrial lastTrial = trials.get(0);
-        for (CounterTrial trial : trials) {
-            if (lastTrial.compareTo(trial) != 0) {
-                index++;
-                lastTrial = trial;
+        int trialsIndex = 0;
+        int dateIndex = 0;
+        double count = 0;
+        //https://stackoverflow.com/questions/4534924/how-to-iterate-through-range-of-dates-in-java
+        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            while (trialsIndex < trials.size() && daysDiff(date, trials.get(trialsIndex).getDate()) == 0) {
+                count++;
+                trialsIndex++;
             }
-            val[index] += 1;
+            val[dateIndex] = count;
+            count = 0;
+            dateIndex++;
         }
         return val;
     }
 
     @Override
-    protected List<Graph> createPlot(List<CounterTrial> trials) {
-        SortedMap<Date, Integer> counts = new TreeMap<>();
+    protected Graph createPlot() {
+        if (trials.size() == 0) {
+            List<Point> points = new ArrayList<>();
+            points.add(new Point(new Date(), 0d));
+            return new Graph("", points);
+        }
+        Calendar start = Calendar.getInstance();
+        start.setTime(trials.get(0).getDate());
+        Calendar end = Calendar.getInstance();
+        end.setTime(trials.get(trials.size()-1).getDate());
+        end.set(Calendar.HOUR_OF_DAY, 23);
+        end.set(Calendar.MINUTE, 59);
+        end.set(Calendar.SECOND, 59);
 
-        CounterTrial lastTrial = null;
-        for (CounterTrial trial : trials) {
-            if (lastTrial == null || trial.compareTo(lastTrial) != 0) {
-                lastTrial = trial;
-                counts.put(lastTrial.getDate(), 1);
-            } else {
-                counts.put(lastTrial.getDate(), counts.get(lastTrial.getDate())+1);
+        int index = 0;
+        List<Point> points = new ArrayList<>();
+        int count = 0;
+        //https://stackoverflow.com/questions/4534924/how-to-iterate-through-range-of-dates-in-java
+        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            while (index < trials.size() && daysDiff(date, trials.get(index).getDate()) == 0) {
+                count++;
+                index++;
             }
+            points.add(new Point(date, count));
+            count = 0;
         }
-
-        List<Point> countList = new ArrayList<>();
-        Set<Date> set = counts.keySet();
-        for (Date key : set) {
-            countList.add(new Point(key, counts.get(key)));
-        }
-        Graph countGraph = new Graph("Counts Per Day", countList);
-        List<Graph> output = new ArrayList<>();
-        output.add(countGraph);
-
-        return output;
+        return new Graph("Change in Count Per Day", points);
     }
 
     @Override
-    protected List<Bar> createHistogram(List<CounterTrial> trials) {
+    protected List<Bar> createHistogram() {
         List<Bar> bars = new ArrayList<>();
         bars.add(new Bar("Total Count", trials.size()));
         return bars;

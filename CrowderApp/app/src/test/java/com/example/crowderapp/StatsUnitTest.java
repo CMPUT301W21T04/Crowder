@@ -94,7 +94,7 @@ public class StatsUnitTest {
     public void testStdevEmpty() {
         double[] data = {};
         double mean = 0d;
-        Assert.assertEquals(0d, stats.calcStdev(data, mean), 0.001d);
+        Assert.assertEquals(Double.NaN, stats.calcStdev(data, mean), 0.001d);
     }
 
     @Test
@@ -144,9 +144,9 @@ public class StatsUnitTest {
         double[] data = {};
         double median = 0d;
         List<Double> expected = new ArrayList<Double>();
-        expected.add(0d);
-        expected.add(0d);
-        expected.add(0d);
+        expected.add(Double.NaN);
+        expected.add(Double.NaN);
+        expected.add(Double.NaN);
         List<Double> actual = stats.calcQuart(data);
         Assert.assertEquals(expected.get(0), actual.get(0), 0.001d);
         Assert.assertEquals(expected.get(1), actual.get(1), 0.001d);
