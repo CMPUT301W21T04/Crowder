@@ -1,5 +1,6 @@
 package com.example.crowderapp.views.trialfragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.StatsActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.ScanHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
@@ -72,7 +74,8 @@ public class TrialFragment extends Fragment {
         this.menu = menu;
         userHandler.getCurrentUser(new getUserByIDCallBack() {
             @Override
-            public void callBackResult(User user) {
+            public void callBackResult(User u) {
+                user = u;
                 MenuItem menuItem = menu.findItem(R.id.more_item);
                 menuItem.setVisible(true);
                 boolean isOwner = experiment.getOwnerID().matches(user.getUid());
@@ -125,7 +128,7 @@ public class TrialFragment extends Fragment {
                 // TODO barcode
                 break;
             case R.id.scan_item:
-                launchScanner();
+                scanCode();
                 break;
             case R.id.qr_code_gen_item:
                 if(experiment.getExperimentType().equals("Binomial"))
@@ -194,6 +197,20 @@ public class TrialFragment extends Fragment {
                 });
             }
         });
+    }
+    public void scanCode() {
+        Intent intent = new Intent(getActivity(), ScanActivity.class);
+        startActivityForResult(intent, 2);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        if(data == null)
+            return;
+        String code = data.getStringExtra("CODE");
+        ScanHandler scanHandler = new ScanHandler(getActivity(), experiment, user);
+        scanHandler.execute(code);
     }
 
     private void launchScanner() {
