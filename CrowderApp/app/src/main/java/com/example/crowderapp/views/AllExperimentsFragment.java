@@ -16,6 +16,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.ExperimentHandler;
 import com.example.crowderapp.controllers.UserHandler;
@@ -250,4 +251,11 @@ public class AllExperimentsFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ( (MainActivity) getActivity()).setActionBarTitle("CrowderApp");
+    }
+
 }

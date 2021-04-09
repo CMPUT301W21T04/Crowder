@@ -29,10 +29,12 @@ import com.example.crowderapp.models.Search;
 import com.example.crowderapp.models.TallyStats;
 import com.example.crowderapp.models.TallyTrial;
 import com.example.crowderapp.models.Trial;
+import com.example.crowderapp.models.User;
 import com.example.crowderapp.models.dao.ExperimentDAO;
 import com.example.crowderapp.models.dao.ExperimentFSDAO;
 import com.example.crowderapp.models.dao.TrialDAO;
 import com.example.crowderapp.models.dao.TrialFSDAO;
+import com.example.crowderapp.models.dao.UserFSDAO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.maps.model.LatLng;
@@ -65,13 +67,14 @@ public class ExperimentHandler {
      * @param ownerID the ownerID string
      * @param callBack the callback interface for the async call
      */
-    public void createExperiment(String experimentName, boolean isLocationRequired,
+    public void createExperiment(String experimentName, boolean isLocationRequired, String region,
                                  int minTrials, String experimentType, String ownerID,
                                  createExperimentCallBack callBack) {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
         newExperiment.setName(experimentName);
+        newExperiment.setRegion(region);
         newExperiment.setLocationRequired(isLocationRequired);
         newExperiment.setMinTrials(minTrials);
         newExperiment.setExperimentType(experimentType);
@@ -111,6 +114,59 @@ public class ExperimentHandler {
                 }
             }
         });
+    }
+
+    /**
+     * removes all subscribers from an experiment
+     * @param experiment contains the experiment object
+     * @param callback
+     */
+    public void unPublishExperiment(Experiment experiment, unPublishExperimentCallBack callback) {
+        // TODO: remove experiment from fire store
+        UserFSDAO userFSDAO = new UserFSDAO();
+
+        // grab all the users
+        Task<List<User>> taskgetAllUsers = userFSDAO.getAllUsers();
+
+        taskgetAllUsers.addOnCompleteListener(new OnCompleteListener<List<User>>() {
+
+            @Override
+            public void onComplete(@NonNull Task<List<User>> task) {
+                if (task.isSuccessful()) {
+                    List<User> users = taskgetAllUsers.getResult();
+                    List<User> changedUsers = new ArrayList<User>();
+                    int index = 0;
+
+                    for (User user : users) {
+                        if (user.getSubscribedExperiments().contains(experiment.getExperimentID())) {
+                            user.getSubscribedExperiments().remove(experiment.getExperimentID());
+                            changedUsers.add(user);
+                        }
+                    }
+
+                    // bulk update
+                    Task<Void> taskBulkUpdate = userFSDAO.bulkUpdateUser(changedUsers);
+
+                    taskBulkUpdate.addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(taskBulkUpdate.isSuccessful()) {
+                                callback.callBackResult();
+                            } else {
+                                Exception e = task.getException();
+                                logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment bulk update", e);
+                            }
+                        }
+                    });
+
+                } else {
+                    Exception e = task.getException();
+                    logger.throwing("Experiment Handler", "error in unPublishExperiment obtaining Experiment grabbing all users", e);
+                }
+            }
+        });
+
+
     }
 
     /**
@@ -300,22 +356,6 @@ public class ExperimentHandler {
         }
 
         return latLngs;
-    }
-
-    public void addQR(String experimentID, addQRCallBack callback) {
-        // TODO: get the experiment object and call generateQR()
-    }
-
-    public void getQR(String experimentID, getQRCallBack callback) {
-        // Assuming QR code is of Integer type
-        // TODO: get all QR codes associated with experiment
-    }
-
-    // similar to the generateQR we will
-    // need some api to read barcodes in
-    public void registerBarcode(registerBarcodeCallBack callback) {
-        // TODO: register a pre-existing barcode.
-
     }
 
     /**

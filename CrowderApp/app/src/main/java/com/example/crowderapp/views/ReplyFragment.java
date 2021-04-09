@@ -12,6 +12,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.crowderapp.MainActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.controllers.CommentHandler;
 import com.example.crowderapp.controllers.UserHandler;
@@ -62,6 +63,7 @@ public class ReplyFragment extends Fragment {
         userID = bundle.getString("UserID");
         experimentID = bundle.getString("ExperimentID");
 
+        ( (MainActivity) getActivity()).setActionBarTitle("Replies");
     }
 
     private void openFragment(Fragment fragment, Question question) {
@@ -94,6 +96,8 @@ public class ReplyFragment extends Fragment {
             }
         });
 
+
+
         replyList = question.getReplyList();
 
         replyAdapter = new CustomListReply(getContext(), replyList);
@@ -104,4 +108,6 @@ public class ReplyFragment extends Fragment {
 
         return view;
     }
+
+
 }

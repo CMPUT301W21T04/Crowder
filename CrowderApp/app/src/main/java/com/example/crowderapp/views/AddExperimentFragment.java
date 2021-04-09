@@ -41,6 +41,7 @@ public class AddExperimentFragment extends DialogFragment {
 
     private Spinner dropdown;
     private EditText minTrialsEditText;
+    private EditText regionEditText;
     private EditText experimentNameEditText;
     private CheckBox locationRequiredCheckBox;
     private User thisUser;
@@ -74,6 +75,7 @@ public class AddExperimentFragment extends DialogFragment {
                 UserHandler.USER_DATA_KEY, Context.MODE_PRIVATE));
 
         minTrialsEditText = view.findViewById(R.id.min_trials_EditText);
+        regionEditText = view.findViewById(R.id.region_EditText);
         experimentNameEditText = view.findViewById(R.id.experiment_name_EditText);
         locationRequiredCheckBox = view.findViewById(R.id.location_required_CheckBox);
 
@@ -134,6 +136,7 @@ public class AddExperimentFragment extends DialogFragment {
                 String experimentType = dropdown.getSelectedItem().toString();
                 String experimentName = experimentNameEditText.getText().toString();
                 String minTrials = minTrialsEditText.getText().toString();
+                String region = regionEditText.getText().toString();
                 Boolean isLocationRequired;
                 if(locationRequiredCheckBox.isChecked())
                     isLocationRequired = true;
@@ -141,7 +144,7 @@ public class AddExperimentFragment extends DialogFragment {
                     isLocationRequired = false;
 
                 if(experimentType == options[0] || minTrials.matches("") ||
-                        experimentName.matches("")) {
+                        experimentName.matches("") || region.matches("")) {
                     Context context = getContext();
                     CharSequence text = "Missing Fields";
                     int duration = Toast.LENGTH_SHORT;
@@ -152,7 +155,7 @@ public class AddExperimentFragment extends DialogFragment {
                         @Override
                         public void callBackResult(User user) {
                             thisUser = user;
-                            handler.createExperiment(experimentName, isLocationRequired,
+                            handler.createExperiment(experimentName, isLocationRequired, region,
                                     Integer.valueOf(minTrials), experimentType, thisUser.getUid(),
                                     new createExperimentCallBack() {
                                         @Override

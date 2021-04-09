@@ -1,5 +1,6 @@
 package com.example.crowderapp.views.trialfragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +13,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.crowderapp.HeatmapActivity;
+import com.example.crowderapp.HistogramActivity;
+import com.example.crowderapp.PlotActivity;
+import com.example.crowderapp.QRCodeActivity;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.StatsActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.ScanHandler;
+import com.example.crowderapp.controllers.ScanObjHandler;
 import com.example.crowderapp.controllers.UserHandler;
 import com.example.crowderapp.controllers.callbackInterfaces.GetUserListCallback;
+import com.example.crowderapp.controllers.callbackInterfaces.ScanObjectCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.endExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
@@ -27,6 +34,7 @@ import com.example.crowderapp.models.BinomialTrial;
 import com.example.crowderapp.models.Experiment;
 import com.example.crowderapp.models.Location;
 import com.example.crowderapp.models.MeasurementExperiment;
+import com.example.crowderapp.models.ScanObj;
 import com.example.crowderapp.models.Trial;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.BinomialBarcodeFragment;
@@ -50,8 +58,10 @@ public class TrialFragment extends Fragment {
     Experiment experiment;
     Menu menu;
     ExperimentHandler handler = new ExperimentHandler();
+    ScanObjHandler soHandler;
     UserHandler userHandler;
     int curIndex=0;
+    String option;
 
 
     @Override
@@ -71,7 +81,8 @@ public class TrialFragment extends Fragment {
         this.menu = menu;
         userHandler.getCurrentUser(new getUserByIDCallBack() {
             @Override
-            public void callBackResult(User user) {
+            public void callBackResult(User u) {
+                user = u;
                 MenuItem menuItem = menu.findItem(R.id.more_item);
                 menuItem.setVisible(true);
                 boolean isOwner = experiment.getOwnerID().matches(user.getUid());
@@ -84,6 +95,9 @@ public class TrialFragment extends Fragment {
                 }
                 if(!experiment.isLocationRequired()) {
                     menu.findItem(R.id.location_item).setVisible(false);
+                }
+                if(experiment.isUnpublished()) {
+                    menu.findItem(R.id.unpublish_item).setVisible(false);
                 }
             }
         });
@@ -100,54 +114,52 @@ public class TrialFragment extends Fragment {
                 startActivity(intentLocation);
                 break;
             case R.id.unpublish_item:
-                handler.unPublishExperiment(experiment.getExperimentID(), new unPublishExperimentCallBack() {
+                item.setVisible(false);
+                experiment.setUnpublished(true);
+                handler.updateExperiment(experiment);
+                handler.unPublishExperiment(experiment, new unPublishExperimentCallBack() {
                     @Override
                     public void callBackResult() {
-                        userHandler.unsubscribeExperiment(experiment.getExperimentID(), new unsubscribedExperimentCallBack() {
-                            @Override
-                            public void callBackResult() {
-                                openFragment(MyExperimentsFragment.newInstance());
-                            }
-                        });
                     }
                 });
                 break;
             case R.id.assign_barcode_item:
                 if(experiment.getExperimentType().equals("Binomial"))
-                    new BinomialBarcodeFragment().show(getFragmentManager(), "BinomialBarcode");
+                    new BinomialBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "BinomialBarcode");
                 else if(experiment.getExperimentType().equals("Non-Negative Integer"))
-                    new NonNegBarcodeFragment().show(getFragmentManager(), "NonNegBarcode");
+                    new NonNegBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "NonNegBarcode");
                 else if(experiment.getExperimentType().equals("Count"))
-                    launchScanner();
+                    scanCode("Count");
                 else if(experiment.getExperimentType().equals("Measurement"))
-                    new MeasurementBarcodeFragment().show(getFragmentManager(), "MeasureBarcode");
-                // TODO barcode
+                    new MeasurementBarcodeFragment().newInstance(experiment).show(getFragmentManager(), "MeasureBarcode");
                 break;
             case R.id.scan_item:
-                launchScanner();
+                scanCode("Scan");
                 break;
             case R.id.qr_code_gen_item:
                 if(experiment.getExperimentType().equals("Binomial"))
-                    new BinomialQRFragment().show(getFragmentManager(), "BinomialQR");
+                    new BinomialQRFragment().newInstance(experiment).show(getFragmentManager(), "BinomialQR");
                 else if(experiment.getExperimentType().equals("Non-Negative Integer"))
-                    new NonNegQRFragment().show(getFragmentManager(), "NonNegQR");
-                else if(experiment.getExperimentType().equals("Count"))
-                    launchScanner();
+                    new NonNegQRFragment().newInstance(experiment).show(getFragmentManager(), "NonNegQR");
+                else if(experiment.getExperimentType().equals("Count")) {
+                    Intent intent = new Intent(getActivity(), QRCodeActivity.class);
+                    intent.putExtra("Experiment", experiment);
+                    intent.putExtra("Value", "1");
+                    startActivity(intent);
+                }
                 else if(experiment.getExperimentType().equals("Measurement"))
-                    new MeasurementQRFragment().show(getFragmentManager(), "MeasureQR");
+                    new MeasurementQRFragment().newInstance(experiment).show(getFragmentManager(), "MeasureQR");
                 break;
             case R.id.comment_item:
-                // TODO go to comments
                 openFragmentWithExperimentID(QuestionsFragment.newInstance());
                 break;
             case R.id.plot_item:
-                // TODO show plots
+                openPlot();
                 break;
             case R.id.histogram_item:
-                // TODO show hist
+                openHistogram();
                 break;
             case R.id.stats_item:
-                // TODO show stats
                 openStats();
                 break;
             case R.id.end_item:
@@ -190,16 +202,51 @@ public class TrialFragment extends Fragment {
             }
         });
     }
-
-    private void launchScanner() {
+    public void scanCode(String message) {
+        option = message;
         Intent intent = new Intent(getActivity(), ScanActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 2);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        if(data == null)
+            return;
+        String code = data.getStringExtra("CODE");
+        if(option.equals("Scan")) {
+            ScanHandler scanHandler = new ScanHandler(getActivity(), experiment, user);
+            scanHandler.execute(code);
+        } else {
+            soHandler = new ScanObjHandler(experiment.getExperimentID());
+            soHandler.createScanObj(code, "1", new ScanObjectCallback() {
+                @Override
+                public void callback(ScanObj o) {
+
+                }
+            });
+        }
+        option = "";
+
+    }
+
 
     private void openStats() {
         Intent statsIntent =  new Intent(getActivity(), StatsActivity.class);
         statsIntent.putExtra("Experiment", experiment);
         startActivity(statsIntent);
+    }
+
+    private void openPlot() {
+        Intent plotIntent =  new Intent(getActivity(), PlotActivity.class);
+        plotIntent.putExtra("Experiment", experiment);
+        startActivity(plotIntent);
+    }
+
+    private void openHistogram() {
+        Intent histogramIntent =  new Intent(getActivity(), HistogramActivity.class);
+        histogramIntent.putExtra("Experiment", experiment);
+        startActivity(histogramIntent);
     }
 
     private void openFragmentWithExperimentID(Fragment fragment) {

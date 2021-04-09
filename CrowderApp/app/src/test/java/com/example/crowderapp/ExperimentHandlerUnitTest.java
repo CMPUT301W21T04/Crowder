@@ -62,8 +62,9 @@ public class ExperimentHandlerUnitTest {
         int minT1 = 0;
         String eType1 = "BinomialTrial";
         String ownerID = "1";
+        String region = "North America";
 
-        handler.createExperiment(expName1, loc1, minT1, eType1, ownerID , new createExperimentCallBack() {
+        handler.createExperiment(expName1, loc1, region, minT1, eType1, ownerID , new createExperimentCallBack() {
             @Override
             public void callBackResult(Experiment experiment) {
                 expID = experiment.getExperimentID();
@@ -72,6 +73,8 @@ public class ExperimentHandlerUnitTest {
                 Assert.assertEquals(experiment.getMinTrials(), minT1);
                 Assert.assertEquals(experiment.getExperimentType(), eType1);
                 Assert.assertEquals(experiment.getOwnerID(), ownerID);
+                Assert.assertEquals(experiment.getRegion(), region);
+
             }
         });
         finishAllTasks();
@@ -93,8 +96,9 @@ public class ExperimentHandlerUnitTest {
         int minT2 = 0;
         String eType2 = "BinomialTrial";
         String ownerID2 = "2";
+        String region2 = "South America";
 
-        handler.createExperiment(expName2, loc2, minT2, eType2, ownerID2, new createExperimentCallBack() {
+        handler.createExperiment(expName2, loc2, region2, minT2, eType2, ownerID2, new createExperimentCallBack() {
             @Override
             public void callBackResult(Experiment experiment) {
                 expID = experiment.getExperimentID();
@@ -103,6 +107,7 @@ public class ExperimentHandlerUnitTest {
                 Assert.assertEquals(experiment.getMinTrials(), minT2);
                 Assert.assertEquals(experiment.getExperimentType(), eType2);
                 Assert.assertEquals(experiment.getOwnerID(), ownerID2);
+                Assert.assertEquals(experiment.getRegion(), region2);
             }
         });
         finishAllTasks();
@@ -126,13 +131,14 @@ public class ExperimentHandlerUnitTest {
         ExperimentFSDAO dao = mock(ExperimentFSDAO.class, RETURNS_DEEP_STUBS);
         Task<Experiment> task = mock(Task.class, RETURNS_DEEP_STUBS);
         ExperimentHandler handler = new ExperimentHandler(dao);
+        String testString = "test";
 
         when(dao.getExperiment(any())).thenReturn(task);
 
         ArgumentCaptor<OnCompleteListener> captor = ArgumentCaptor.forClass(OnCompleteListener.class);
         unPublishExperimentCallBack mockedExperimentCB = mock(unPublishExperimentCallBack.class);
 
-        handler.unPublishExperiment(any(), mockedExperimentCB);
+        handler.unPublishExperiment(testString, mockedExperimentCB);
 
         finishAllTasks();
 

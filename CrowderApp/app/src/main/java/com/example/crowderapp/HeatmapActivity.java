@@ -21,6 +21,7 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+// Code started from Template Google Map Activity Class
 public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -40,15 +41,6 @@ public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallb
         mExperiment = (Experiment) intent.getSerializableExtra("experiment");
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -61,10 +53,12 @@ public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallb
                 mExperiment = experiment;
                 latLngs = handler.getLatLongExperiment(mExperiment);
 
+                // Put no overlay when no latLngs
                 if(latLngs.size() == 0) {
                     return;
                 }
 
+                // Display Heatmap on map
                 HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
                         .data(latLngs)
                         .build();
