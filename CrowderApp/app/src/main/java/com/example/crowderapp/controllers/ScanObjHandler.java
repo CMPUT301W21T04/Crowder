@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 public class ScanObjHandler {
 
     private static final String TAG = "ScanObjHandler";
+    private static final String INVALID_CODE_STRING = "NOT_VALID";
 
     private String experimentId;
 
@@ -80,11 +81,21 @@ public class ScanObjHandler {
     /**
      * Gets the scan object by key.
      * @param key The key of scan object.
-     * @param cb Callback
+     * @param cb Callback. Has valid scan object, or scan object with key and value set to INVALID_CODE_STRING
      */
     public void getScanObj(String key, ScanObjectCallback cb) {
         dao.getScanObj(key, experimentId).addOnSuccessListener(scanObj -> {
-            cb.callback(scanObj);
+            if (scanObj == null) {
+                ScanObj invalidObj = new ScanObj();
+
+                // Both key and value are invalid for this experiment!
+                invalidObj.setValue(INVALID_CODE_STRING);
+                invalidObj.setKey(INVALID_CODE_STRING);
+                cb.callback(invalidObj);
+            }
+            else {
+                cb.callback(scanObj);
+            }
         }).addOnFailureListener(e -> {
             Log.e(TAG, "getScanObj: Failed to get the scan object with key " + key, e);
         });
