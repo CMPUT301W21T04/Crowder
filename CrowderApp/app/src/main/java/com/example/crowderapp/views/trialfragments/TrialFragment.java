@@ -117,7 +117,7 @@ public class TrialFragment extends Fragment {
                 item.setVisible(false);
                 experiment.setUnpublished(true);
                 handler.updateExperiment(experiment);
-                handler.unPublishExperiment(experiment, new unPublishExperimentCallBack() {
+                handler.unPublishExperiment(experiment, user.getUid(), new unPublishExperimentCallBack() {
                     @Override
                     public void callBackResult() {
                     }

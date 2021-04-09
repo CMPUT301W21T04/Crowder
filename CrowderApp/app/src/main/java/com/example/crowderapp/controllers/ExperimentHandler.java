@@ -121,7 +121,7 @@ public class ExperimentHandler {
      * @param experiment contains the experiment object
      * @param callback
      */
-    public void unPublishExperiment(Experiment experiment, unPublishExperimentCallBack callback) {
+    public void unPublishExperiment(Experiment experiment, String UID, unPublishExperimentCallBack callback) {
         // TODO: remove experiment from fire store
         UserFSDAO userFSDAO = new UserFSDAO();
 
@@ -140,7 +140,8 @@ public class ExperimentHandler {
                     for (User user : users) {
                         if (user.getSubscribedExperiments().contains(experiment.getExperimentID())) {
                             user.getSubscribedExperiments().remove(experiment.getExperimentID());
-                            changedUsers.add(user);
+                            if(!user.getUid().equals(UID))
+                                changedUsers.add(user);
                         }
                     }
 
