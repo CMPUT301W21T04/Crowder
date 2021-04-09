@@ -40,6 +40,9 @@ import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
 
+/**
+ * Pop up fragment when assigning a barcode to an action
+ */
 public class BinomialBarcodeFragment extends DialogFragment {
 
     private static final String[] options = new String[]{
@@ -91,7 +94,6 @@ public class BinomialBarcodeFragment extends DialogFragment {
 
 
         dropdown = view.findViewById(R.id.dropdown_binomial);
-        // https://stackoverflow.com/questions/40339499/how-to-create-an-unselectable-hint-text-for-spinner-in-android-without-reflec
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, options) {
             @Override
@@ -156,7 +158,7 @@ public class BinomialBarcodeFragment extends DialogFragment {
                 } else {
                     Intent intent = new Intent(getActivity(), ScanActivity.class);
                     startActivityForResult(intent, 0);
-//                    ad.dismiss();
+
                 }
             }
         });
@@ -165,12 +167,15 @@ public class BinomialBarcodeFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
+        // Check if not data was recieved
         if(data == null)
             return;
+
         String code = data.getStringExtra("CODE");
         Log.v("Barcode Frag", code);
         String binomialAction = dropdown.getSelectedItem().toString();
+
+        // Create scan object from retrieved values
         soHandler = new ScanObjHandler(experiment.getExperimentID());
         soHandler.createScanObj(code, binomialAction, new ScanObjectCallback() {
             @Override

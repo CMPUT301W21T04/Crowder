@@ -23,6 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays Statistics of an experiment
+ */
 public class StatsActivity extends AppCompatActivity {
 
     ExperimentHandler handler = new ExperimentHandler();
@@ -44,6 +47,7 @@ public class StatsActivity extends AppCompatActivity {
 
         experiment = (Experiment) getIntent().getSerializableExtra("Experiment");
 
+        // Get UI elements
         q1TextView = findViewById(R.id.q1_value_TextView);
         q2TextView = findViewById(R.id.q2_value_TextView);
         q3TextView = findViewById(R.id.q3_value_TextView);
@@ -51,6 +55,8 @@ public class StatsActivity extends AppCompatActivity {
         medianTextView = findViewById(R.id.median_value_TextView);
         stdDevTextView = findViewById(R.id.std_dev_value_TextView);
 
+        // Get trials for and experiment and get the statistics. Display them on to screen
+        // Handle case when value is NaN and display N/A instead
         handler.refreshExperimentTrials(experiment, new getExperimentCallBack() {
             @Override
             public void callBackResult(Experiment experiment) {
@@ -61,9 +67,12 @@ public class StatsActivity extends AppCompatActivity {
                         q1TextView.setText(!qs.get(0).isNaN() ? df.format(qs.get(0)) : "N/A");
                         q2TextView.setText(!qs.get(1).isNaN() ? df.format(qs.get(1)) : "N/A");
                         q3TextView.setText(!qs.get(2).isNaN() ? df.format(qs.get(2)) : "N/A");
-                        meanTextView.setText(!Double.isNaN(experimentStats.getMean()) ? df.format(experimentStats.getMean()) : "N/A" ) ;
-                        medianTextView.setText(!Double.isNaN(experimentStats.getMedian()) ? df.format(experimentStats.getMedian()) : "N/A");
-                        stdDevTextView.setText(!Double.isNaN(experimentStats.getStdev()) ? df.format(experimentStats.getStdev()) : "N/A" );
+                        meanTextView.setText(!Double.isNaN(experimentStats.getMean()) ?
+                                df.format(experimentStats.getMean()) : "N/A" ) ;
+                        medianTextView.setText(!Double.isNaN(experimentStats.getMedian()) ?
+                                df.format(experimentStats.getMedian()) : "N/A");
+                        stdDevTextView.setText(!Double.isNaN(experimentStats.getStdev()) ?
+                                df.format(experimentStats.getStdev()) : "N/A" );
                     }
                 });
             }

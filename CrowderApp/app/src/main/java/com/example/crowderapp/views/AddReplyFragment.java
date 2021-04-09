@@ -21,6 +21,9 @@ import com.example.crowderapp.controllers.callbackInterfaces.addQuestionToExperi
 import com.example.crowderapp.models.posts.Question;
 import com.example.crowderapp.models.posts.Reply;
 
+/**
+ * Fragment that allows user to add replies to questions
+ */
 public class AddReplyFragment extends DialogFragment {
 
     private Question question;
@@ -93,9 +96,11 @@ public class AddReplyFragment extends DialogFragment {
             public void onClick(View v) {
                 newReply = newReplyField.getText().toString();
                 question.addReply(new Reply(newReply, userID, question.getCommentId()));
+                // Check for blank text
                 if (newReply.matches("")) {
                     Toast.makeText(getContext(), "Invalid Question", Toast.LENGTH_LONG);
                 } else {
+                    // Add a comment to an experiment
                     commentHandler.updateQuestionForExperiment(experimentID, question);
                     listener.onOkPressed(question);
                     ad.dismiss();

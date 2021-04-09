@@ -25,6 +25,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays replies to a given question
+ */
 public class ReplyFragment extends Fragment {
 
     private List<Reply> replyList = new ArrayList<>();
@@ -34,8 +37,6 @@ public class ReplyFragment extends Fragment {
     private String userID;
     private String experimentID;
     private FloatingActionButton fab;
-    private CommentHandler commentHandler = new CommentHandler();
-    private UserHandler userHandler;
 
     public ReplyFragment() {
 
@@ -49,8 +50,6 @@ public class ReplyFragment extends Fragment {
     }
 
     public void update(Question question) {
-        //replyList.clear();
-        //replyList.addAll(question.getReplyList());
         replyAdapter.notifyDataSetChanged();
     }
 
@@ -66,12 +65,7 @@ public class ReplyFragment extends Fragment {
         ( (MainActivity) getActivity()).setActionBarTitle("Replies");
     }
 
-    private void openFragment(Fragment fragment, Question question) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+
 
     /**
      * Opens an immutable user fragment.
@@ -88,6 +82,8 @@ public class ReplyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.reply_fragment, container, false);
 
+
+        // Set floating action button to add a reply
         fab = view.findViewById(R.id.add_reply_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +93,7 @@ public class ReplyFragment extends Fragment {
         });
 
 
-
+        // Display replies
         replyList = question.getReplyList();
 
         replyAdapter = new CustomListReply(getContext(), replyList);

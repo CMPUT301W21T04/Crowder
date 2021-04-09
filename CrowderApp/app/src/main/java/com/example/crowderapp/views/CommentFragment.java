@@ -13,7 +13,9 @@ import androidx.fragment.app.Fragment;
 import com.example.crowderapp.R;
 
 
-
+/**
+ * Displayes comments for a given experiment
+ */
 public class CommentFragment extends Fragment {
 
     public CommentFragment() {

@@ -21,7 +21,12 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-// Code started from Template Google Map Activity Class
+
+/**
+ * Displays a heatmap of experiment trials
+ *
+ * Code started from Template Google Map Activity Class
+ */
 public class HeatmapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

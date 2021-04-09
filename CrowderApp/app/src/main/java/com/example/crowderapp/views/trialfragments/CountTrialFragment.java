@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Fragment for adding trials to count experiment
+ */
 public class CountTrialFragment extends TrialFragment {
     TextView totalCountTextView;
     TextView expName;
@@ -60,7 +63,7 @@ public class CountTrialFragment extends TrialFragment {
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
 
-        // Check if location is required
+        // Check if location is required and show pop up if it is
         locationHandler = new LocationHandler(getActivity().getApplicationContext());
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");

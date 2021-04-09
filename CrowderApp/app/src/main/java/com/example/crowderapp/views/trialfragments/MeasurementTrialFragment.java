@@ -42,6 +42,9 @@ import java.util.List;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
+/**
+ * Fragment for adding trials to a measurement experiment
+ */
 public class MeasurementTrialFragment extends TrialFragment {
 
     MeasurementExperiment measurementExperiment;
@@ -87,7 +90,7 @@ public class MeasurementTrialFragment extends TrialFragment {
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
 
-        // Check if location is required
+        // Check if location is required and show location pop up
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
             locationHandler = new LocationHandler(getActivity().getApplicationContext());
