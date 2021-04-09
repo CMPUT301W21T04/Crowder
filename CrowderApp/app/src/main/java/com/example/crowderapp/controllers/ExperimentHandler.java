@@ -65,13 +65,14 @@ public class ExperimentHandler {
      * @param ownerID the ownerID string
      * @param callBack the callback interface for the async call
      */
-    public void createExperiment(String experimentName, boolean isLocationRequired,
+    public void createExperiment(String experimentName, boolean isLocationRequired, String region,
                                  int minTrials, String experimentType, String ownerID,
                                  createExperimentCallBack callBack) {
         // TODO: have some code here to generate the id and what not
         // TODO: fill in parameters in the experiment.
         Experiment newExperiment = new Experiment();
         newExperiment.setName(experimentName);
+        newExperiment.setRegion(region);
         newExperiment.setLocationRequired(isLocationRequired);
         newExperiment.setMinTrials(minTrials);
         newExperiment.setExperimentType(experimentType);

@@ -26,8 +26,8 @@ public class BinomialExperiment extends Experiment {
      * @param isLocationRequired Boolean to show if the location is required to add trials
      * @param ownerID ID of the user who created the experiment
      */
-    public BinomialExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
-        super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
+    public BinomialExperiment(String experimentID, String name, String region, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+        super(experimentID, name, region, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
         this.totalPass = 0;
         this.totalFail = 0;
         this.successRate = 0;

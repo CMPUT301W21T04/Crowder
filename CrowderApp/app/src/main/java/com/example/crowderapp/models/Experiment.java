@@ -23,6 +23,7 @@ public class Experiment implements Serializable {
     private boolean isUnpublished;
     private boolean isLocationRequired;
     private String ownerID;
+    private String region;
 
     @Exclude // Trials have their own DAO
     protected List<Trial> trials = new ArrayList<Trial>();
@@ -39,6 +40,7 @@ public class Experiment implements Serializable {
         this.isLocationRequired = false;
         this.ownerID = "";
         this.experimentType = "";
+        this.region = "";
     }
 
     /**
@@ -59,10 +61,11 @@ public class Experiment implements Serializable {
      * @param isLocationRequired boolean whether the location is required for teh experiment
      * @param ownerID unique identifier for the owner of an experiment
      */
-    public Experiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+    public Experiment(String experimentID, String name, String region, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
         this.experimentID = experimentID;
         this.name = name;
         this.minTrials = minTrials;
+        this.region = region;
         this.isEnded = isEnded;
         this.isUnpublished = isUnpublished;
         this.isLocationRequired = isLocationRequired;
@@ -80,6 +83,10 @@ public class Experiment implements Serializable {
     public void setMinTrials(int minTrials) {
         this.minTrials = minTrials;
     }
+
+    public String getRegion() { return this.region; }
+
+    public void setRegion(String region) { this.region = region; }
 
     public String getExperimentID() {
         return experimentID;
