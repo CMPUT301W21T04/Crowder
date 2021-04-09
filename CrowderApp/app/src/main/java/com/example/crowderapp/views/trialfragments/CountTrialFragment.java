@@ -31,15 +31,14 @@ import java.util.List;
 public class CountTrialFragment extends TrialFragment {
     TextView totalCountTextView;
     TextView expName;
-    int totalCount;
     Button countButton;
     Button saveButton;
+
+    int totalCount;
     private CounterExperiment countExperiment;
     private Location location;
     private LocationHandler locationHandler;
     private List<CounterTrial> trials = new ArrayList<>();
-
-
 
     public CountTrialFragment() {
 
@@ -61,6 +60,7 @@ public class CountTrialFragment extends TrialFragment {
         Bundle bundle = getArguments();
         experiment = (Experiment) bundle.getSerializable("Experiment");
 
+        // Check if location is required
         locationHandler = new LocationHandler(getActivity().getApplicationContext());
         if(experiment.isLocationRequired()) {
             new LocationPopupFragment().newInstance(experiment).show(getFragmentManager(), "LocationPopup");
@@ -77,6 +77,8 @@ public class CountTrialFragment extends TrialFragment {
 
         countExperiment = (CounterExperiment) experiment;
         user = (User) bundle.getSerializable("User");
+
+        // Get UI Elements
         totalCountTextView = view.findViewById(R.id.count_name_TextView);
         expName = view.findViewById(R.id.count_trial_textView);
         expName.setText(experiment.getName());
@@ -88,6 +90,7 @@ public class CountTrialFragment extends TrialFragment {
         countButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Don't allow users to add trials when the experiment has ended
                 if(countExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
@@ -106,7 +109,9 @@ public class CountTrialFragment extends TrialFragment {
                 if(countExperiment.isEnded()) {
                     Toast.makeText(view.getContext(), "Experiment Has Ended!", Toast.LENGTH_LONG).show();
                 } else {
+                    // Don't allow users to add trials when the experiment has ended
                     handler.updateExperiment(countExperiment);
+                    // Add Trials
                     for (Trial trial : trials) {
                         Log.v(String.valueOf(trial.getExperimentID()), "Trial experiment id");
                         handler.addTrial(trial, new addTrialCallBack() {
