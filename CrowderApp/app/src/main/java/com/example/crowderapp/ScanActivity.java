@@ -16,7 +16,13 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 import com.google.zxing.integration.android.IntentIntegrator;
+
+// Code modified from Yuriy Budiyev on Github https://github.com/
+// code-scanner repo in ReadMe.md, available at
+// https://github.com/yuriy-budiyev/code-scanner
+// and
 // https://github.com/yuriy-budiyev/lib-demo-app/blob/master/app/src/main/java/com/budiyev/android/libdemoapp/codescanner/CodeScannerActivity.java
+// under MIT license
 public class ScanActivity extends AppCompatActivity {
     private static final int RC_PERMISSION = 10;
     private CodeScanner mCodeScanner;

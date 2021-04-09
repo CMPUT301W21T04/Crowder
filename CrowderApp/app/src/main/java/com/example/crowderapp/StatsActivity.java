@@ -60,12 +60,12 @@ public class StatsActivity extends AppCompatActivity {
                     @Override
                     public void callBackResult(ExperimentStats experimentStats) {
                         List<Double> qs = experimentStats.getQuartiles();
-                        q1TextView.setText(df.format(qs.get(0)));
-                        q2TextView.setText(df.format(qs.get(1)));
-                        q3TextView.setText(df.format(qs.get(2)));
-                        meanTextView.setText(df.format(experimentStats.getMean()));
-                        medianTextView.setText(df.format(experimentStats.getMedian()));
-                        stdDevTextView.setText(df.format(experimentStats.getStdev()));
+                        q1TextView.setText(!qs.get(0).isNaN() ? df.format(qs.get(0)) : "N/A");
+                        q2TextView.setText(!qs.get(1).isNaN() ? df.format(qs.get(1)) : "N/A");
+                        q3TextView.setText(!qs.get(2).isNaN() ? df.format(qs.get(2)) : "N/A");
+                        meanTextView.setText(!Double.isNaN(experimentStats.getMean()) ? df.format(experimentStats.getMean()) : "N/A" ) ;
+                        medianTextView.setText(!Double.isNaN(experimentStats.getMedian()) ? df.format(experimentStats.getMedian()) : "N/A");
+                        stdDevTextView.setText(!Double.isNaN(experimentStats.getStdev()) ? df.format(experimentStats.getStdev()) : "N/A" );
                         DateFormat df = new SimpleDateFormat("MMdd");
                         ExperimentStats.Graph graph = experimentStats.getPlotPoints();
                         List<ExperimentStats.Point> points = graph.getPoints();
