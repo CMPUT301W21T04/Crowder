@@ -39,7 +39,11 @@ public class BarcodeHandler {
      * @param barcode
      */
     public void scanBarcode(Bitmap barcode) {
-
+        /*
+            Reference : https://zeeshan-elahi.medium.com/how-to-use-googles-ml-kit-to-scan-barcodes-8a009ab491d2
+            Author : Zeeshan Elahi
+            Details : Showed how to scan QR and barcode using mlkit
+         */
         BarcodeScanner barcodeScanner = BarcodeScanning.getClient();
         InputImage inputImage = InputImage.fromBitmap(barcode, 0);
         Task<List<Barcode>> task = barcodeScanner.process(inputImage);
@@ -60,7 +64,11 @@ public class BarcodeHandler {
      * @param qr
      */
     public void scanQR(Bitmap qr) {
-
+        /*
+            Reference : https://zeeshan-elahi.medium.com/how-to-use-googles-ml-kit-to-scan-barcodes-8a009ab491d2
+            Author : Zeeshan Elahi
+            Details : Showed how to scan QR and barcode using mlkit
+         */
         BarcodeScannerOptions options = new BarcodeScannerOptions.Builder().setBarcodeFormats(
                 Barcode.FORMAT_QR_CODE
         ).build();
@@ -86,7 +94,11 @@ public class BarcodeHandler {
      * @return QR code bitmap
      */
     public Bitmap generateQR(String actionText) {
-
+        /*
+            Reference: https://medium.com/@aanandshekharroy/generate-barcode-in-android-app-using-zxing-64c076a5d83a
+            Author : Aanand Shekhar Roy
+            Details : Showed how to use zxing to generate barcode
+         */
         try {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(actionText.toString(), BarcodeFormat.QR_CODE, 500, 500, null);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
