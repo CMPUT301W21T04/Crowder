@@ -134,17 +134,18 @@ public class ExperimentHandler {
             public void onComplete(@NonNull Task<List<User>> task) {
                 if (task.isSuccessful()) {
                     List<User> users = taskgetAllUsers.getResult();
+                    List<User> changedUsers = new ArrayList<User>();
                     int index = 0;
+
                     for (User user : users) {
                         if (user.getSubscribedExperiments().contains(experiment.getExperimentID())) {
-                            index =  users.indexOf(user);
                             user.getSubscribedExperiments().remove(experiment.getExperimentID());
-                            users.set(index, user);
+                            changedUsers.add(user);
                         }
                     }
 
                     // bulk update
-                    Task<Void> taskBulkUpdate = userFSDAO.bulkUpdateUser(users);
+                    Task<Void> taskBulkUpdate = userFSDAO.bulkUpdateUser(changedUsers);
 
                     taskBulkUpdate.addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
