@@ -29,21 +29,11 @@ public class LocationHandler {
     public LocationHandler(Context context) {
         this.context = context;
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-//        injectBarcodeHandler();
     }
 
     public LocationHandler(Context context, FusedLocationProviderClient provider) {
         this.context = context;
         this.fusedLocationClient = provider;
-//        injectBarcodeHandler();
-    }
-
-    public void injectBarcodeHandler() {
-        BarcodeHandler barcodeHandler = new BarcodeHandler();
-        barcodeHandler.scanBarcode(this.context);
-        barcodeHandler.scanQR(this.context);
-        Bitmap myQR = barcodeHandler.generateQR("testing");
-        barcodeHandler.scanQR(myQR);
     }
 
     /**

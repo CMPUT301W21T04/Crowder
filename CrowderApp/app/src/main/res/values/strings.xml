@@ -16,6 +16,7 @@
     <string name="search_username">Username:</string>
     <string name="search_status">Status:</string>
     <string name="search_type">"Type: "</string>
+    <string name="update_index_tag">update_index_tag</string>
     <string name="quarter_1">Quartile 1</string>
     <string name="quarter_3">Quartile 3</string>
     <string name="_0">0</string>
@@ -24,4 +25,5 @@
     <string name="mean">Mean</string>
     <string name="std_dev">Std. Dev.</string>
     <string name="qr_code">QR Code</string>
+    <string name="number_of_counts">Number of Counts:</string>
 </resources>

@@ -57,6 +57,7 @@ public class ExperimentEndTest {
     @Test
     public void testExpEndBinomial() {
         UiTestHelperFunctions.initExp(solo, expname, UiTestHelperFunctions.expTypes.BINOMIAL);
+        solo.sleep(1000);
 
         Button incrementButton = (Button) solo.getView(R.id.binomialPassButton);
         Button saveButton = (Button) solo.getView(R.id.binomialSave);

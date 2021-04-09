@@ -23,8 +23,8 @@ public class CounterExperiment extends Experiment {
      * @param isLocationRequired Boolean to show if the location is required to add trials
      * @param ownerID ID of the user who created the experiment
      */
-    public CounterExperiment(String experimentID, String name, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
-        super(experimentID, name, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
+    public CounterExperiment(String experimentID, String name, String region, int minTrials, boolean isEnded, boolean isUnpublished, boolean isLocationRequired, String ownerID) {
+        super(experimentID, name, region, minTrials, isEnded, isUnpublished, isLocationRequired, ownerID);
     }
 
     /**

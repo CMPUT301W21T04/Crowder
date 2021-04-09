@@ -29,10 +29,13 @@ import androidx.annotation.Nullable;
 import com.example.crowderapp.R;
 import com.example.crowderapp.ScanActivity;
 import com.example.crowderapp.controllers.ExperimentHandler;
+import com.example.crowderapp.controllers.ScanObjHandler;
 import com.example.crowderapp.controllers.UserHandler;
+import com.example.crowderapp.controllers.callbackInterfaces.ScanObjectCallback;
 import com.example.crowderapp.controllers.callbackInterfaces.createExperimentCallBack;
 import com.example.crowderapp.controllers.callbackInterfaces.getUserByIDCallBack;
 import com.example.crowderapp.models.Experiment;
+import com.example.crowderapp.models.ScanObj;
 import com.example.crowderapp.models.User;
 import com.example.crowderapp.views.trialfragments.BinomialTrialFragment;
 import com.example.crowderapp.views.trialfragments.TrialFragment;
@@ -40,13 +43,22 @@ import com.example.crowderapp.views.trialfragments.TrialFragment;
 public class NonNegBarcodeFragment extends DialogFragment {
 
     EditText integerEditText;
-
+    private Experiment experiment;
     private OnFragmentInteractionListener listener;
+    private ScanObjHandler soHandler;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed();
     }
 
+
+    public static NonNegBarcodeFragment newInstance(Experiment experiment) {
+        NonNegBarcodeFragment frag = new NonNegBarcodeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Experiment", experiment);
+        frag.setArguments(bundle);
+        return frag;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -58,6 +70,15 @@ public class NonNegBarcodeFragment extends DialogFragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
+    @Override
+    public void onCreate(Bundle saveInstanceState) {
+
+        super.onCreate(saveInstanceState);
+
+        experiment = (Experiment) getArguments().get("Experiment");
+    }
+
 
     @NonNull
     @Override
@@ -124,9 +145,17 @@ public class NonNegBarcodeFragment extends DialogFragment {
 
         String code = data.getStringExtra("CODE");
         Log.v("Barcode Frag", code);
+        String newIntegerVal = integerEditText.getText().toString();
 
-        AlertDialog ad = (AlertDialog) getDialog();
-        ad.dismiss();
+        soHandler = new ScanObjHandler(experiment.getExperimentID());
+        soHandler.createScanObj(code, newIntegerVal, new ScanObjectCallback() {
+            @Override
+            public void callback(ScanObj o) {
+                AlertDialog ad = (AlertDialog) getDialog();
+                ad.dismiss();
+            }
+        });
+
     }
 
 }
